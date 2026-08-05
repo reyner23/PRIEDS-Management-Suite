@@ -197,7 +197,7 @@
         .bug-status-track > div { height:100%; border-radius:999px; background:var(--primary); }
         .bug-toolbar { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--gray-border); }
         .bug-table-wrap { width:100%; overflow:auto; border:1px solid var(--gray-border); border-radius:10px; }
-        .bug-table { width:100%; min-width:1390px; border-collapse:collapse; font-size:11px; table-layout:fixed; }
+        .bug-table { width:100%; min-width:1420px; border-collapse:collapse; font-size:11px; table-layout:fixed; }
         .bug-table th { position:sticky; top:0; z-index:2; background:#f8fafc; color:var(--text-muted); text-transform:uppercase; letter-spacing:.03em; font-size:10px; padding:11px 10px; border-bottom:1px solid var(--gray-border); text-align:left; white-space:nowrap; }
         .bug-table td { padding:11px 10px; border-bottom:1px solid var(--gray-border); vertical-align:top; color:var(--text-main); overflow-wrap:anywhere; }
         .bug-table tr:hover td { background:#f8fafc; }
@@ -749,9 +749,9 @@
                             <i class="fa-solid fa-rotate"></i> Refresh dari Prieds API
                         </button>
                         <button id="bug-load-btn" class="btn btn-outline" style="width:100%;" onclick="loadBugTrackerData(false)">
-                            <i class="fa-solid fa-cloud-arrow-down"></i> Muat dari Google Sheet
+                            <i class="fa-solid fa-cloud-arrow-down"></i> Tarik Data & Simpan Firebase
                         </button>
-                        <div id="bug-sync-status" class="bug-sync-status">Data belum dimuat pada sesi ini.</div>
+                        <div id="bug-sync-status" class="bug-sync-status">Data belum dimuat. Hasil penarikan akan disimpan dan di-upsert ke Firebase.</div>
                     </div>
 
                     <div class="section-title">Filter Data</div>
@@ -780,7 +780,8 @@
                         <label>Urutkan</label>
                         <select id="bug-sort-filter" onchange="applyBugTrackerFilters()">
                             <option value="updated_desc">Last Updated — terbaru</option>
-                            <option value="deadline_asc">Deadline — terdekat</option>
+                            <option value="created_desc">Created Time — terbaru</option>
+                            <option value="created_asc">Created Time — terlama</option>
                             <option value="priority_desc">Priority — tertinggi</option>
                             <option value="status_asc">Status — A ke Z</option>
                         </select>
@@ -1216,7 +1217,7 @@
                             <i class="fa-solid fa-spinner fa-spin"></i> Memproses data BUG Tracker...
                         </div>
                         <div id="bug-table-container">
-                            <div class="bug-empty">Buka halaman ini untuk memuat data dari Google Sheet.</div>
+                            <div class="bug-empty">Buka halaman ini untuk menarik data API dan memuat daftar yang tersimpan di Firebase.</div>
                         </div>
                         <div id="bug-pagination-container"></div>
                     </div>
@@ -1969,6 +1970,8 @@
             'repository', 'pageName', 'pathName', 'pic', 'status'
         ];
 
+        const BUG_TRACKER_FIREBASE_ROOT = 'prieds_bug_tracker';
+
         const bugTrackerState = {
             rows: [],
             filteredRows: [],
@@ -1978,7 +1981,8 @@
             loading: false,
             initialized: false,
             lastSync: '',
-            lastAction: ''
+            lastAction: '',
+            lastFirebaseResult: null
         };
 
         // ================= FUNGSI BANTUAN WARNA SKOR NPS =================
@@ -5410,11 +5414,119 @@ function openLastLoginReportDetail(idx) {
 
         function normalizeBugRow(row, index) {
             const obj = { _index: index };
-            BUG_TRACKER_COLUMNS.forEach((key, colIndex) => {
-                const value = Array.isArray(row) ? row[colIndex] : '';
-                obj[key] = value === null || value === undefined ? '' : String(value).trim();
-            });
+
+            if (Array.isArray(row)) {
+                BUG_TRACKER_COLUMNS.forEach((key, colIndex) => {
+                    const value = row[colIndex];
+                    obj[key] = value === null || value === undefined ? '' : String(value).trim();
+                });
+            } else {
+                BUG_TRACKER_COLUMNS.forEach(key => {
+                    const value = row && Object.prototype.hasOwnProperty.call(row, key) ? row[key] : '';
+                    obj[key] = value === null || value === undefined ? '' : String(value).trim();
+                });
+                obj.firebaseKey = row?.firebaseKey || '';
+                obj.firstSyncedAt = row?.firstSyncedAt || '';
+                obj.lastSyncedAt = row?.lastSyncedAt || '';
+                obj.syncCount = Number(row?.syncCount || 0);
+            }
+
             return obj;
+        }
+
+        function createBugHash(value) {
+            let hash = 2166136261;
+            const input = String(value || '');
+            for (let index = 0; index < input.length; index++) {
+                hash ^= input.charCodeAt(index);
+                hash = Math.imul(hash, 16777619);
+            }
+            return (hash >>> 0).toString(36);
+        }
+
+        function getBugFirebaseKey(row) {
+            const documentId = String(row.documentId || '').trim();
+            const hasDocumentId = documentId && documentId !== '-';
+            const identity = hasDocumentId
+                ? `document:${documentId.toLowerCase()}`
+                : `fallback:${String(row.projectId || '').toLowerCase()}|${String(row.title || '').toLowerCase()}|${String(row.createdTime || '').toLowerCase()}`;
+
+            const readablePrefix = String(hasDocumentId ? documentId : (row.title || row.projectId || 'bug'))
+                .toLowerCase()
+                .replace(/[^a-z0-9_-]+/g, '_')
+                .replace(/^_+|_+$/g, '')
+                .slice(0, 45) || 'bug';
+
+            return `${readablePrefix}_${createBugHash(identity)}`;
+        }
+
+        async function upsertBugRowsToFirebase(rows, syncSource = 'getBugData') {
+            const normalizedRows = rows.map(normalizeBugRow);
+            const rootRef = db.ref(BUG_TRACKER_FIREBASE_ROOT);
+            const existingSnapshot = await rootRef.child('items').once('value');
+            const existingItems = existingSnapshot.val() || {};
+            const updates = {};
+            const syncTimestamp = Date.now();
+            const syncIso = new Date(syncTimestamp).toISOString();
+            let added = 0;
+            let updated = 0;
+
+            normalizedRows.forEach(row => {
+                const firebaseKey = getBugFirebaseKey(row);
+                const previous = existingItems[firebaseKey] || null;
+
+                if (previous) updated += 1;
+                else added += 1;
+
+                const record = {
+                    ...row,
+                    _index: null,
+                    firebaseKey,
+                    source: 'prieds_internal_task_list',
+                    firstSyncedAt: previous?.firstSyncedAt || syncIso,
+                    lastSyncedAt: syncIso,
+                    syncCount: Number(previous?.syncCount || 0) + 1,
+                    lastSyncSource: syncSource
+                };
+
+                updates[`items/${firebaseKey}`] = record;
+            });
+
+            updates['meta/lastSyncAt'] = syncTimestamp;
+            updates['meta/lastSyncIso'] = syncIso;
+            updates['meta/lastSyncSource'] = syncSource;
+            updates['meta/latestSourceRowCount'] = normalizedRows.length;
+            updates['meta/lastAddedCount'] = added;
+            updates['meta/lastUpdatedCount'] = updated;
+
+            await rootRef.update(updates);
+
+            return {
+                added,
+                updated,
+                sourceRows: normalizedRows.length,
+                syncIso
+            };
+        }
+
+        async function readBugRowsFromFirebase() {
+            const snapshot = await db.ref(`${BUG_TRACKER_FIREBASE_ROOT}/items`).once('value');
+            const storedItems = snapshot.val() || {};
+
+            return Object.entries(storedItems).map(([firebaseKey, value], index) =>
+                normalizeBugRow({ ...value, firebaseKey }, index)
+            );
+        }
+
+        function applyBugRowsToState(rows, lastSync, action) {
+            bugTrackerState.rows = rows.map(normalizeBugRow);
+            bugTrackerState.initialized = true;
+            bugTrackerState.lastAction = action;
+            bugTrackerState.lastSync = lastSync || new Date().toLocaleString('id-ID');
+            bugTrackerState.page = 1;
+
+            populateBugTrackerFilters();
+            applyBugTrackerFilters();
         }
 
         function getBugStatusCategory(status) {
@@ -5480,27 +5592,46 @@ function openLastLoginReportDetail(idx) {
 
         async function loadBugTrackerData(showAlert = false) {
             if (bugTrackerState.loading) return;
-            setBugTrackerLoading(true, 'Mengambil data terbaru dari Google Sheet...');
-            updateBugSyncStatus('Mengambil data dari Google Sheet...', false);
+            setBugTrackerLoading(true, 'Menarik data dan menyimpannya ke Firebase...');
+            updateBugSyncStatus('Mengambil data Google Sheet melalui API, lalu melakukan upsert ke Firebase...', false);
 
             try {
                 const result = await callBugTrackerApi('getBugData');
                 const rawRows = result?.result?.rows || [];
-                bugTrackerState.rows = rawRows.map(normalizeBugRow);
-                bugTrackerState.initialized = true;
-                bugTrackerState.lastAction = 'getBugData';
-                bugTrackerState.lastSync = result?.result?.retrievedAt || new Date().toLocaleString('id-ID');
-                bugTrackerState.page = 1;
+                const normalizedRows = rawRows.map(normalizeBugRow);
+                const firebaseResult = await upsertBugRowsToFirebase(normalizedRows, 'getBugData');
+                const firebaseRows = await readBugRowsFromFirebase();
+                const syncTime = result?.result?.retrievedAt || new Date().toLocaleString('id-ID');
 
-                populateBugTrackerFilters();
-                applyBugTrackerFilters();
-                updateBugSyncStatus(`Berhasil memuat ${bugTrackerState.rows.length} data. Terakhir diambil: ${bugTrackerState.lastSync}`, true);
-                if (showAlert) alert(`✅ ${bugTrackerState.rows.length} data BUG Tracker berhasil dimuat.`);
+                bugTrackerState.lastFirebaseResult = firebaseResult;
+                applyBugRowsToState(firebaseRows, syncTime, 'getBugData');
+
+                const message = `Firebase tersinkron: ${firebaseResult.added} data baru, ${firebaseResult.updated} data diperbarui. Total tersimpan: ${firebaseRows.length}.`;
+                updateBugSyncStatus(`${message} Terakhir sinkron: ${syncTime}`, true);
+                if (showAlert) alert(`✅ BUG Tracker berhasil dimuat dan disimpan ke Firebase.
+
+Data baru: ${firebaseResult.added}
+Data diperbarui: ${firebaseResult.updated}
+Total Firebase: ${firebaseRows.length}`);
             } catch (error) {
                 console.error('Load BUG Tracker error:', error);
-                updateBugSyncStatus(`Gagal memuat data: ${error.message}`, false, true);
-                renderBugTrackerError(error.message);
-                if (showAlert) alert(`❌ Gagal memuat BUG Tracker.\n\n${error.message}`);
+
+                try {
+                    const firebaseRows = await readBugRowsFromFirebase();
+                    if (firebaseRows.length) {
+                        applyBugRowsToState(firebaseRows, bugTrackerState.lastSync || 'Data Firebase terakhir', 'firebaseFallback');
+                        updateBugSyncStatus(`API gagal: ${error.message}. Menampilkan ${firebaseRows.length} data terakhir dari Firebase.`, false, true);
+                        if (showAlert) alert(`⚠️ API gagal, tetapi ${firebaseRows.length} data terakhir berhasil dimuat dari Firebase.`);
+                    } else {
+                        throw error;
+                    }
+                } catch (firebaseError) {
+                    updateBugSyncStatus(`Gagal memuat data: ${firebaseError.message}`, false, true);
+                    renderBugTrackerError(firebaseError.message);
+                    if (showAlert) alert(`❌ Gagal memuat BUG Tracker.
+
+${firebaseError.message}`);
+                }
             } finally {
                 setBugTrackerLoading(false);
             }
@@ -5508,34 +5639,52 @@ function openLastLoginReportDetail(idx) {
 
         async function refreshBugTrackerFromSource() {
             if (bugTrackerState.loading) return;
-            const confirmed = confirm('Jalankan refresh dari Prieds Internal API? Proses dapat memerlukan sekitar 10–30 detik.');
+            const confirmed = confirm('Jalankan refresh dari Prieds Internal API? Data yang sudah ada di Firebase akan diperbarui, sedangkan data baru akan ditambahkan.');
             if (!confirmed) return;
 
-            setBugTrackerLoading(true, 'Menjalankan Apps Script dan memperbarui Google Sheet...');
-            updateBugSyncStatus('Menjalankan sinkronisasi Prieds API → Google Sheet...', false);
+            setBugTrackerLoading(true, 'Menjalankan API, memperbarui Google Sheet, dan upsert ke Firebase...');
+            updateBugSyncStatus('Sinkronisasi Prieds API → Google Sheet → Firebase sedang berjalan...', false);
 
             try {
                 const refreshResult = await callBugTrackerApi('refreshBugReport');
                 const updateInfo = refreshResult?.result || {};
-                updateBugSyncStatus(`Google Sheet berhasil diperbarui (${updateInfo.totalRows || 0} baris). Mengambil data hasil sinkronisasi...`, true);
+                updateBugSyncStatus(`Google Sheet diperbarui (${updateInfo.totalRows || 0} baris). Menarik hasil dan menyimpan ke Firebase...`, true);
 
                 const dataResult = await callBugTrackerApi('getBugData');
                 const rawRows = dataResult?.result?.rows || [];
-                bugTrackerState.rows = rawRows.map(normalizeBugRow);
-                bugTrackerState.initialized = true;
-                bugTrackerState.lastAction = 'refreshBugReport';
-                bugTrackerState.lastSync = updateInfo.updatedAt || dataResult?.result?.retrievedAt || new Date().toLocaleString('id-ID');
-                bugTrackerState.page = 1;
+                const normalizedRows = rawRows.map(normalizeBugRow);
+                const firebaseResult = await upsertBugRowsToFirebase(normalizedRows, 'refreshBugReport');
+                const firebaseRows = await readBugRowsFromFirebase();
+                const syncTime = updateInfo.updatedAt || dataResult?.result?.retrievedAt || new Date().toLocaleString('id-ID');
 
-                populateBugTrackerFilters();
-                applyBugTrackerFilters();
-                updateBugSyncStatus(`Sinkronisasi selesai. ${bugTrackerState.rows.length} data tersedia. Update: ${bugTrackerState.lastSync}`, true);
-                alert(`✅ BUG Tracker berhasil diperbarui.\n\nTotal data: ${bugTrackerState.rows.length}\nUpdate: ${bugTrackerState.lastSync}`);
+                bugTrackerState.lastFirebaseResult = firebaseResult;
+                applyBugRowsToState(firebaseRows, syncTime, 'refreshBugReport');
+
+                updateBugSyncStatus(`Sinkronisasi selesai: ${firebaseResult.added} data baru, ${firebaseResult.updated} data diperbarui, ${firebaseRows.length} total data Firebase. Update: ${syncTime}`, true);
+                alert(`✅ BUG Tracker berhasil disinkronkan.
+
+Data baru: ${firebaseResult.added}
+Data diperbarui: ${firebaseResult.updated}
+Total Firebase: ${firebaseRows.length}
+Update: ${syncTime}`);
             } catch (error) {
                 console.error('Refresh BUG Tracker error:', error);
                 updateBugSyncStatus(`Sinkronisasi gagal: ${error.message}`, false, true);
-                renderBugTrackerError(error.message);
-                alert(`❌ Sinkronisasi gagal.\n\n${error.message}`);
+
+                try {
+                    const firebaseRows = await readBugRowsFromFirebase();
+                    if (firebaseRows.length) {
+                        applyBugRowsToState(firebaseRows, bugTrackerState.lastSync || 'Data Firebase terakhir', 'firebaseFallback');
+                    } else {
+                        renderBugTrackerError(error.message);
+                    }
+                } catch (firebaseError) {
+                    renderBugTrackerError(firebaseError.message);
+                }
+
+                alert(`❌ Sinkronisasi gagal.
+
+${error.message}`);
             } finally {
                 setBugTrackerLoading(false);
             }
@@ -5583,10 +5732,10 @@ function openLastLoginReportDetail(idx) {
             });
 
             rows.sort((a, b) => {
-                if (sort === 'deadline_asc') {
-                    const aDate = parseBugDate(a.deadline)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-                    const bDate = parseBugDate(b.deadline)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-                    return aDate - bDate;
+                if (sort === 'created_desc' || sort === 'created_asc') {
+                    const aDate = parseBugDate(a.createdTime)?.getTime() ?? 0;
+                    const bDate = parseBugDate(b.createdTime)?.getTime() ?? 0;
+                    return sort === 'created_asc' ? aDate - bDate : bDate - aDate;
                 }
                 if (sort === 'priority_desc') return getBugPriorityWeight(b.priority) - getBugPriorityWeight(a.priority);
                 if (sort === 'status_asc') return a.status.localeCompare(b.status);
@@ -5660,18 +5809,19 @@ function openLastLoginReportDetail(idx) {
             const done = rows.filter(row => getBugStatusCategory(row.status) === 'done').length;
             const inProgress = rows.filter(row => getBugStatusCategory(row.status) === 'in_progress').length;
             const waiting = rows.filter(row => getBugStatusCategory(row.status) === 'waiting').length;
+            const attention = rows.filter(row => getBugStatusCategory(row.status) === 'attention').length;
             const open = total - done;
-            const overdue = rows.filter(isBugOverdue).length;
             const completion = total ? Math.round((done / total) * 100) : 0;
+            const attentionRate = total ? Math.round((attention / total) * 100) : 0;
 
             const cards = document.getElementById('bug-dashboard-cards');
             if (cards) {
                 cards.innerHTML = `
-                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-list-check" style="color:var(--primary)"></i>Total Issue</div><div class="bug-stat-value">${total}</div><div class="bug-stat-helper">Sesuai filter aktif</div></div>
+                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-list-check" style="color:var(--primary)"></i>Total Issue</div><div class="bug-stat-value">${total}</div><div class="bug-stat-helper">Total data tersimpan di Firebase</div></div>
                     <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-folder-open" style="color:var(--warning)"></i>Open</div><div class="bug-stat-value">${open}</div><div class="bug-stat-helper">Belum berstatus Done</div></div>
                     <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-gears" style="color:#8b5cf6"></i>In Progress</div><div class="bug-stat-value">${inProgress}</div><div class="bug-stat-helper">Sedang diproses / checking</div></div>
+                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-circle-exclamation" style="color:var(--danger)"></i>Need Attention</div><div class="bug-stat-value">${attention}</div><div class="bug-stat-helper">On Hold atau Need Update</div></div>
                     <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-circle-check" style="color:var(--success)"></i>Done</div><div class="bug-stat-value">${done}</div><div class="bug-stat-helper">Completion ${completion}%</div></div>
-                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-calendar-xmark" style="color:var(--danger)"></i>Overdue</div><div class="bug-stat-value">${overdue}</div><div class="bug-stat-helper">Deadline lewat & belum Done</div></div>
                 `;
             }
 
@@ -5686,7 +5836,7 @@ function openLastLoginReportDetail(idx) {
                     <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);"><span>${done} selesai</span><span>${open} masih terbuka</span></div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">
                         <div style="background:#f8fafc;border-radius:8px;padding:10px;"><span style="font-size:9px;color:var(--text-muted);font-weight:800;text-transform:uppercase;">Waiting</span><strong style="display:block;font-size:20px;color:var(--warning);margin-top:4px;">${waiting}</strong></div>
-                        <div style="background:#f8fafc;border-radius:8px;padding:10px;"><span style="font-size:9px;color:var(--text-muted);font-weight:800;text-transform:uppercase;">Overdue Rate</span><strong style="display:block;font-size:20px;color:var(--danger);margin-top:4px;">${total ? Math.round((overdue / total) * 100) : 0}%</strong></div>
+                        <div style="background:#f8fafc;border-radius:8px;padding:10px;"><span style="font-size:9px;color:var(--text-muted);font-weight:800;text-transform:uppercase;">Attention Rate</span><strong style="display:block;font-size:20px;color:var(--danger);margin-top:4px;">${attentionRate}%</strong></div>
                     </div>
                 `;
             }
@@ -5700,7 +5850,7 @@ function openLastLoginReportDetail(idx) {
             const statusProgress = document.getElementById('bug-status-progress');
             if (statusProgress) {
                 statusProgress.innerHTML = `
-                    <div class="bug-progress-head"><div><h4>Status Distribution</h4><p>Komposisi status dari data yang sedang ditampilkan</p></div><span class="bug-badge" style="background:#eff6ff;color:var(--primary);border-color:#bfdbfe;">${statusEntries.length} Status</span></div>
+                    <div class="bug-progress-head"><div><h4>Status Distribution</h4><p>Komposisi status dari data Firebase yang sedang ditampilkan</p></div><span class="bug-badge" style="background:#eff6ff;color:var(--primary);border-color:#bfdbfe;">${statusEntries.length} Status</span></div>
                     <div class="bug-status-list">
                         ${statusEntries.length ? statusEntries.slice(0, 7).map(([status, count]) => `
                             <div class="bug-status-row"><strong title="${bugEscapeHtml(status)}">${bugEscapeHtml(status)}</strong><span style="font-weight:800;text-align:right;">${count}</span><div class="bug-status-track"><div style="width:${total ? (count / total) * 100 : 0}%"></div></div></div>
@@ -5726,7 +5876,7 @@ function openLastLoginReportDetail(idx) {
             if (summary) {
                 const start = total ? startIndex + 1 : 0;
                 const end = Math.min(startIndex + bugTrackerState.limit, total);
-                summary.textContent = `Menampilkan ${start}–${end} dari ${total} data • Terakhir sinkron: ${bugTrackerState.lastSync || '-'}`;
+                summary.textContent = `Menampilkan ${start}–${end} dari ${total} data Firebase • Terakhir sinkron: ${bugTrackerState.lastSync || '-'}`;
             }
 
             if (!bugTrackerState.initialized) {
@@ -5748,7 +5898,7 @@ function openLastLoginReportDetail(idx) {
                     <td>${bugEscapeHtml(row.taskType || '-')}</td>
                     <td>${getBugPriorityBadge(row.priority)}</td>
                     <td>${getBugStatusBadge(row.status)}</td>
-                    <td class="bug-mono" style="${isBugOverdue(row) ? 'color:var(--danger);font-weight:800;' : ''}">${bugEscapeHtml(row.deadline || '-')}</td>
+                    <td>${formatBugDateList(row.createdTime)}</td>
                     <td>${formatBugPicList(row.pic)}</td>
                     <td>${formatBugDateList(row.lastUpdated)}</td>
                     <td class="bug-action-cell"><button class="btn btn-outline" style="padding:6px 10px;font-size:10px;" onclick="openBugDetail(${index})"><i class="fa-solid fa-eye"></i> Detail</button></td>
@@ -5760,16 +5910,16 @@ function openLastLoginReportDetail(idx) {
                     <table class="bug-table">
                         <colgroup>
                             <col style="width:150px">
-                            <col style="width:330px">
+                            <col style="width:315px">
                             <col style="width:125px">
                             <col style="width:78px">
                             <col style="width:120px">
-                            <col style="width:95px">
+                            <col style="width:130px">
                             <col style="width:215px">
-                            <col style="width:125px">
+                            <col style="width:130px">
                             <col style="width:105px">
                         </colgroup>
-                        <thead><tr><th>Document / Project</th><th>Title / Page</th><th>Task Type</th><th>Priority</th><th>Status</th><th>Deadline</th><th>PIC</th><th>Last Updated</th><th>Action</th></tr></thead>
+                        <thead><tr><th>Document / Project</th><th>Title / Page</th><th>Task Type</th><th>Priority</th><th>Status</th><th>Created Time</th><th>PIC</th><th>Last Updated</th><th>Action</th></tr></thead>
                         <tbody>${rowsHtml}</tbody>
                     </table>
                 </div>
@@ -5811,9 +5961,10 @@ function openLastLoginReportDetail(idx) {
                 ['Status', row.status], ['Priority', row.priority],
                 ['Task Type', row.taskType], ['PIC', row.pic],
                 ['Created Time', row.createdTime], ['Last Updated', row.lastUpdated],
-                ['Deadline', row.deadline], ['Page Name', row.pageName],
-                ['Branch', row.branch], ['Repository', row.repository],
-                ['Path Name', row.pathName], ['Description', row.description, true]
+                ['Page Name', row.pageName], ['Branch', row.branch],
+                ['Repository', row.repository], ['Path Name', row.pathName],
+                ['Firebase First Sync', row.firstSyncedAt], ['Firebase Last Sync', row.lastSyncedAt],
+                ['Description', row.description, true]
             ];
             document.getElementById('bug-detail-content').innerHTML = fields.map(([label, value, full]) => `
                 <div class="bug-detail-item ${full ? 'full' : ''}"><label>${bugEscapeHtml(label)}</label><div>${bugEscapeHtml(value || '-')}</div></div>
@@ -5834,7 +5985,6 @@ function openLastLoginReportDetail(idx) {
                 'No': index + 1,
                 'Created Time': row.createdTime,
                 'Last Updated': row.lastUpdated,
-                'Deadline': row.deadline,
                 'Priority': row.priority,
                 'Task Type': row.taskType,
                 'Document ID': row.documentId,
@@ -5846,12 +5996,11 @@ function openLastLoginReportDetail(idx) {
                 'Page Name': row.pageName,
                 'Path Name': row.pathName,
                 'PIC': row.pic,
-                'Status': row.status,
-                'Overdue': isBugOverdue(row) ? 'Yes' : 'No'
+                'Status': row.status
             }));
             const worksheet = XLSX.utils.json_to_sheet(exportRows);
             worksheet['!cols'] = [
-                {wch:5},{wch:16},{wch:16},{wch:14},{wch:10},{wch:24},{wch:20},{wch:45},{wch:60},{wch:18},{wch:18},{wch:22},{wch:24},{wch:30},{wch:30},{wch:26},{wch:10}
+                {wch:5},{wch:18},{wch:18},{wch:10},{wch:24},{wch:20},{wch:45},{wch:60},{wch:18},{wch:18},{wch:22},{wch:24},{wch:30},{wch:30},{wch:18}
             ];
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'BUG Tracker');
