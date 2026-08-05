@@ -170,6 +170,58 @@
         .modal-header { padding: 20px 25px; border-bottom: 1px solid var(--gray-border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
         .modal-body { padding: 20px 25px; overflow-y: auto; flex: 1; }
 
+
+
+        /* ================= BUG TRACKER STYLES ================= */
+        .bug-sync-card { background:#eff6ff; border:1px dashed #60a5fa; border-radius:10px; padding:14px; margin-bottom:16px; }
+        .bug-sync-status { font-size:10px; color:var(--text-muted); line-height:1.5; margin-top:10px; word-break:break-word; }
+        .bug-filter-box { padding:15px; background:var(--gray-light); border:1px solid var(--gray-border); border-radius:10px; }
+        .bug-filter-box label { font-weight:700; color:var(--dark); display:block; margin-bottom:5px; font-size:11px; }
+        .bug-filter-box input, .bug-filter-box select { width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:11px; font-size:12px; background:#fff; }
+        .bug-dashboard-grid { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:14px; margin-bottom:20px; }
+        .bug-stat-card { background:#fff; border:1px solid var(--gray-border); border-radius:12px; padding:16px; box-shadow:0 2px 5px rgba(15,23,42,.04); min-width:0; }
+        .bug-stat-label { color:var(--text-muted); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px; display:flex; align-items:center; gap:7px; }
+        .bug-stat-value { color:var(--dark); font-size:28px; line-height:1; font-weight:800; }
+        .bug-stat-helper { color:var(--text-muted); font-size:10px; margin-top:7px; }
+        .bug-progress-layout { display:grid; grid-template-columns:minmax(260px, .85fr) minmax(360px, 1.15fr); gap:16px; margin-bottom:20px; }
+        .bug-progress-card { background:#fff; border:1px solid var(--gray-border); border-radius:12px; padding:18px; }
+        .bug-progress-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:14px; }
+        .bug-progress-head h4 { font-size:14px; font-weight:800; color:var(--dark); }
+        .bug-progress-head p { font-size:10px; color:var(--text-muted); margin-top:3px; }
+        .bug-large-progress { height:12px; border-radius:999px; background:#e2e8f0; overflow:hidden; margin-bottom:10px; }
+        .bug-large-progress > div { height:100%; border-radius:999px; background:var(--success); transition:width .35s ease; }
+        .bug-status-list { display:grid; gap:10px; }
+        .bug-status-row { display:grid; grid-template-columns:minmax(135px, 1fr) 42px minmax(100px, 1.4fr); gap:10px; align-items:center; font-size:11px; }
+        .bug-status-row strong { color:var(--dark); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .bug-status-track { height:7px; background:#e2e8f0; border-radius:999px; overflow:hidden; }
+        .bug-status-track > div { height:100%; border-radius:999px; background:var(--primary); }
+        .bug-toolbar { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--gray-border); }
+        .bug-table-wrap { width:100%; overflow:auto; border:1px solid var(--gray-border); border-radius:10px; }
+        .bug-table { width:100%; min-width:1180px; border-collapse:collapse; font-size:11px; }
+        .bug-table th { position:sticky; top:0; z-index:2; background:#f8fafc; color:var(--text-muted); text-transform:uppercase; letter-spacing:.03em; font-size:10px; padding:11px 10px; border-bottom:1px solid var(--gray-border); text-align:left; white-space:nowrap; }
+        .bug-table td { padding:11px 10px; border-bottom:1px solid var(--gray-border); vertical-align:top; color:var(--text-main); }
+        .bug-table tr:hover td { background:#f8fafc; }
+        .bug-title-cell { min-width:230px; max-width:330px; white-space:normal; line-height:1.35; font-weight:700; color:var(--dark); }
+        .bug-mono { font-family:'Roboto Mono', monospace; font-size:10px; }
+        .bug-badge { display:inline-flex; align-items:center; padding:3px 7px; border-radius:999px; font-size:9px; font-weight:800; white-space:nowrap; border:1px solid transparent; }
+        .bug-pagination { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap; }
+        .bug-pagination-buttons { display:flex; gap:6px; flex-wrap:wrap; }
+        .bug-page-btn { min-width:32px; height:32px; padding:0 9px; border-radius:7px; border:1px solid var(--gray-border); background:#fff; color:var(--text-main); cursor:pointer; font-weight:700; font-size:11px; }
+        .bug-page-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+        .bug-page-btn:disabled { opacity:.45; cursor:not-allowed; }
+        .bug-empty { padding:45px 20px; text-align:center; color:var(--text-muted); }
+        .bug-loading-overlay { display:none; align-items:center; justify-content:center; gap:10px; padding:30px; color:var(--primary); font-weight:700; }
+        .bug-loading-overlay.active { display:flex; }
+        .bug-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px 18px; }
+        .bug-detail-item { border-bottom:1px solid var(--gray-border); padding-bottom:10px; min-width:0; }
+        .bug-detail-item.full { grid-column:1 / -1; }
+        .bug-detail-item label { display:block; font-size:9px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:5px; }
+        .bug-detail-item div { font-size:12px; line-height:1.5; color:var(--dark); white-space:pre-wrap; overflow-wrap:anywhere; }
+        @media (max-width: 1350px) {
+            .bug-dashboard-grid { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+            .bug-progress-layout { grid-template-columns:1fr; }
+        }
+
         /* ================= LOGIN PAGE STYLES ================= */
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -303,6 +355,9 @@
                 <div class="sub-menu">
                     <div class="nav-item" onclick="switchTab('roadmap', this)">
                         <i class="fa-solid fa-route"></i> Roadmap Planner
+                    </div>
+                    <div class="nav-item" onclick="switchTab('bug_tracker', this)">
+                        <i class="fa-solid fa-bug"></i> BUG Tracker
                     </div>
                     <div class="nav-item" onclick="switchTab('feature_history', this)">
                         <i class="fa-solid fa-clock-rotate-left"></i> Feature History
@@ -678,6 +733,63 @@
                             <option value="Q4 2026">Q4 2026</option>
                             <option value="Q1 2027">Q1 2027</option>
                         </select>
+                    </div>
+                </div>
+
+                <div id="editor-bug_tracker" class="editor-section">
+                    <div class="section-title">Sinkronisasi BUG Tracker</div>
+                    <div class="bug-sync-card">
+                        <button id="bug-refresh-btn" class="btn btn-primary" style="width:100%; margin-bottom:8px;" onclick="refreshBugTrackerFromSource()">
+                            <i class="fa-solid fa-rotate"></i> Refresh dari Prieds API
+                        </button>
+                        <button id="bug-load-btn" class="btn btn-outline" style="width:100%;" onclick="loadBugTrackerData(false)">
+                            <i class="fa-solid fa-cloud-arrow-down"></i> Muat dari Google Sheet
+                        </button>
+                        <div id="bug-sync-status" class="bug-sync-status">Data belum dimuat pada sesi ini.</div>
+                    </div>
+
+                    <div class="section-title">Filter Data</div>
+                    <div class="bug-filter-box">
+                        <label>Cari Bug / Document ID</label>
+                        <input id="bug-search-input" type="text" placeholder="Judul, document ID, project, PIC..." oninput="applyBugTrackerFilters()">
+
+                        <label>Status</label>
+                        <select id="bug-status-filter" onchange="applyBugTrackerFilters()">
+                            <option value="all">Semua Status</option>
+                        </select>
+
+                        <label>Task Type</label>
+                        <select id="bug-type-filter" onchange="applyBugTrackerFilters()">
+                            <option value="all">Semua Task Type</option>
+                        </select>
+
+                        <label>Priority</label>
+                        <select id="bug-priority-filter" onchange="applyBugTrackerFilters()">
+                            <option value="all">Semua Priority</option>
+                            <option value="HIGH">High</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LOW">Low</option>
+                        </select>
+
+                        <label>Urutkan</label>
+                        <select id="bug-sort-filter" onchange="applyBugTrackerFilters()">
+                            <option value="updated_desc">Last Updated — terbaru</option>
+                            <option value="deadline_asc">Deadline — terdekat</option>
+                            <option value="priority_desc">Priority — tertinggi</option>
+                            <option value="status_asc">Status — A ke Z</option>
+                        </select>
+
+                        <label>Data per Halaman</label>
+                        <select id="bug-limit-filter" onchange="changeBugTrackerLimit()">
+                            <option value="10" selected>10 Data</option>
+                            <option value="25">25 Data</option>
+                            <option value="50">50 Data</option>
+                            <option value="100">100 Data</option>
+                        </select>
+
+                        <button class="btn btn-outline" style="width:100%;" onclick="resetBugTrackerFilters()">
+                            <i class="fa-solid fa-filter-circle-xmark"></i> Reset Filter
+                        </button>
                     </div>
                 </div>
                 <div id="editor-feature_history" class="editor-section">
@@ -1059,6 +1171,48 @@
                         <div id="roadmap-table-container">
                             <div style="text-align:center; padding:30px; color:var(--text-muted);">Memuat data roadmap...</div>
                         </div>
+                    </div>
+                </div>
+
+
+                <div id="view-bug_tracker" class="tab-view">
+                    <div class="presentation-slide">
+                        <div class="slide-header" style="margin-bottom:20px; display:flex; justify-content:space-between; gap:20px; align-items:flex-start;">
+                            <div>
+                                <h2>BUG Tracker</h2>
+                                <p>Monitoring progress bug, improvement, dan new feature dari Prieds Internal Task List</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="refreshBugTrackerFromSource()">
+                                <i class="fa-solid fa-rotate"></i> Refresh Data
+                            </button>
+                        </div>
+
+                        <div id="bug-dashboard-cards" class="bug-dashboard-grid">
+                            <div class="bug-stat-card"><div class="bug-stat-label">Memuat dashboard...</div><div class="bug-stat-value">-</div></div>
+                        </div>
+
+                        <div class="bug-progress-layout">
+                            <div id="bug-overall-progress" class="bug-progress-card"></div>
+                            <div id="bug-status-progress" class="bug-progress-card"></div>
+                        </div>
+
+                        <div class="bug-toolbar">
+                            <div>
+                                <h3 style="font-size:16px; font-weight:800; color:var(--dark);"><i class="fa-solid fa-list-check"></i> Daftar Task</h3>
+                                <p id="bug-result-summary" style="font-size:10px; color:var(--text-muted); margin-top:4px;">Belum ada data.</p>
+                            </div>
+                            <button class="btn btn-outline" onclick="exportBugTrackerExcel()">
+                                <i class="fa-solid fa-file-excel"></i> Download Excel
+                            </button>
+                        </div>
+
+                        <div id="bug-loading" class="bug-loading-overlay">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Memproses data BUG Tracker...
+                        </div>
+                        <div id="bug-table-container">
+                            <div class="bug-empty">Buka halaman ini untuk memuat data dari Google Sheet.</div>
+                        </div>
+                        <div id="bug-pagination-container"></div>
                     </div>
                 </div>
 
@@ -1638,6 +1792,26 @@
             </div>
         </div>
     </div>
+
+
+    <!-- MODAL BUG TRACKER DETAIL -->
+    <div id="bug-detail-modal" class="modal-overlay">
+        <div class="modal-content" style="width:780px; max-width:92vw;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="bug-detail-title" style="font-size:16px; font-weight:800; color:var(--dark);">Detail BUG</h3>
+                    <p id="bug-detail-subtitle" style="font-size:10px; color:var(--text-muted); margin-top:3px;"></p>
+                </div>
+                <button style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-muted); padding:5px;" onclick="closeBugDetailModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="bug-detail-content" class="bug-detail-grid"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
 
         // ================= LOGIN & LOGOUT LOGIC =================
@@ -1778,6 +1952,27 @@
             // TAMBAHAN STATE MASTER DATA:
             masterCompany: [],
             masterCompanyState: { page: 1, limit: 10, search: '' }
+        };
+
+
+
+        // ================= BUG TRACKER RUNTIME STATE =================
+        const BUG_TRACKER_COLUMNS = [
+            'createdTime', 'lastUpdated', 'deadline', 'priority', 'taskType',
+            'documentId', 'title', 'description', 'projectId', 'branch',
+            'repository', 'pageName', 'pathName', 'pic', 'status'
+        ];
+
+        const bugTrackerState = {
+            rows: [],
+            filteredRows: [],
+            currentPageRows: [],
+            page: 1,
+            limit: 10,
+            loading: false,
+            initialized: false,
+            lastSync: '',
+            lastAction: ''
         };
 
         // ================= FUNGSI BANTUAN WARNA SKOR NPS =================
@@ -3427,6 +3622,7 @@
                 closeAddCompanyModal();
                 closeAddFeatureModal();
                 closeFeatureLogModal();
+                closeBugDetailModal();
             }
         }
 
@@ -3474,9 +3670,14 @@
                 'account_master': 'Account Master Management',
                 'roadmap': 'PM Hub - Feature Roadmap Planner',
                 'roadmap': 'PM Hub - Feature Roadmap Planner',
-                'feature_history': 'PM Hub - Historical Feature Tracker'
+                'feature_history': 'PM Hub - Historical Feature Tracker',
+                'bug_tracker': 'PM Hub - BUG Tracker Dashboard'
             };
             document.getElementById('page-header-title').innerText = titles[tab];
+
+            if (tab === 'bug_tracker' && !bugTrackerState.initialized && !bugTrackerState.loading) {
+                loadBugTrackerData(false);
+            }
         }
 
         // FUNGSI BARU: Mengontrol buka-tutup submenu secara dinamis (Accordion System)
@@ -5139,6 +5340,475 @@ function openLastLoginReportDetail(idx) {
             reader.readAsArrayBuffer(file);
         }
         
+
+
+        // ================= BUG TRACKER LOGIC =================
+        function bugEscapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function parseBugDate(value) {
+            if (!value) return null;
+            const raw = String(value).trim();
+            if (!raw || raw === '-') return null;
+
+            const idMatch = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})(?:\s|$)/);
+            if (idMatch) {
+                let year = Number(idMatch[3]);
+                if (year < 100) year += 2000;
+                const parsed = new Date(year, Number(idMatch[2]) - 1, Number(idMatch[1]));
+                return Number.isNaN(parsed.getTime()) ? null : parsed;
+            }
+
+            const parsed = new Date(raw);
+            return Number.isNaN(parsed.getTime()) ? null : parsed;
+        }
+
+        function normalizeBugRow(row, index) {
+            const obj = { _index: index };
+            BUG_TRACKER_COLUMNS.forEach((key, colIndex) => {
+                const value = Array.isArray(row) ? row[colIndex] : '';
+                obj[key] = value === null || value === undefined ? '' : String(value).trim();
+            });
+            return obj;
+        }
+
+        function getBugStatusCategory(status) {
+            const value = String(status || '').toUpperCase();
+            if (value === 'DONE') return 'done';
+            if (value.includes('IN PROGRESS') || value.includes('CHECKING IN PROGRESS')) return 'in_progress';
+            if (value.includes('WAITING')) return 'waiting';
+            if (value === 'ON HOLD' || value === 'NEED UPDATE') return 'attention';
+            return 'other';
+        }
+
+        function isBugOverdue(row) {
+            if (getBugStatusCategory(row.status) === 'done') return false;
+            const deadline = parseBugDate(row.deadline);
+            if (!deadline) return false;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            deadline.setHours(0, 0, 0, 0);
+            return deadline < today;
+        }
+
+        function getBugPriorityWeight(priority) {
+            const value = String(priority || '').toUpperCase();
+            if (value === 'HIGH') return 3;
+            if (value === 'MEDIUM') return 2;
+            if (value === 'LOW') return 1;
+            return 0;
+        }
+
+        function setBugTrackerLoading(isLoading, message) {
+            bugTrackerState.loading = isLoading;
+            const loading = document.getElementById('bug-loading');
+            if (loading) {
+                loading.classList.toggle('active', isLoading);
+                if (message) loading.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${bugEscapeHtml(message)}`;
+            }
+            ['bug-refresh-btn', 'bug-load-btn'].forEach(id => {
+                const button = document.getElementById(id);
+                if (button) button.disabled = isLoading;
+            });
+        }
+
+        async function callBugTrackerApi(action) {
+            const response = await fetch('/api/bug-report', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action })
+            });
+
+            const rawText = await response.text();
+            let result;
+            try {
+                result = JSON.parse(rawText);
+            } catch (error) {
+                throw new Error('Respons server bukan JSON yang valid. Periksa Vercel Function /api/bug-report.');
+            }
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || `Request gagal dengan status ${response.status}.`);
+            }
+            return result;
+        }
+
+        async function loadBugTrackerData(showAlert = false) {
+            if (bugTrackerState.loading) return;
+            setBugTrackerLoading(true, 'Mengambil data terbaru dari Google Sheet...');
+            updateBugSyncStatus('Mengambil data dari Google Sheet...', false);
+
+            try {
+                const result = await callBugTrackerApi('getBugData');
+                const rawRows = result?.result?.rows || [];
+                bugTrackerState.rows = rawRows.map(normalizeBugRow);
+                bugTrackerState.initialized = true;
+                bugTrackerState.lastAction = 'getBugData';
+                bugTrackerState.lastSync = result?.result?.retrievedAt || new Date().toLocaleString('id-ID');
+                bugTrackerState.page = 1;
+
+                populateBugTrackerFilters();
+                applyBugTrackerFilters();
+                updateBugSyncStatus(`Berhasil memuat ${bugTrackerState.rows.length} data. Terakhir diambil: ${bugTrackerState.lastSync}`, true);
+                if (showAlert) alert(`✅ ${bugTrackerState.rows.length} data BUG Tracker berhasil dimuat.`);
+            } catch (error) {
+                console.error('Load BUG Tracker error:', error);
+                updateBugSyncStatus(`Gagal memuat data: ${error.message}`, false, true);
+                renderBugTrackerError(error.message);
+                if (showAlert) alert(`❌ Gagal memuat BUG Tracker.\n\n${error.message}`);
+            } finally {
+                setBugTrackerLoading(false);
+            }
+        }
+
+        async function refreshBugTrackerFromSource() {
+            if (bugTrackerState.loading) return;
+            const confirmed = confirm('Jalankan refresh dari Prieds Internal API? Proses dapat memerlukan sekitar 10–30 detik.');
+            if (!confirmed) return;
+
+            setBugTrackerLoading(true, 'Menjalankan Apps Script dan memperbarui Google Sheet...');
+            updateBugSyncStatus('Menjalankan sinkronisasi Prieds API → Google Sheet...', false);
+
+            try {
+                const refreshResult = await callBugTrackerApi('refreshBugReport');
+                const updateInfo = refreshResult?.result || {};
+                updateBugSyncStatus(`Google Sheet berhasil diperbarui (${updateInfo.totalRows || 0} baris). Mengambil data hasil sinkronisasi...`, true);
+
+                const dataResult = await callBugTrackerApi('getBugData');
+                const rawRows = dataResult?.result?.rows || [];
+                bugTrackerState.rows = rawRows.map(normalizeBugRow);
+                bugTrackerState.initialized = true;
+                bugTrackerState.lastAction = 'refreshBugReport';
+                bugTrackerState.lastSync = updateInfo.updatedAt || dataResult?.result?.retrievedAt || new Date().toLocaleString('id-ID');
+                bugTrackerState.page = 1;
+
+                populateBugTrackerFilters();
+                applyBugTrackerFilters();
+                updateBugSyncStatus(`Sinkronisasi selesai. ${bugTrackerState.rows.length} data tersedia. Update: ${bugTrackerState.lastSync}`, true);
+                alert(`✅ BUG Tracker berhasil diperbarui.\n\nTotal data: ${bugTrackerState.rows.length}\nUpdate: ${bugTrackerState.lastSync}`);
+            } catch (error) {
+                console.error('Refresh BUG Tracker error:', error);
+                updateBugSyncStatus(`Sinkronisasi gagal: ${error.message}`, false, true);
+                renderBugTrackerError(error.message);
+                alert(`❌ Sinkronisasi gagal.\n\n${error.message}`);
+            } finally {
+                setBugTrackerLoading(false);
+            }
+        }
+
+        function updateBugSyncStatus(message, success = false, error = false) {
+            const element = document.getElementById('bug-sync-status');
+            if (!element) return;
+            element.textContent = message;
+            element.style.color = error ? 'var(--danger)' : success ? 'var(--success)' : 'var(--text-muted)';
+            element.style.fontWeight = (success || error) ? '700' : '400';
+        }
+
+        function populateBugTrackerFilters() {
+            const statusSelect = document.getElementById('bug-status-filter');
+            const typeSelect = document.getElementById('bug-type-filter');
+            if (!statusSelect || !typeSelect) return;
+
+            const currentStatus = statusSelect.value;
+            const currentType = typeSelect.value;
+            const statuses = [...new Set(bugTrackerState.rows.map(row => row.status).filter(Boolean))].sort();
+            const types = [...new Set(bugTrackerState.rows.map(row => row.taskType).filter(Boolean))].sort();
+
+            statusSelect.innerHTML = '<option value="all">Semua Status</option>' + statuses.map(value => `<option value="${bugEscapeHtml(value)}">${bugEscapeHtml(value)}</option>`).join('');
+            typeSelect.innerHTML = '<option value="all">Semua Task Type</option>' + types.map(value => `<option value="${bugEscapeHtml(value)}">${bugEscapeHtml(value)}</option>`).join('');
+
+            if (statuses.includes(currentStatus)) statusSelect.value = currentStatus;
+            if (types.includes(currentType)) typeSelect.value = currentType;
+        }
+
+        function applyBugTrackerFilters() {
+            const search = (document.getElementById('bug-search-input')?.value || '').trim().toLowerCase();
+            const status = document.getElementById('bug-status-filter')?.value || 'all';
+            const type = document.getElementById('bug-type-filter')?.value || 'all';
+            const priority = document.getElementById('bug-priority-filter')?.value || 'all';
+            const sort = document.getElementById('bug-sort-filter')?.value || 'updated_desc';
+
+            let rows = bugTrackerState.rows.filter(row => {
+                const searchable = [row.documentId, row.title, row.description, row.projectId, row.pageName, row.pic, row.repository, row.branch].join(' ').toLowerCase();
+                const matchSearch = !search || searchable.includes(search);
+                const matchStatus = status === 'all' || row.status === status;
+                const matchType = type === 'all' || row.taskType === type;
+                const matchPriority = priority === 'all' || row.priority.toUpperCase() === priority;
+                return matchSearch && matchStatus && matchType && matchPriority;
+            });
+
+            rows.sort((a, b) => {
+                if (sort === 'deadline_asc') {
+                    const aDate = parseBugDate(a.deadline)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+                    const bDate = parseBugDate(b.deadline)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+                    return aDate - bDate;
+                }
+                if (sort === 'priority_desc') return getBugPriorityWeight(b.priority) - getBugPriorityWeight(a.priority);
+                if (sort === 'status_asc') return a.status.localeCompare(b.status);
+                const aDate = parseBugDate(a.lastUpdated)?.getTime() ?? 0;
+                const bDate = parseBugDate(b.lastUpdated)?.getTime() ?? 0;
+                return bDate - aDate;
+            });
+
+            bugTrackerState.filteredRows = rows;
+            const totalPages = Math.max(1, Math.ceil(rows.length / bugTrackerState.limit));
+            if (bugTrackerState.page > totalPages) bugTrackerState.page = totalPages;
+            renderBugTrackerDashboard();
+            renderBugTrackerTable();
+        }
+
+        function resetBugTrackerFilters() {
+            const values = {
+                'bug-search-input': '',
+                'bug-status-filter': 'all',
+                'bug-type-filter': 'all',
+                'bug-priority-filter': 'all',
+                'bug-sort-filter': 'updated_desc',
+                'bug-limit-filter': '10'
+            };
+            Object.entries(values).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.value = value;
+            });
+            bugTrackerState.limit = 10;
+            bugTrackerState.page = 1;
+            applyBugTrackerFilters();
+        }
+
+        function changeBugTrackerLimit() {
+            bugTrackerState.limit = Number(document.getElementById('bug-limit-filter')?.value || 10);
+            bugTrackerState.page = 1;
+            renderBugTrackerTable();
+        }
+
+        function goToBugTrackerPage(page) {
+            const totalPages = Math.max(1, Math.ceil(bugTrackerState.filteredRows.length / bugTrackerState.limit));
+            bugTrackerState.page = Math.min(Math.max(1, page), totalPages);
+            renderBugTrackerTable();
+            document.getElementById('bug-table-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function getBugStatusBadge(status) {
+            const category = getBugStatusCategory(status);
+            const styles = {
+                done: 'background:#dcfce7;color:#15803d;border-color:#86efac;',
+                in_progress: 'background:#dbeafe;color:#1d4ed8;border-color:#93c5fd;',
+                waiting: 'background:#fef3c7;color:#b45309;border-color:#fcd34d;',
+                attention: 'background:#fee2e2;color:#b91c1c;border-color:#fca5a5;',
+                other: 'background:#f1f5f9;color:#475569;border-color:#cbd5e1;'
+            };
+            return `<span class="bug-badge" style="${styles[category]}">${bugEscapeHtml(status || '-')}</span>`;
+        }
+
+        function getBugPriorityBadge(priority) {
+            const value = String(priority || '-').toUpperCase();
+            let style = 'background:#f1f5f9;color:#475569;border-color:#cbd5e1;';
+            if (value === 'HIGH') style = 'background:#fee2e2;color:#b91c1c;border-color:#fca5a5;';
+            if (value === 'MEDIUM') style = 'background:#fef3c7;color:#b45309;border-color:#fcd34d;';
+            if (value === 'LOW') style = 'background:#dcfce7;color:#15803d;border-color:#86efac;';
+            return `<span class="bug-badge" style="${style}">${bugEscapeHtml(value)}</span>`;
+        }
+
+        function renderBugTrackerDashboard() {
+            const rows = bugTrackerState.filteredRows;
+            const total = rows.length;
+            const done = rows.filter(row => getBugStatusCategory(row.status) === 'done').length;
+            const inProgress = rows.filter(row => getBugStatusCategory(row.status) === 'in_progress').length;
+            const waiting = rows.filter(row => getBugStatusCategory(row.status) === 'waiting').length;
+            const open = total - done;
+            const overdue = rows.filter(isBugOverdue).length;
+            const completion = total ? Math.round((done / total) * 100) : 0;
+
+            const cards = document.getElementById('bug-dashboard-cards');
+            if (cards) {
+                cards.innerHTML = `
+                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-list-check" style="color:var(--primary)"></i>Total Issue</div><div class="bug-stat-value">${total}</div><div class="bug-stat-helper">Sesuai filter aktif</div></div>
+                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-folder-open" style="color:var(--warning)"></i>Open</div><div class="bug-stat-value">${open}</div><div class="bug-stat-helper">Belum berstatus Done</div></div>
+                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-gears" style="color:#8b5cf6"></i>In Progress</div><div class="bug-stat-value">${inProgress}</div><div class="bug-stat-helper">Sedang diproses / checking</div></div>
+                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-circle-check" style="color:var(--success)"></i>Done</div><div class="bug-stat-value">${done}</div><div class="bug-stat-helper">Completion ${completion}%</div></div>
+                    <div class="bug-stat-card"><div class="bug-stat-label"><i class="fa-solid fa-calendar-xmark" style="color:var(--danger)"></i>Overdue</div><div class="bug-stat-value">${overdue}</div><div class="bug-stat-helper">Deadline lewat & belum Done</div></div>
+                `;
+            }
+
+            const overall = document.getElementById('bug-overall-progress');
+            if (overall) {
+                overall.innerHTML = `
+                    <div class="bug-progress-head">
+                        <div><h4>Overall Completion</h4><p>Progress berdasarkan status DONE</p></div>
+                        <strong style="font-size:26px;color:var(--success);">${completion}%</strong>
+                    </div>
+                    <div class="bug-large-progress"><div style="width:${completion}%"></div></div>
+                    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-muted);"><span>${done} selesai</span><span>${open} masih terbuka</span></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">
+                        <div style="background:#f8fafc;border-radius:8px;padding:10px;"><span style="font-size:9px;color:var(--text-muted);font-weight:800;text-transform:uppercase;">Waiting</span><strong style="display:block;font-size:20px;color:var(--warning);margin-top:4px;">${waiting}</strong></div>
+                        <div style="background:#f8fafc;border-radius:8px;padding:10px;"><span style="font-size:9px;color:var(--text-muted);font-weight:800;text-transform:uppercase;">Overdue Rate</span><strong style="display:block;font-size:20px;color:var(--danger);margin-top:4px;">${total ? Math.round((overdue / total) * 100) : 0}%</strong></div>
+                    </div>
+                `;
+            }
+
+            const statusCounts = rows.reduce((acc, row) => {
+                const key = row.status || 'NO STATUS';
+                acc[key] = (acc[key] || 0) + 1;
+                return acc;
+            }, {});
+            const statusEntries = Object.entries(statusCounts).sort((a, b) => b[1] - a[1]);
+            const statusProgress = document.getElementById('bug-status-progress');
+            if (statusProgress) {
+                statusProgress.innerHTML = `
+                    <div class="bug-progress-head"><div><h4>Status Distribution</h4><p>Komposisi status dari data yang sedang ditampilkan</p></div><span class="bug-badge" style="background:#eff6ff;color:var(--primary);border-color:#bfdbfe;">${statusEntries.length} Status</span></div>
+                    <div class="bug-status-list">
+                        ${statusEntries.length ? statusEntries.slice(0, 7).map(([status, count]) => `
+                            <div class="bug-status-row"><strong title="${bugEscapeHtml(status)}">${bugEscapeHtml(status)}</strong><span style="font-weight:800;text-align:right;">${count}</span><div class="bug-status-track"><div style="width:${total ? (count / total) * 100 : 0}%"></div></div></div>
+                        `).join('') : '<div class="bug-empty" style="padding:20px;">Belum ada data status.</div>'}
+                    </div>
+                `;
+            }
+        }
+
+        function renderBugTrackerTable() {
+            const container = document.getElementById('bug-table-container');
+            const pagination = document.getElementById('bug-pagination-container');
+            const summary = document.getElementById('bug-result-summary');
+            if (!container || !pagination) return;
+
+            const rows = bugTrackerState.filteredRows;
+            const total = rows.length;
+            const totalPages = Math.max(1, Math.ceil(total / bugTrackerState.limit));
+            const startIndex = (bugTrackerState.page - 1) * bugTrackerState.limit;
+            const pageRows = rows.slice(startIndex, startIndex + bugTrackerState.limit);
+            bugTrackerState.currentPageRows = pageRows;
+
+            if (summary) {
+                const start = total ? startIndex + 1 : 0;
+                const end = Math.min(startIndex + bugTrackerState.limit, total);
+                summary.textContent = `Menampilkan ${start}–${end} dari ${total} data • Terakhir sinkron: ${bugTrackerState.lastSync || '-'}`;
+            }
+
+            if (!bugTrackerState.initialized) {
+                container.innerHTML = '<div class="bug-empty">Data belum dimuat.</div>';
+                pagination.innerHTML = '';
+                return;
+            }
+
+            if (!pageRows.length) {
+                container.innerHTML = '<div class="bug-empty"><i class="fa-solid fa-magnifying-glass" style="font-size:24px;margin-bottom:10px;display:block;"></i>Tidak ada data yang sesuai dengan filter.</div>';
+                pagination.innerHTML = '';
+                return;
+            }
+
+            const rowsHtml = pageRows.map((row, index) => `
+                <tr>
+                    <td class="bug-mono"><strong>${bugEscapeHtml(row.documentId || '-')}</strong><br><span style="color:var(--text-muted);">${bugEscapeHtml(row.projectId || '-')}</span></td>
+                    <td class="bug-title-cell">${bugEscapeHtml(row.title || '-')}<div style="font-size:9px;color:var(--text-muted);font-weight:400;margin-top:4px;">${bugEscapeHtml(row.pageName || row.pathName || '-')}</div></td>
+                    <td>${bugEscapeHtml(row.taskType || '-')}</td>
+                    <td>${getBugPriorityBadge(row.priority)}</td>
+                    <td>${getBugStatusBadge(row.status)}</td>
+                    <td class="bug-mono" style="${isBugOverdue(row) ? 'color:var(--danger);font-weight:800;' : ''}">${bugEscapeHtml(row.deadline || '-')}</td>
+                    <td style="max-width:150px;white-space:normal;">${bugEscapeHtml(row.pic || '-')}</td>
+                    <td class="bug-mono">${bugEscapeHtml(row.lastUpdated || '-')}</td>
+                    <td><button class="btn btn-outline" style="padding:6px 10px;font-size:10px;" onclick="openBugDetail(${index})"><i class="fa-solid fa-eye"></i> Detail</button></td>
+                </tr>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="bug-table-wrap">
+                    <table class="bug-table">
+                        <thead><tr><th>Document / Project</th><th>Title / Page</th><th>Task Type</th><th>Priority</th><th>Status</th><th>Deadline</th><th>PIC</th><th>Last Updated</th><th>Action</th></tr></thead>
+                        <tbody>${rowsHtml}</tbody>
+                    </table>
+                </div>
+            `;
+
+            const pageButtons = [];
+            const firstPage = Math.max(1, bugTrackerState.page - 2);
+            const lastPage = Math.min(totalPages, firstPage + 4);
+            for (let page = firstPage; page <= lastPage; page++) {
+                pageButtons.push(`<button class="bug-page-btn ${page === bugTrackerState.page ? 'active' : ''}" onclick="goToBugTrackerPage(${page})">${page}</button>`);
+            }
+            pagination.innerHTML = `
+                <div class="bug-pagination">
+                    <span style="font-size:10px;color:var(--text-muted);">Page ${bugTrackerState.page} of ${totalPages}</span>
+                    <div class="bug-pagination-buttons">
+                        <button class="bug-page-btn" onclick="goToBugTrackerPage(1)" ${bugTrackerState.page === 1 ? 'disabled' : ''}><i class="fa-solid fa-angles-left"></i></button>
+                        <button class="bug-page-btn" onclick="goToBugTrackerPage(${bugTrackerState.page - 1})" ${bugTrackerState.page === 1 ? 'disabled' : ''}><i class="fa-solid fa-chevron-left"></i></button>
+                        ${pageButtons.join('')}
+                        <button class="bug-page-btn" onclick="goToBugTrackerPage(${bugTrackerState.page + 1})" ${bugTrackerState.page === totalPages ? 'disabled' : ''}><i class="fa-solid fa-chevron-right"></i></button>
+                        <button class="bug-page-btn" onclick="goToBugTrackerPage(${totalPages})" ${bugTrackerState.page === totalPages ? 'disabled' : ''}><i class="fa-solid fa-angles-right"></i></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBugTrackerError(message) {
+            const container = document.getElementById('bug-table-container');
+            if (container) container.innerHTML = `<div class="bug-empty" style="color:var(--danger);"><i class="fa-solid fa-circle-exclamation" style="font-size:24px;margin-bottom:10px;display:block;"></i>${bugEscapeHtml(message)}</div>`;
+        }
+
+        function openBugDetail(index) {
+            const row = bugTrackerState.currentPageRows[index];
+            if (!row) return;
+            document.getElementById('bug-detail-title').textContent = row.title || 'Detail BUG';
+            document.getElementById('bug-detail-subtitle').textContent = `${row.documentId || '-'} • ${row.taskType || '-'} • ${row.status || '-'}`;
+
+            const fields = [
+                ['Document ID', row.documentId], ['Project ID', row.projectId],
+                ['Status', row.status], ['Priority', row.priority],
+                ['Task Type', row.taskType], ['PIC', row.pic],
+                ['Created Time', row.createdTime], ['Last Updated', row.lastUpdated],
+                ['Deadline', row.deadline], ['Page Name', row.pageName],
+                ['Branch', row.branch], ['Repository', row.repository],
+                ['Path Name', row.pathName], ['Description', row.description, true]
+            ];
+            document.getElementById('bug-detail-content').innerHTML = fields.map(([label, value, full]) => `
+                <div class="bug-detail-item ${full ? 'full' : ''}"><label>${bugEscapeHtml(label)}</label><div>${bugEscapeHtml(value || '-')}</div></div>
+            `).join('');
+            document.getElementById('bug-detail-modal').classList.add('active');
+        }
+
+        function closeBugDetailModal() {
+            document.getElementById('bug-detail-modal')?.classList.remove('active');
+        }
+
+        function exportBugTrackerExcel() {
+            if (!bugTrackerState.filteredRows.length) {
+                alert('Tidak ada data untuk di-download.');
+                return;
+            }
+            const exportRows = bugTrackerState.filteredRows.map((row, index) => ({
+                'No': index + 1,
+                'Created Time': row.createdTime,
+                'Last Updated': row.lastUpdated,
+                'Deadline': row.deadline,
+                'Priority': row.priority,
+                'Task Type': row.taskType,
+                'Document ID': row.documentId,
+                'Title': row.title,
+                'Description': row.description,
+                'Project ID': row.projectId,
+                'Branch': row.branch,
+                'Repository': row.repository,
+                'Page Name': row.pageName,
+                'Path Name': row.pathName,
+                'PIC': row.pic,
+                'Status': row.status,
+                'Overdue': isBugOverdue(row) ? 'Yes' : 'No'
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(exportRows);
+            worksheet['!cols'] = [
+                {wch:5},{wch:16},{wch:16},{wch:14},{wch:10},{wch:24},{wch:20},{wch:45},{wch:60},{wch:18},{wch:18},{wch:22},{wch:24},{wch:30},{wch:30},{wch:26},{wch:10}
+            ];
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'BUG Tracker');
+            XLSX.writeFile(workbook, `Prieds_BUG_Tracker_${new Date().toISOString().slice(0, 10)}.xlsx`);
+        }
+
+
         // ================= ROADMAP PLANNER LOGIC =================
         
         // 1. Inisialisasi State Roadmap (Mencegah error jika data kosong)
