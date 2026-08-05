@@ -228,6 +228,49 @@
             .bug-progress-layout { grid-template-columns:1fr; }
         }
 
+
+        /* ================= MASTER FEATURE STYLES ================= */
+        .master-feature-summary { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:14px; margin-bottom:20px; }
+        .master-feature-card { background:#fff; border:1px solid var(--gray-border); border-radius:12px; padding:16px; box-shadow:0 2px 5px rgba(15,23,42,.04); }
+        .master-feature-card-label { color:var(--text-muted); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px; }
+        .master-feature-card-value { color:var(--dark); font-size:28px; line-height:1; font-weight:800; }
+        .master-feature-card-helper { color:var(--text-muted); font-size:10px; margin-top:7px; }
+        .master-feature-toolbar { background:#f8fafc; border:1px solid var(--gray-border); border-radius:12px; padding:15px; margin-bottom:18px; display:grid; grid-template-columns:200px 170px minmax(240px, 1fr) auto; gap:12px; align-items:end; }
+        .master-feature-toolbar label { display:block; margin-bottom:6px; color:var(--dark); font-size:10px; font-weight:800; text-transform:uppercase; }
+        .master-feature-toolbar input, .master-feature-toolbar select { width:100%; padding:9px 10px; border:1px solid var(--gray-border); border-radius:7px; background:#fff; color:var(--text-main); font-size:12px; }
+        .master-feature-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+        .master-feature-module { border:1px solid var(--gray-border); border-radius:12px; background:#fff; margin-bottom:14px; overflow:hidden; box-shadow:0 2px 5px rgba(15,23,42,.03); }
+        .master-feature-module-header { display:grid; grid-template-columns:minmax(220px, 1fr) repeat(4, minmax(90px, auto)) 28px; gap:12px; align-items:center; padding:15px 16px; cursor:pointer; background:#fff; transition:.2s; }
+        .master-feature-module-header:hover { background:#f8fafc; }
+        .master-feature-module-name { color:var(--dark); font-size:14px; font-weight:800; display:flex; align-items:center; gap:9px; min-width:0; }
+        .master-feature-module-name span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .master-feature-metric { font-size:10px; color:var(--text-muted); text-align:center; white-space:nowrap; }
+        .master-feature-metric strong { display:block; color:var(--dark); font-size:15px; margin-bottom:2px; }
+        .master-feature-module-body { display:none; padding:0 14px 14px; background:#f8fafc; border-top:1px solid var(--gray-border); }
+        .master-feature-module.open .master-feature-module-body { display:block; }
+        .master-feature-module.open .master-feature-chevron { transform:rotate(180deg); }
+        .master-feature-chevron { transition:transform .2s; color:var(--text-muted); }
+        .master-feature-page { background:#fff; border:1px solid var(--gray-border); border-radius:10px; margin-top:12px; overflow:hidden; }
+        .master-feature-page-header { padding:11px 13px; display:flex; justify-content:space-between; align-items:center; gap:12px; background:#f8fafc; border-bottom:1px solid var(--gray-border); }
+        .master-feature-page-title { color:var(--dark); font-size:12px; font-weight:800; display:flex; align-items:center; gap:8px; min-width:0; }
+        .master-feature-page-title span { overflow-wrap:anywhere; }
+        .master-feature-count-badge { display:inline-flex; align-items:center; padding:3px 8px; border-radius:999px; background:#dbeafe; color:#1d4ed8; font-size:9px; font-weight:800; white-space:nowrap; }
+        .master-feature-table-wrap { width:100%; overflow:auto; }
+        .master-feature-table { width:100%; min-width:980px; border-collapse:collapse; table-layout:fixed; font-size:11px; }
+        .master-feature-table th { padding:9px 10px; text-align:left; background:#fff; border-bottom:1px solid var(--gray-border); color:var(--text-muted); font-size:9px; font-weight:800; text-transform:uppercase; }
+        .master-feature-table td { padding:10px; border-bottom:1px solid #eef2f7; vertical-align:top; color:var(--text-main); overflow-wrap:anywhere; }
+        .master-feature-table tr:last-child td { border-bottom:none; }
+        .master-feature-table tr:hover td { background:#f8fafc; }
+        .master-feature-empty { padding:45px 20px; text-align:center; color:var(--text-muted); border:1px dashed var(--gray-border); border-radius:12px; background:#fff; }
+        @media (max-width: 1350px) {
+            .master-feature-summary { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+            .master-feature-toolbar { grid-template-columns:1fr 1fr; }
+            .master-feature-actions { justify-content:flex-start; }
+            .master-feature-module-header { grid-template-columns:minmax(180px, 1fr) repeat(2, minmax(80px, auto)) 28px; }
+            .master-feature-module-header .master-feature-metric:nth-of-type(3),
+            .master-feature-module-header .master-feature-metric:nth-of-type(4) { display:none; }
+        }
+
         /* ================= LOGIN PAGE STYLES ================= */
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -385,6 +428,9 @@
                     </div>
                     <div class="nav-item" data-page-id="feature_history" onclick="switchTab('feature_history', this)">
                         <i class="fa-solid fa-clock-rotate-left"></i> Feature History
+                    </div>
+                    <div class="nav-item" data-page-id="master_feature" onclick="switchTab('master_feature', this)">
+                        <i class="fa-solid fa-layer-group"></i> Master Feature
                     </div>
                 </div>
             </div>
@@ -841,6 +887,9 @@
                 </div>
                 <div id="editor-feature_history" class="editor-section">
                     <!-- Dikosongkan karena filter dipindah ke atas tabel agar Full Width -->
+                </div>
+                <div id="editor-master_feature" class="editor-section">
+                    <!-- Master Feature menggunakan tampilan full width -->
                 </div>
             </div>
 
@@ -1339,6 +1388,56 @@
 
                         <div id="feature-history-table-container">
                             <div style="text-align:center; padding:30px; color:var(--text-muted);">Memuat data history...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-master_feature" class="tab-view">
+                    <div class="presentation-slide">
+                        <div class="slide-header" style="margin-bottom:20px;">
+                            <h2>Master Feature Catalog</h2>
+                            <p>Pengelompokan seluruh fitur pada Feature History berdasarkan Module dan Page</p>
+                        </div>
+
+                        <div id="master-feature-summary" class="master-feature-summary">
+                            <div class="master-feature-card">
+                                <div class="master-feature-card-label">Memuat data...</div>
+                                <div class="master-feature-card-value">-</div>
+                            </div>
+                        </div>
+
+                        <div class="master-feature-toolbar">
+                            <div>
+                                <label>Module</label>
+                                <select id="master-feature-module-filter" onchange="filterMasterFeature()">
+                                    <option value="all">Semua Module</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Tipe Feature</label>
+                                <select id="master-feature-type-filter" onchange="filterMasterFeature()">
+                                    <option value="all">Semua Tipe</option>
+                                    <option value="integration">Integration</option>
+                                    <option value="internal">Internal</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Cari Module, Page, atau Feature</label>
+                                <input id="master-feature-search" type="text" placeholder="Ketik nama module, page, feature ID, atau feature..." oninput="filterMasterFeature()">
+                            </div>
+                            <div class="master-feature-actions">
+                                <button class="btn btn-outline" onclick="setAllMasterFeatureGroups(true)">
+                                    <i class="fa-solid fa-angles-down"></i> Expand All
+                                </button>
+                                <button class="btn btn-outline" onclick="setAllMasterFeatureGroups(false)">
+                                    <i class="fa-solid fa-angles-up"></i> Collapse All
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="master-feature-result-summary" style="font-size:10px; color:var(--text-muted); margin:0 0 12px 2px;">Belum ada data.</div>
+                        <div id="master-feature-container">
+                            <div class="master-feature-empty">Memuat Master Feature...</div>
                         </div>
                     </div>
                 </div>
@@ -1910,7 +2009,8 @@
                 pages: [
                     { id: 'roadmap', label: 'Roadmap Planner' },
                     { id: 'bug_tracker', label: 'BUG Tracker' },
-                    { id: 'feature_history', label: 'Feature History' }
+                    { id: 'feature_history', label: 'Feature History' },
+                    { id: 'master_feature', label: 'Master Feature' }
                 ]
             }
         ];
@@ -1972,6 +2072,11 @@
 
             const adminExists = appState.roles.some(role => role.name.toLowerCase() === 'admin');
             if (!adminExists) appState.roles.push(createDefaultRoles()[1]);
+
+            const standardAdminRole = appState.roles.find(role => role.id === 'role_admin');
+            if (standardAdminRole && !standardAdminRole.permissions.includes('*') && !standardAdminRole.permissions.includes('master_feature')) {
+                standardAdminRole.permissions.push('master_feature');
+            }
 
             if (!Array.isArray(appState.accounts)) {
                 appState.accounts = appState.accounts ? Object.values(appState.accounts) : [];
@@ -4171,7 +4276,7 @@
             document.querySelectorAll('.editor-section').forEach(editor => editor.classList.remove('active'));
 
             const editorPanel = document.querySelector('.editor-panel');
-            if (tab === 'user_company' || tab === 'feature_history') {
+            if (tab === 'user_company' || tab === 'feature_history' || tab === 'master_feature') {
                 editorPanel.style.display = 'none';
             } else {
                 editorPanel.style.display = 'block';
@@ -4192,11 +4297,13 @@
                 'account_master': 'Account Master Management',
                 'roadmap': 'PM Hub - Feature Roadmap Planner',
                 'feature_history': 'PM Hub - Historical Feature Tracker',
+                'master_feature': 'PM Hub - Master Feature Catalog',
                 'bug_tracker': 'PM Hub - BUG Tracker Dashboard'
             };
             document.getElementById('page-header-title').innerText = titles[tab] || getPageLabel(tab);
 
             if (tab === 'account_master') initializeAccountAccessManagement();
+            if (tab === 'master_feature') initMasterFeatureView();
             if (tab === 'bug_tracker' && !bugTrackerState.initialized && !bugTrackerState.loading) {
                 loadBugTrackerFromFirebaseOnly();
             }
@@ -6702,6 +6809,7 @@ ${error.message}`);
 
                     saveDataToLocal();
                     initFeatureHistoryView(); // Refresh tabel history
+                    if (typeof initMasterFeatureView === "function") initMasterFeatureView();
                     if (typeof initRoadmapView === "function") initRoadmapView(); // Refresh tabel roadmap
                     
                     alert(`✅ Fitur "${f.name}" berhasil di-reopen!`);
@@ -6828,6 +6936,8 @@ ${error.message}`);
                 appState.roadmapFeatures = appState.roadmapFeatures.filter(f => String(f.id) !== String(id));
                 saveDataToLocal();
                 initRoadmapView();
+                if (typeof initFeatureHistoryView === "function") initFeatureHistoryView();
+                if (typeof initMasterFeatureView === "function") initMasterFeatureView();
             }
         }
 
@@ -6972,6 +7082,7 @@ ${error.message}`);
             saveDataToLocal();
             initRoadmapView();
             if (typeof initFeatureHistoryView === "function") initFeatureHistoryView(); // Trigger auto update tab history
+            if (typeof initMasterFeatureView === "function") initMasterFeatureView();
             closeAddFeatureModal();
         }
 
@@ -7101,6 +7212,246 @@ ${error.message}`);
         setTimeout(() => { 
             if (typeof initRoadmapView === "function") initRoadmapView(); 
         }, 1000);
+
+
+        // ================= MASTER FEATURE CATALOG =================
+        function masterFeatureEscapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getMasterFeatureSource() {
+            return (appState.roadmapFeatures || []).filter(feature => feature.overallStatus === 'Done');
+        }
+
+        function normalizeMasterFeatureModule(value) {
+            const moduleName = String(value || '').trim();
+            return (!moduleName || moduleName === '-') ? 'Unassigned Module' : moduleName;
+        }
+
+        function normalizeMasterFeaturePages(value) {
+            const raw = String(value || '').trim();
+            if (!raw || raw === '-') return ['Unassigned Page'];
+
+            const pages = raw
+                .split(/[,;|\n]+/)
+                .map(page => page.trim())
+                .filter(Boolean);
+
+            return pages.length ? [...new Set(pages)] : ['Unassigned Page'];
+        }
+
+        function populateMasterFeatureModuleFilter(features) {
+            const select = document.getElementById('master-feature-module-filter');
+            if (!select) return;
+
+            const previousValue = select.value || 'all';
+            const modules = [...new Set(features.map(feature => normalizeMasterFeatureModule(feature.impactedModule)))]
+                .sort((a, b) => a.localeCompare(b));
+
+            select.innerHTML = `
+                <option value="all">Semua Module</option>
+                ${modules.map(moduleName => `<option value="${masterFeatureEscapeHtml(moduleName)}">${masterFeatureEscapeHtml(moduleName)}</option>`).join('')}
+            `;
+
+            select.value = modules.includes(previousValue) ? previousValue : 'all';
+        }
+
+        function filterMasterFeature() {
+            initMasterFeatureView();
+        }
+
+        function initMasterFeatureView() {
+            const container = document.getElementById('master-feature-container');
+            const summary = document.getElementById('master-feature-summary');
+            const resultSummary = document.getElementById('master-feature-result-summary');
+            if (!container || !summary) return;
+
+            const allFeatures = getMasterFeatureSource();
+            populateMasterFeatureModuleFilter(allFeatures);
+
+            const allModules = new Set();
+            const allPages = new Set();
+            allFeatures.forEach(feature => {
+                const moduleName = normalizeMasterFeatureModule(feature.impactedModule);
+                allModules.add(moduleName);
+                normalizeMasterFeaturePages(feature.impactedPages).forEach(page => allPages.add(`${moduleName}|||${page}`));
+            });
+
+            const integrationTotal = allFeatures.filter(feature => Boolean(feature.isIntegration)).length;
+            summary.innerHTML = `
+                <div class="master-feature-card">
+                    <div class="master-feature-card-label"><i class="fa-solid fa-cubes"></i> Total Module</div>
+                    <div class="master-feature-card-value">${allModules.size}</div>
+                    <div class="master-feature-card-helper">Module dari seluruh Feature History</div>
+                </div>
+                <div class="master-feature-card">
+                    <div class="master-feature-card-label"><i class="fa-solid fa-file-lines"></i> Total Page</div>
+                    <div class="master-feature-card-value">${allPages.size}</div>
+                    <div class="master-feature-card-helper">Page unik per module</div>
+                </div>
+                <div class="master-feature-card">
+                    <div class="master-feature-card-label"><i class="fa-solid fa-layer-group"></i> Total Feature</div>
+                    <div class="master-feature-card-value">${allFeatures.length}</div>
+                    <div class="master-feature-card-helper">Seluruh feature berstatus Done</div>
+                </div>
+                <div class="master-feature-card">
+                    <div class="master-feature-card-label"><i class="fa-solid fa-link"></i> Integration Feature</div>
+                    <div class="master-feature-card-value">${integrationTotal}</div>
+                    <div class="master-feature-card-helper">${allFeatures.length ? Math.round((integrationTotal / allFeatures.length) * 100) : 0}% dari seluruh feature</div>
+                </div>
+            `;
+
+            const moduleFilter = document.getElementById('master-feature-module-filter')?.value || 'all';
+            const typeFilter = document.getElementById('master-feature-type-filter')?.value || 'all';
+            const search = (document.getElementById('master-feature-search')?.value || '').trim().toLowerCase();
+
+            let filtered = allFeatures.filter(feature => {
+                const moduleName = normalizeMasterFeatureModule(feature.impactedModule);
+                const pages = normalizeMasterFeaturePages(feature.impactedPages);
+                const typeMatch = typeFilter === 'all'
+                    || (typeFilter === 'integration' && Boolean(feature.isIntegration))
+                    || (typeFilter === 'internal' && !feature.isIntegration);
+                const moduleMatch = moduleFilter === 'all' || moduleName === moduleFilter;
+                const searchable = [
+                    moduleName,
+                    ...pages,
+                    feature.featureId,
+                    feature.name,
+                    feature.package,
+                    feature.quarter
+                ].join(' ').toLowerCase();
+                const searchMatch = !search || searchable.includes(search);
+                return typeMatch && moduleMatch && searchMatch;
+            });
+
+            const grouped = {};
+            filtered.forEach(feature => {
+                const moduleName = normalizeMasterFeatureModule(feature.impactedModule);
+                if (!grouped[moduleName]) grouped[moduleName] = {};
+
+                normalizeMasterFeaturePages(feature.impactedPages).forEach(pageName => {
+                    if (!grouped[moduleName][pageName]) grouped[moduleName][pageName] = [];
+                    grouped[moduleName][pageName].push(feature);
+                });
+            });
+
+            const moduleNames = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
+            const visiblePageCount = moduleNames.reduce((total, moduleName) => total + Object.keys(grouped[moduleName]).length, 0);
+            if (resultSummary) {
+                resultSummary.textContent = `Menampilkan ${filtered.length} feature dalam ${visiblePageCount} page dan ${moduleNames.length} module.`;
+            }
+
+            if (!moduleNames.length) {
+                container.innerHTML = `<div class="master-feature-empty"><i class="fa-solid fa-folder-open" style="font-size:24px; margin-bottom:10px;"></i><br>Tidak ada feature yang sesuai dengan filter.</div>`;
+                return;
+            }
+
+            container.innerHTML = moduleNames.map((moduleName, moduleIndex) => {
+                const pageGroups = grouped[moduleName];
+                const pageNames = Object.keys(pageGroups).sort((a, b) => a.localeCompare(b));
+                const uniqueModuleFeatures = [...new Map(
+                    pageNames.flatMap(pageName => pageGroups[pageName]).map(feature => [String(feature.id), feature])
+                ).values()];
+                const integrationCount = uniqueModuleFeatures.filter(feature => Boolean(feature.isIntegration)).length;
+                const internalCount = uniqueModuleFeatures.length - integrationCount;
+                const openClass = moduleIndex === 0 ? ' open' : '';
+
+                const pagesHtml = pageNames.map(pageName => {
+                    const pageFeatures = [...new Map(pageGroups[pageName].map(feature => [String(feature.id), feature])).values()]
+                        .sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
+
+                    const featureRows = pageFeatures.map(feature => {
+                        const hasPRD = Boolean(feature.tabDetails?.prdUrl?.trim());
+                        const hasFigma = Boolean(feature.tabDetails?.figmaUrl?.trim());
+                        const typeHtml = feature.isIntegration
+                            ? '<span style="font-size:9px; color:#b45309; background:#fef3c7; padding:3px 7px; border-radius:999px; font-weight:800;"><i class="fa-solid fa-link"></i> Integration</span>'
+                            : '<span style="font-size:9px; color:#475569; background:#f1f5f9; padding:3px 7px; border-radius:999px; font-weight:800;">Internal</span>';
+
+                        return `
+                            <tr>
+                                <td style="font-family:'Roboto Mono', monospace; font-size:10px; color:var(--primary); font-weight:700;">${masterFeatureEscapeHtml(feature.featureId || '-')}</td>
+                                <td style="font-weight:700; color:var(--dark); line-height:1.35;">${masterFeatureEscapeHtml(feature.name || '-')}</td>
+                                <td>${typeHtml}</td>
+                                <td style="font-weight:700; color:var(--primary);">${masterFeatureEscapeHtml(feature.package || 'All')}</td>
+                                <td>
+                                    <div style="font-weight:700; color:var(--dark);">${masterFeatureEscapeHtml(feature.quarter || '-')}</div>
+                                    <div style="font-size:9px; color:var(--text-muted); margin-top:2px;">${masterFeatureEscapeHtml(feature.dueDate || '-')}</div>
+                                </td>
+                                <td style="font-size:9px; line-height:1.55;">
+                                    <div>PRD ${hasPRD ? '✅' : '❌'}</div>
+                                    <div>Figma ${hasFigma ? '✅' : '❌'}</div>
+                                </td>
+                                <td style="text-align:center;">
+                                    <button class="btn btn-outline" style="padding:6px 9px; font-size:10px;" onclick="viewFeatureDetail('${masterFeatureEscapeHtml(feature.id)}')">
+                                        <i class="fa-solid fa-eye"></i> Detail
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                    return `
+                        <div class="master-feature-page">
+                            <div class="master-feature-page-header">
+                                <div class="master-feature-page-title">
+                                    <i class="fa-regular fa-file-lines" style="color:var(--primary);"></i>
+                                    <span>${masterFeatureEscapeHtml(pageName)}</span>
+                                </div>
+                                <span class="master-feature-count-badge">${pageFeatures.length} Feature</span>
+                            </div>
+                            <div class="master-feature-table-wrap">
+                                <table class="master-feature-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:105px;">Feature ID</th>
+                                            <th>Feature Name</th>
+                                            <th style="width:115px;">Type</th>
+                                            <th style="width:90px;">Package</th>
+                                            <th style="width:115px;">Release</th>
+                                            <th style="width:80px;">Docs</th>
+                                            <th style="width:90px; text-align:center;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>${featureRows}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="master-feature-module${openClass}">
+                        <div class="master-feature-module-header" onclick="toggleMasterFeatureModule(this)">
+                            <div class="master-feature-module-name">
+                                <i class="fa-solid fa-cube" style="color:var(--primary);"></i>
+                                <span>${masterFeatureEscapeHtml(moduleName)}</span>
+                            </div>
+                            <div class="master-feature-metric"><strong>${pageNames.length}</strong>Page</div>
+                            <div class="master-feature-metric"><strong>${uniqueModuleFeatures.length}</strong>Feature</div>
+                            <div class="master-feature-metric"><strong>${integrationCount}</strong>Integration</div>
+                            <div class="master-feature-metric"><strong>${internalCount}</strong>Internal</div>
+                            <i class="fa-solid fa-chevron-down master-feature-chevron"></i>
+                        </div>
+                        <div class="master-feature-module-body">${pagesHtml}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleMasterFeatureModule(headerElement) {
+            headerElement.closest('.master-feature-module')?.classList.toggle('open');
+        }
+
+        function setAllMasterFeatureGroups(expand) {
+            document.querySelectorAll('#master-feature-container .master-feature-module').forEach(moduleElement => {
+                moduleElement.classList.toggle('open', Boolean(expand));
+            });
+        }
 
         function filterHistory() {
             initFeatureHistoryView();
