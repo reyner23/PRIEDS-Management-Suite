@@ -3686,7 +3686,7 @@
             document.getElementById('page-header-title').innerText = titles[tab];
 
             if (tab === 'bug_tracker' && !bugTrackerState.initialized && !bugTrackerState.loading) {
-                loadBugTrackerData(false);
+                loadBugTrackerFromFirebaseOnly();
             }
         }
 
@@ -5579,15 +5579,44 @@ function openLastLoginReportDetail(idx) {
             const rawText = await response.text();
             let result;
             try {
-                result = JSON.parse(rawText);
+                result = JSON.parse(rawText.replace(/^\uFEFF/, '').trim());
             } catch (error) {
-                throw new Error('Respons server bukan JSON yang valid. Periksa Vercel Function /api/bug-report.');
+                console.error('Raw /api/bug-report response:', rawText);
+                throw new Error(`Respons server bukan JSON yang valid (HTTP ${response.status}). Periksa Vercel Function Logs.`);
             }
 
             if (!response.ok || !result.success) {
                 throw new Error(result.message || `Request gagal dengan status ${response.status}.`);
             }
             return result;
+        }
+
+        async function loadBugTrackerFromFirebaseOnly() {
+            if (bugTrackerState.loading) return;
+            setBugTrackerLoading(true, 'Memuat data terakhir dari Firebase...');
+            updateBugSyncStatus('Memuat data BUG Tracker yang sudah tersimpan di Firebase...', false);
+
+            try {
+                const firebaseRows = await readBugRowsFromFirebase();
+                const metaSnapshot = await db.ref(`${BUG_TRACKER_FIREBASE_ROOT}/meta`).once('value');
+                const meta = metaSnapshot.val() || {};
+                const syncTime = meta.lastSyncIso || meta.lastSyncAt || 'Belum pernah sinkron dari API';
+
+                applyBugRowsToState(firebaseRows, syncTime, 'firebaseInitialLoad');
+
+                if (firebaseRows.length) {
+                    updateBugSyncStatus(`Menampilkan ${firebaseRows.length} data terakhir dari Firebase. Sinkron terakhir: ${syncTime}`, true);
+                } else {
+                    updateBugSyncStatus('Firebase belum memiliki data BUG Tracker. Klik “Tarik Data & Simpan Firebase” atau “Refresh dari Prieds API”.', false);
+                    renderBugTrackerEmpty();
+                }
+            } catch (error) {
+                console.error('Firebase BUG Tracker load error:', error);
+                updateBugSyncStatus(`Gagal memuat data Firebase: ${error.message}`, false, true);
+                renderBugTrackerError(error.message);
+            } finally {
+                setBugTrackerLoading(false);
+            }
         }
 
         async function loadBugTrackerData(showAlert = false) {
