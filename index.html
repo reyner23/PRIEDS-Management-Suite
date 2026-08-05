@@ -289,6 +289,24 @@
         .modal-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
         .modal-tab-content { display: none; }
         .modal-tab-content.active { display: block; }
+
+
+        /* ================= ROLE & PAGE ACCESS MANAGEMENT ================= */
+        .role-builder-card { padding:15px; background:var(--gray-light); border:1px solid var(--gray-border); border-radius:8px; margin-bottom:18px; }
+        .role-permission-group { background:#fff; border:1px solid var(--gray-border); border-radius:8px; padding:10px; margin-bottom:10px; }
+        .role-permission-group-title { display:flex; align-items:center; gap:7px; font-size:11px; font-weight:800; color:var(--dark); margin-bottom:8px; text-transform:uppercase; }
+        .role-permission-list { display:grid; grid-template-columns:1fr; gap:6px; }
+        .role-permission-item { display:flex; align-items:flex-start; gap:8px; padding:7px 8px; border-radius:6px; cursor:pointer; font-size:11px; color:var(--text-main); transition:.15s; }
+        .role-permission-item:hover { background:#eff6ff; }
+        .role-permission-item input { margin-top:2px; }
+        .role-permission-item span { line-height:1.35; }
+        .role-chip-wrap { display:flex; flex-wrap:wrap; gap:5px; max-width:620px; }
+        .role-page-chip { font-size:10px; font-weight:700; color:#1e40af; background:#dbeafe; border:1px solid #bfdbfe; border-radius:999px; padding:3px 7px; white-space:nowrap; }
+        .role-page-chip.all { color:#166534; background:#dcfce7; border-color:#bbf7d0; }
+        .role-table-section { margin-top:24px; padding-top:22px; border-top:1px solid var(--gray-border); }
+        .account-role-select { min-width:145px; max-width:190px; padding:7px 9px; border:1px solid var(--gray-border); border-radius:6px; font-size:11px; font-weight:700; background:#fff; }
+        .access-denied-note { padding:16px; border-radius:8px; background:#fee2e2; color:#991b1b; font-size:12px; font-weight:700; }
+
     </style>
 </head>
 <body>
@@ -327,22 +345,22 @@
         <div class="nav-menu">
             <div class="nav-group open"> <div class="nav-item header-group" onclick="toggleGroup(this)"><i class="fa-solid fa-right-to-bracket"></i> Last Login <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
                 <div class="sub-menu">
-                    <div class="nav-item active" onclick="switchTab('lastlogin', this)"><i class="fa-solid fa-satellite-dish"></i> Last Login Tracker</div>
-                    <div class="nav-item" onclick="switchTab('lastlogin_report', this)"><i class="fa-solid fa-file-shield"></i> Last Login Report</div>
+                    <div class="nav-item active" data-page-id="lastlogin" onclick="switchTab('lastlogin', this)"><i class="fa-solid fa-satellite-dish"></i> Last Login Tracker</div>
+                    <div class="nav-item" data-page-id="lastlogin_report" onclick="switchTab('lastlogin_report', this)"><i class="fa-solid fa-file-shield"></i> Last Login Report</div>
                     
                     <!-- Retention Tracker sekarang berada di dalam grup Last Login -->
-                    <div class="nav-item" onclick="switchTab('retention', this)"><i class="fa-solid fa-user-check"></i> Retention Tracker</div>
+                    <div class="nav-item" data-page-id="retention" onclick="switchTab('retention', this)"><i class="fa-solid fa-user-check"></i> Retention Tracker</div>
                 </div>
             </div>
 
             <div class="nav-group">
                 <div class="nav-item header-group" onclick="toggleGroup(this)"><i class="fa-solid fa-face-smile"></i> NPS <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
                 <div class="sub-menu">
-                    <div class="nav-item" onclick="switchTab('nps', this)"><i class="fa-solid fa-chart-line"></i> NPS Tracker</div>
-                    <div class="nav-item" onclick="switchTab('nps_report', this)"><i class="fa-solid fa-file-shield"></i></i> NPS Report</div>
-                    <div class="nav-item" onclick="switchTab('anomaly', this)"><i class="fa-solid fa-triangle-exclamation"></i> Anomaly Report</div>
-                    <div class="nav-item" onclick="switchTab('user_report', this)"><i class="fa-solid fa-user-tag"></i> User Report</div>
-                    <div class="nav-item" onclick="switchTab('company_report', this)"><i class="fa-solid fa-building"></i> Company Report</div>
+                    <div class="nav-item" data-page-id="nps" onclick="switchTab('nps', this)"><i class="fa-solid fa-chart-line"></i> NPS Tracker</div>
+                    <div class="nav-item" data-page-id="nps_report" onclick="switchTab('nps_report', this)"><i class="fa-solid fa-file-shield"></i></i> NPS Report</div>
+                    <div class="nav-item" data-page-id="anomaly" onclick="switchTab('anomaly', this)"><i class="fa-solid fa-triangle-exclamation"></i> Anomaly Report</div>
+                    <div class="nav-item" data-page-id="user_report" onclick="switchTab('user_report', this)"><i class="fa-solid fa-user-tag"></i> User Report</div>
+                    <div class="nav-item" data-page-id="company_report" onclick="switchTab('company_report', this)"><i class="fa-solid fa-building"></i> Company Report</div>
                 </div>
             </div>
 
@@ -350,8 +368,8 @@
             <div class="nav-group">
                 <div class="nav-item header-group" onclick="toggleGroup(this)"><i class="fa-solid fa-database"></i> Master Data <i class="fa-solid fa-chevron-down arrow-icon"></i></div>
                 <div class="sub-menu">
-                    <div class="nav-item" onclick="switchTab('user_company', this)"><i class="fa-solid fa-building-user"></i> User Company Master</div>
-                    <div class="nav-item" onclick="switchTab('account_master', this)"><i class="fa-solid fa-users-gear"></i> Account Master</div>
+                    <div class="nav-item" data-page-id="user_company" onclick="switchTab('user_company', this)"><i class="fa-solid fa-building-user"></i> User Company Master</div>
+                    <div class="nav-item" data-page-id="account_master" onclick="switchTab('account_master', this)"><i class="fa-solid fa-users-gear"></i> Account Master</div>
                 </div>
             </div>
             <div class="nav-group">
@@ -359,13 +377,13 @@
                     <i class="fa-solid fa-map-location-dot"></i> PM Hub <i class="fa-solid fa-chevron-down arrow-icon"></i>
                 </div>
                 <div class="sub-menu">
-                    <div class="nav-item" onclick="switchTab('roadmap', this)">
+                    <div class="nav-item" data-page-id="roadmap" onclick="switchTab('roadmap', this)">
                         <i class="fa-solid fa-route"></i> Roadmap Planner
                     </div>
-                    <div class="nav-item" onclick="switchTab('bug_tracker', this)">
+                    <div class="nav-item" data-page-id="bug_tracker" onclick="switchTab('bug_tracker', this)">
                         <i class="fa-solid fa-bug"></i> BUG Tracker
                     </div>
-                    <div class="nav-item" onclick="switchTab('feature_history', this)">
+                    <div class="nav-item" data-page-id="feature_history" onclick="switchTab('feature_history', this)">
                         <i class="fa-solid fa-clock-rotate-left"></i> Feature History
                     </div>
                 </div>
@@ -705,20 +723,42 @@
                 <!-- ACCOUNT MASTER EDITOR DITAMBAHKAN DI SINI -->
                 <div id="editor-account_master" class="editor-section">
                     <div class="section-title">Tambah Akun Baru</div>
-                    <div style="padding:15px; background:var(--gray-light); border:1px solid var(--gray-border); border-radius:8px;">
+                    <div style="padding:15px; background:var(--gray-light); border:1px solid var(--gray-border); border-radius:8px; margin-bottom:20px;">
                         <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px; font-size:12px;">Email</label>
                         <input type="email" id="new-account-email" placeholder="Masukkan email..." style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px; font-size:12px;">
-                        
+
                         <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px; font-size:12px;">Password</label>
                         <input type="text" id="new-account-password" placeholder="Buat password login..." style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px; font-size:12px;">
-                        
+
                         <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px; font-size:12px;">Role Akses</label>
-                        <select id="new-account-role" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:15px; font-size:12px;">
-                            <option value="Super Admin">Super Admin</option>
-                            <option value="Admin">Admin</option>
-                        </select>
+                        <select id="new-account-role" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:15px; font-size:12px;"></select>
 
                         <button class="btn btn-primary" style="width:100%;" onclick="addAccount()">+ Simpan Akun</button>
+                    </div>
+
+                    <div class="section-title">Buat & Atur Role</div>
+                    <div class="role-builder-card">
+                        <input type="hidden" id="editing-role-id">
+
+                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px; font-size:12px;">Nama Role</label>
+                        <input type="text" id="role-name-input" placeholder="Contoh: Product Manager" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px; font-size:12px;">
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:9px;">
+                            <label style="font-weight:700; color:var(--dark); font-size:12px;">Halaman yang Bisa Dibuka</label>
+                            <div style="display:flex; gap:5px;">
+                                <button type="button" class="btn btn-outline" style="padding:4px 7px; font-size:10px;" onclick="setAllRolePermissions(true)">Pilih Semua</button>
+                                <button type="button" class="btn btn-outline" style="padding:4px 7px; font-size:10px;" onclick="setAllRolePermissions(false)">Kosongkan</button>
+                            </div>
+                        </div>
+
+                        <div id="role-permission-builder"></div>
+
+                        <button id="save-role-button" class="btn btn-primary" style="width:100%; margin-top:5px;" onclick="saveRole()">
+                            <i class="fa-solid fa-shield-halved"></i> Simpan Role
+                        </button>
+                        <button id="cancel-role-edit-button" class="btn btn-outline" style="width:100%; margin-top:8px; display:none;" onclick="resetRoleForm()">
+                            Batal Edit
+                        </button>
                     </div>
                 </div>
                 <div id="editor-roadmap" class="editor-section">
@@ -1156,10 +1196,22 @@
                     <div class="presentation-slide">
                         <div class="slide-header" style="margin-bottom:20px;">
                             <h2>Account Master Management</h2>
-                            <p>Daftar akun admin yang diizinkan untuk login dan mengelola Prieds Suite</p>
+                            <p>Kelola akun, buat role, dan tentukan halaman yang dapat diakses setiap role</p>
                         </div>
                         <div id="account-master-table-container">
                             <div style="text-align:center; padding:30px; color:var(--text-muted);">Memuat data akun...</div>
+                        </div>
+
+                        <div class="role-table-section">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:12px;">
+                                <div>
+                                    <h3 style="font-family:'Poppins'; font-size:18px; color:var(--dark); margin-bottom:3px;">Role & Page Access</h3>
+                                    <p style="font-size:11px; color:var(--text-muted);">Perubahan akses berlaku saat pengguna login dan langsung diterapkan pada akun yang sedang aktif.</p>
+                                </div>
+                            </div>
+                            <div id="role-master-table-container">
+                                <div style="text-align:center; padding:25px; color:var(--text-muted);">Memuat data role...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1821,6 +1873,444 @@
 
     <script>
 
+
+        // ================= ROLE & PAGE ACCESS MANAGEMENT =================
+        const PAGE_ACCESS_CATALOG = [
+            {
+                group: 'Last Login',
+                icon: 'fa-right-to-bracket',
+                pages: [
+                    { id: 'lastlogin', label: 'Last Login Tracker' },
+                    { id: 'lastlogin_report', label: 'Last Login Report' },
+                    { id: 'retention', label: 'Retention Tracker' }
+                ]
+            },
+            {
+                group: 'NPS',
+                icon: 'fa-face-smile',
+                pages: [
+                    { id: 'nps', label: 'NPS Tracker' },
+                    { id: 'nps_report', label: 'NPS Report' },
+                    { id: 'anomaly', label: 'Anomaly Report' },
+                    { id: 'user_report', label: 'User Report' },
+                    { id: 'company_report', label: 'Company Report' }
+                ]
+            },
+            {
+                group: 'Master Data',
+                icon: 'fa-database',
+                pages: [
+                    { id: 'user_company', label: 'User Company Master' },
+                    { id: 'account_master', label: 'Account Master' }
+                ]
+            },
+            {
+                group: 'PM Hub',
+                icon: 'fa-map-location-dot',
+                pages: [
+                    { id: 'roadmap', label: 'Roadmap Planner' },
+                    { id: 'bug_tracker', label: 'BUG Tracker' },
+                    { id: 'feature_history', label: 'Feature History' }
+                ]
+            }
+        ];
+
+        const ALL_PAGE_IDS = PAGE_ACCESS_CATALOG.flatMap(group => group.pages.map(page => page.id));
+        let currentLoggedInAccount = null;
+
+        function accessEscapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function createDefaultRoles() {
+            return [
+                {
+                    id: 'role_super_admin',
+                    name: 'Super Admin',
+                    permissions: ['*'],
+                    isSystem: true
+                },
+                {
+                    id: 'role_admin',
+                    name: 'Admin',
+                    permissions: ALL_PAGE_IDS.filter(pageId => pageId !== 'account_master'),
+                    isSystem: false
+                }
+            ];
+        }
+
+        function migrateAccessControlState() {
+            if (!Array.isArray(appState.roles)) {
+                appState.roles = appState.roles ? Object.values(appState.roles) : [];
+            }
+
+            appState.roles = appState.roles.filter(Boolean).map((role, index) => ({
+                id: role.id || `role_${Date.now()}_${index}`,
+                name: String(role.name || role.role || `Role ${index + 1}`).trim(),
+                permissions: role.permissions === '*' ? ['*'] : (Array.isArray(role.permissions) ? role.permissions : []),
+                isSystem: Boolean(role.isSystem)
+            }));
+
+            let superAdminRole = appState.roles.find(role =>
+                role.id === 'role_super_admin' || role.name.toLowerCase() === 'super admin'
+            );
+
+            if (!superAdminRole) {
+                superAdminRole = createDefaultRoles()[0];
+                appState.roles.unshift(superAdminRole);
+            } else {
+                superAdminRole.id = 'role_super_admin';
+                superAdminRole.name = 'Super Admin';
+                superAdminRole.permissions = ['*'];
+                superAdminRole.isSystem = true;
+            }
+
+            const adminExists = appState.roles.some(role => role.name.toLowerCase() === 'admin');
+            if (!adminExists) appState.roles.push(createDefaultRoles()[1]);
+
+            if (!Array.isArray(appState.accounts)) {
+                appState.accounts = appState.accounts ? Object.values(appState.accounts) : [];
+            }
+
+            if (!appState.accounts.length) {
+                appState.accounts = [{
+                    id: Date.now(),
+                    email: 'reyraynaldi@prieds.com',
+                    password: 'Prieds1234',
+                    role: 'Super Admin',
+                    roleId: 'role_super_admin'
+                }];
+            }
+
+            appState.accounts = appState.accounts.filter(Boolean).map(account => {
+                let role = appState.roles.find(item => item.id === account.roleId);
+                if (!role && account.role) {
+                    role = appState.roles.find(item => item.name.toLowerCase() === String(account.role).toLowerCase());
+                }
+                if (!role) role = superAdminRole;
+
+                return {
+                    ...account,
+                    id: account.id || Date.now() + Math.floor(Math.random() * 10000),
+                    roleId: role.id,
+                    role: role.name
+                };
+            });
+        }
+
+        function getRoleById(roleId) {
+            migrateAccessControlState();
+            return appState.roles.find(role => role.id === roleId) || appState.roles[0];
+        }
+
+        function getRoleForAccount(account) {
+            if (!account) return null;
+            migrateAccessControlState();
+            return appState.roles.find(role => role.id === account.roleId)
+                || appState.roles.find(role => role.name.toLowerCase() === String(account.role || '').toLowerCase())
+                || null;
+        }
+
+        function roleHasPageAccess(role, pageId) {
+            if (!role) return false;
+            return role.permissions.includes('*') || role.permissions.includes(pageId);
+        }
+
+        function hasPageAccess(pageId) {
+            const role = getRoleForAccount(currentLoggedInAccount);
+            return roleHasPageAccess(role, pageId);
+        }
+
+        function getPageLabel(pageId) {
+            for (const group of PAGE_ACCESS_CATALOG) {
+                const page = group.pages.find(item => item.id === pageId);
+                if (page) return page.label;
+            }
+            return pageId;
+        }
+
+        function renderRoleSelectOptions(selectedRoleId = '') {
+            migrateAccessControlState();
+            return appState.roles.map(role => `
+                <option value="${accessEscapeHtml(role.id)}" ${role.id === selectedRoleId ? 'selected' : ''}>
+                    ${accessEscapeHtml(role.name)}
+                </option>
+            `).join('');
+        }
+
+        function initializeAccountAccessManagement() {
+            migrateAccessControlState();
+            renderNewAccountRoleOptions();
+            renderRolePermissionBuilder();
+            initAccountMasterTable();
+            initRoleMasterTable();
+        }
+
+        function renderNewAccountRoleOptions() {
+            const select = document.getElementById('new-account-role');
+            if (!select) return;
+            const previous = select.value;
+            select.innerHTML = renderRoleSelectOptions(previous);
+        }
+
+        function renderRolePermissionBuilder(selectedPermissions = []) {
+            const container = document.getElementById('role-permission-builder');
+            if (!container) return;
+
+            const selected = new Set(selectedPermissions.includes('*') ? ALL_PAGE_IDS : selectedPermissions);
+            container.innerHTML = PAGE_ACCESS_CATALOG.map(group => `
+                <div class="role-permission-group">
+                    <div class="role-permission-group-title">
+                        <i class="fa-solid ${group.icon}"></i> ${accessEscapeHtml(group.group)}
+                    </div>
+                    <div class="role-permission-list">
+                        ${group.pages.map(page => `
+                            <label class="role-permission-item">
+                                <input type="checkbox" class="role-page-permission-checkbox" value="${page.id}" ${selected.has(page.id) ? 'checked' : ''}>
+                                <span>${accessEscapeHtml(page.label)}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setAllRolePermissions(checked) {
+            document.querySelectorAll('.role-page-permission-checkbox').forEach(input => {
+                input.checked = checked;
+            });
+        }
+
+        function getSelectedRolePermissions() {
+            return Array.from(document.querySelectorAll('.role-page-permission-checkbox:checked'))
+                .map(input => input.value);
+        }
+
+        function saveRole() {
+            migrateAccessControlState();
+            const roleId = document.getElementById('editing-role-id').value;
+            const name = document.getElementById('role-name-input').value.trim();
+            const permissions = getSelectedRolePermissions();
+
+            if (!name) {
+                alert('⚠️ Nama role wajib diisi.');
+                return;
+            }
+            if (!permissions.length) {
+                alert('⚠️ Pilih minimal satu halaman yang dapat dibuka oleh role ini.');
+                return;
+            }
+
+            const duplicate = appState.roles.find(role =>
+                role.name.toLowerCase() === name.toLowerCase() && role.id !== roleId
+            );
+            if (duplicate) {
+                alert('⚠️ Nama role sudah digunakan.');
+                return;
+            }
+
+            if (roleId) {
+                const role = appState.roles.find(item => item.id === roleId);
+                if (!role) return;
+                if (role.isSystem || role.id === 'role_super_admin') {
+                    alert('❌ Role Super Admin adalah role sistem dan tidak dapat diubah.');
+                    return;
+                }
+
+                const oldName = role.name;
+                role.name = name;
+                role.permissions = permissions;
+                appState.accounts.forEach(account => {
+                    if (account.roleId === role.id) account.role = name;
+                });
+
+                alert(`✅ Role ${oldName} berhasil diperbarui.`);
+            } else {
+                appState.roles.push({
+                    id: `role_${Date.now()}`,
+                    name,
+                    permissions,
+                    isSystem: false
+                });
+                alert(`✅ Role ${name} berhasil dibuat.`);
+            }
+
+            saveDataToLocal();
+            resetRoleForm();
+            initializeAccountAccessManagement();
+
+            if (currentLoggedInAccount) {
+                currentLoggedInAccount = appState.accounts.find(account => account.id === currentLoggedInAccount.id) || currentLoggedInAccount;
+                applyRoleAccessUI();
+                ensureCurrentPageIsAccessible();
+            }
+        }
+
+        function editRole(roleId) {
+            const role = getRoleById(roleId);
+            if (!role || role.isSystem || role.id === 'role_super_admin') {
+                alert('ℹ️ Role Super Admin memiliki akses penuh dan tidak dapat diedit.');
+                return;
+            }
+
+            document.getElementById('editing-role-id').value = role.id;
+            document.getElementById('role-name-input').value = role.name;
+            renderRolePermissionBuilder(role.permissions);
+            document.getElementById('save-role-button').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update Role';
+            document.getElementById('cancel-role-edit-button').style.display = 'inline-flex';
+            document.querySelector('.editor-panel').scrollTo({ top: document.querySelector('.editor-panel').scrollHeight, behavior: 'smooth' });
+        }
+
+        function resetRoleForm() {
+            const idInput = document.getElementById('editing-role-id');
+            const nameInput = document.getElementById('role-name-input');
+            if (idInput) idInput.value = '';
+            if (nameInput) nameInput.value = '';
+            renderRolePermissionBuilder([]);
+            const saveBtn = document.getElementById('save-role-button');
+            const cancelBtn = document.getElementById('cancel-role-edit-button');
+            if (saveBtn) saveBtn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Simpan Role';
+            if (cancelBtn) cancelBtn.style.display = 'none';
+        }
+
+        function deleteRole(roleId) {
+            migrateAccessControlState();
+            const role = appState.roles.find(item => item.id === roleId);
+            if (!role) return;
+            if (role.isSystem || role.id === 'role_super_admin') {
+                alert('❌ Role Super Admin tidak dapat dihapus.');
+                return;
+            }
+
+            const assignedAccounts = appState.accounts.filter(account => account.roleId === roleId);
+            if (assignedAccounts.length) {
+                alert(`❌ Role ini masih digunakan oleh ${assignedAccounts.length} akun. Ubah role akun tersebut terlebih dahulu.`);
+                return;
+            }
+
+            if (!confirm(`Hapus role "${role.name}"?`)) return;
+            appState.roles = appState.roles.filter(item => item.id !== roleId);
+            saveDataToLocal();
+            resetRoleForm();
+            initializeAccountAccessManagement();
+        }
+
+        function initRoleMasterTable() {
+            const container = document.getElementById('role-master-table-container');
+            if (!container) return;
+            migrateAccessControlState();
+
+            const rows = appState.roles.map((role, index) => {
+                const accountCount = appState.accounts.filter(account => account.roleId === role.id).length;
+                const permissions = role.permissions.includes('*') ? ALL_PAGE_IDS : role.permissions;
+                const chips = role.permissions.includes('*')
+                    ? '<span class="role-page-chip all"><i class="fa-solid fa-key"></i> Semua Halaman</span>'
+                    : permissions.map(pageId => `<span class="role-page-chip">${accessEscapeHtml(getPageLabel(pageId))}</span>`).join('');
+
+                return `
+                    <tr>
+                        <td style="font-weight:700;">${index + 1}</td>
+                        <td>
+                            <div style="font-weight:800; color:var(--dark);">${accessEscapeHtml(role.name)}</div>
+                            ${role.isSystem ? '<div style="font-size:10px; color:var(--success); margin-top:3px;"><i class="fa-solid fa-lock"></i> Role Sistem</div>' : ''}
+                        </td>
+                        <td><div class="role-chip-wrap">${chips || '<span style="font-size:11px;color:var(--danger);">Tidak ada akses</span>'}</div></td>
+                        <td style="text-align:center; font-weight:800;">${accountCount}</td>
+                        <td>
+                            <div style="display:flex; gap:6px; justify-content:flex-end;">
+                                <button class="btn btn-outline" style="padding:6px 9px; font-size:11px; ${role.isSystem ? 'opacity:.45; cursor:not-allowed;' : ''}" onclick="editRole('${role.id}')" ${role.isSystem ? 'disabled' : ''}>
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </button>
+                                <button class="btn btn-outline" style="padding:6px 9px; font-size:11px; color:var(--danger); border-color:var(--danger); ${role.isSystem ? 'opacity:.45; cursor:not-allowed;' : ''}" onclick="deleteRole('${role.id}')" ${role.isSystem ? 'disabled' : ''}>
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div style="overflow-x:auto;">
+                    <table class="anomaly-table">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">No</th>
+                                <th style="min-width:150px;">Role</th>
+                                <th>Halaman yang Dapat Dibuka</th>
+                                <th style="width:95px; text-align:center;">Jumlah Akun</th>
+                                <th style="width:150px; text-align:right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function updateAccountRole(accountId, roleId) {
+            migrateAccessControlState();
+            const account = appState.accounts.find(item => String(item.id) === String(accountId));
+            const nextRole = appState.roles.find(item => item.id === roleId);
+            if (!account || !nextRole) return;
+
+            const currentRole = getRoleForAccount(account);
+            const superAdminAccounts = appState.accounts.filter(item => getRoleForAccount(item)?.id === 'role_super_admin');
+            if (currentRole?.id === 'role_super_admin' && nextRole.id !== 'role_super_admin' && superAdminAccounts.length <= 1) {
+                alert('❌ Harus tersisa minimal satu akun Super Admin.');
+                initAccountMasterTable();
+                return;
+            }
+
+            account.roleId = nextRole.id;
+            account.role = nextRole.name;
+            saveDataToLocal();
+
+            if (currentLoggedInAccount && String(currentLoggedInAccount.id) === String(account.id)) {
+                currentLoggedInAccount = account;
+                applyRoleAccessUI();
+                ensureCurrentPageIsAccessible();
+            }
+
+            initAccountMasterTable();
+            initRoleMasterTable();
+        }
+
+        function applyRoleAccessUI() {
+            document.querySelectorAll('.sub-menu .nav-item[data-page-id]').forEach(item => {
+                const pageId = item.dataset.pageId;
+                item.style.display = hasPageAccess(pageId) ? 'flex' : 'none';
+            });
+
+            document.querySelectorAll('.nav-group').forEach(group => {
+                const pageItems = Array.from(group.querySelectorAll('.sub-menu .nav-item[data-page-id]'));
+                const hasVisiblePage = pageItems.some(item => item.style.display !== 'none');
+                group.style.display = hasVisiblePage ? 'block' : 'none';
+                if (!hasVisiblePage) group.classList.remove('open');
+            });
+        }
+
+        function ensureCurrentPageIsAccessible() {
+            const activeView = document.querySelector('.tab-view.active');
+            const activePageId = activeView?.id?.replace('view-', '');
+            if (activePageId && hasPageAccess(activePageId)) return;
+
+            const firstAllowedItem = Array.from(document.querySelectorAll('.sub-menu .nav-item[data-page-id]'))
+                .find(item => item.style.display !== 'none' && hasPageAccess(item.dataset.pageId));
+
+            if (firstAllowedItem) {
+                const parentGroup = firstAllowedItem.closest('.nav-group');
+                document.querySelectorAll('.nav-group').forEach(group => group.classList.remove('open'));
+                if (parentGroup) parentGroup.classList.add('open');
+                switchTab(firstAllowedItem.dataset.pageId, firstAllowedItem, true);
+            }
+        }
+
         // ================= LOGIN & LOGOUT LOGIC =================
         function togglePasswordVisibility() {
             const pwdInput = document.getElementById('login-password');
@@ -1835,23 +2325,27 @@
         }
 
         function handleLogin() {
+            migrateAccessControlState();
             const email = document.getElementById('login-email').value.trim();
             const pass = document.getElementById('login-password').value;
             const errorMsg = document.getElementById('login-error-msg');
 
-            // Fallback (jika Database kosong, gunakan default ini)
-            let validAccounts = appState.accounts && appState.accounts.length > 0 
-                ? appState.accounts 
-                : [{ email: 'reyraynaldi@prieds.com', password: 'Prieds1234', role: 'Super Admin' }];
+            const validAccounts = appState.accounts && appState.accounts.length > 0
+                ? appState.accounts
+                : [{ id: 1, email: 'reyraynaldi@prieds.com', password: 'Prieds1234', role: 'Super Admin', roleId: 'role_super_admin' }];
 
-            // Cek apakah email dan password cocok dengan data di Account Master
-            const isValidUser = validAccounts.find(acc => acc.email.toLowerCase() === email.toLowerCase() && acc.password === pass);
+            const validUser = validAccounts.find(account =>
+                String(account.email || '').toLowerCase() === email.toLowerCase() && account.password === pass
+            );
 
-            if (isValidUser) {
+            if (validUser) {
+                currentLoggedInAccount = validUser;
                 errorMsg.style.display = 'none';
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
-                initAccountMasterTable(); // Render tabel master ketika berhasil masuk
+                initializeAccountAccessManagement();
+                applyRoleAccessUI();
+                ensureCurrentPageIsAccessible();
             } else {
                 errorMsg.style.display = 'block';
             }
@@ -1876,9 +2370,13 @@
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
                 
-                // Render data sama seperti login normal
-                initAccountMasterTable(); 
-                
+                // Bypass menggunakan akun Super Admin pertama agar permission tetap konsisten.
+                migrateAccessControlState();
+                currentLoggedInAccount = appState.accounts.find(account => getRoleForAccount(account)?.id === 'role_super_admin') || appState.accounts[0];
+                initializeAccountAccessManagement();
+                applyRoleAccessUI();
+                ensureCurrentPageIsAccessible();
+
                 // Reset hitungan
                 bypassClickCount = 0;
                 console.log("Bypass login aktif!");
@@ -1886,6 +2384,7 @@
         }
 
         function handleLogout() {
+            currentLoggedInAccount = null;
             // Kosongkan form input
             document.getElementById('login-email').value = '';
             document.getElementById('login-password').value = '';
@@ -1937,8 +2436,9 @@
 
             // STATE TAMBAHAN UNTUK ACCOUNT MASTER:
             accounts: [
-                { id: 1, email: 'reyraynaldi@prieds.com', password: 'Prieds1234', role: 'Super Admin' }
+                { id: 1, email: 'reyraynaldi@prieds.com', password: 'Prieds1234', role: 'Super Admin', roleId: 'role_super_admin' }
             ],
+            roles: createDefaultRoles(),
             masterCompany: [],
 
             // STATE ORIGINAL LAINNYA
@@ -2037,7 +2537,7 @@
                         const data = snapshot.val();
                         Object.assign(appState, data);
                         
-                        const arrayKeys = ['lastLoginData', 'lastLoginReports', 'retention', 'surveyLogs', 'npsReports', 'masterCompany', 'accounts'];
+                        const arrayKeys = ['lastLoginData', 'lastLoginReports', 'retention', 'surveyLogs', 'npsReports', 'masterCompany', 'accounts', 'roles'];
                         arrayKeys.forEach(key => {
                             if (!appState[key]) {
                                 appState[key] = [];
@@ -2048,6 +2548,8 @@
                                 appState[key] = appState[key].filter(item => item !== null && item !== undefined);
                             }
                         });
+
+                        migrateAccessControlState();
 
                         // Bug fix Search & Status
                         if (appState.masterCompanyState) {
@@ -2075,8 +2577,10 @@
                         console.log("Data berhasil dimuat dari Firebase.");
                     } else {
                         console.log("Belum ada data di Firebase, menggunakan state awal.");
+                        migrateAccessControlState();
                     }
-                    
+
+                    initializeAccountAccessManagement();
                     renderLastLoginDashboard();
                     initNPS();
                     initRetention();
@@ -3645,30 +4149,38 @@
         }
 
         // --- TAB NAVIGATION ---
-        function switchTab(tab, element) {
-            // PERBAIKAN: Hanya hapus class active dari menu yang ada di dalam .sub-menu, 
-            // agar class header-group tidak sengaja ikut terhapus warnanya.
-            document.querySelectorAll('.sub-menu .nav-item').forEach(i => i.classList.remove('active'));
-            element.classList.add('active');
+        function switchTab(tab, element, skipPermissionWarning = false) {
+            if (currentLoggedInAccount && !hasPageAccess(tab)) {
+                if (!skipPermissionWarning) {
+                    alert(`❌ Role Anda tidak memiliki akses ke halaman ${getPageLabel(tab)}.`);
+                }
+                ensureCurrentPageIsAccessible();
+                return;
+            }
 
-            document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
-            document.getElementById(`view-${tab}`).classList.add('active');
+            const targetView = document.getElementById(`view-${tab}`);
+            if (!targetView) return;
 
-            document.querySelectorAll('.editor-section').forEach(e => e.classList.remove('active'));
-            
-            // 👇 LOGIKA BARU: SEMBUNYIKAN PANEL KIRI AGAR TABEL FULL WIDTH 👇
+            document.querySelectorAll('.sub-menu .nav-item').forEach(item => item.classList.remove('active'));
+            const targetNav = element || document.querySelector(`.sub-menu .nav-item[data-page-id="${tab}"]`);
+            if (targetNav) targetNav.classList.add('active');
+
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+            targetView.classList.add('active');
+
+            document.querySelectorAll('.editor-section').forEach(editor => editor.classList.remove('active'));
+
             const editorPanel = document.querySelector('.editor-panel');
             if (tab === 'user_company' || tab === 'feature_history') {
-                editorPanel.style.display = 'none'; // Hilangkan panel kiri khusus di tab ini
+                editorPanel.style.display = 'none';
             } else {
-                editorPanel.style.display = 'block'; // Tampilkan kembali di tab lain
+                editorPanel.style.display = 'block';
                 const targetEditor = document.getElementById(`editor-${tab}`);
                 if (targetEditor) targetEditor.classList.add('active');
             }
-            // 👆 AKHIR LOGIKA 👆
 
             const titles = {
-                'lastlogin': 'Last Login Tracker Dashboard', 
+                'lastlogin': 'Last Login Tracker Dashboard',
                 'lastlogin_report': 'Last Login History Report',
                 'nps': 'Net Promoter Score (NPS) Dashboard',
                 'retention': 'Retention Rate Dashboard',
@@ -3679,12 +4191,12 @@
                 'user_company': 'User Company Master Data',
                 'account_master': 'Account Master Management',
                 'roadmap': 'PM Hub - Feature Roadmap Planner',
-                'roadmap': 'PM Hub - Feature Roadmap Planner',
                 'feature_history': 'PM Hub - Historical Feature Tracker',
                 'bug_tracker': 'PM Hub - BUG Tracker Dashboard'
             };
-            document.getElementById('page-header-title').innerText = titles[tab];
+            document.getElementById('page-header-title').innerText = titles[tab] || getPageLabel(tab);
 
+            if (tab === 'account_master') initializeAccountAccessManagement();
             if (tab === 'bug_tracker' && !bugTrackerState.initialized && !bugTrackerState.loading) {
                 loadBugTrackerFromFirebaseOnly();
             }
@@ -4872,90 +5384,113 @@ function openLastLoginReportDetail(idx) {
         // ================= FUNGSI ACCOUNT MASTER =================
         function initAccountMasterTable() {
             const container = document.getElementById('account-master-table-container');
-            
-            // Proteksi jika data kosong
-            if (!appState.accounts || appState.accounts.length === 0) {
-                appState.accounts = [{ id: Date.now(), email: 'reyraynaldi@prieds.com', password: 'Prieds1234', role: 'Super Admin' }];
-            }
+            if (!container) return;
+            migrateAccessControlState();
 
-            const rowsHtml = appState.accounts.map((acc, idx) => `
-                <tr>
-                    <td style="font-weight:700; color:var(--dark);">${idx + 1}</td>
-                    <td><span style="font-weight:700; color:var(--primary);">${acc.email}</span></td>
-                    <td><span style="font-family:'Roboto Mono', monospace; font-size:12px; background:var(--gray-light); padding:4px 8px; border:1px solid var(--gray-border); border-radius:4px;">${acc.password}</span></td>
-                    <td><span style="font-size:11px; font-weight:700; color:var(--dark); background:#e0f2fe; padding:4px 8px; border-radius:6px; border:1px solid #bae6fd;">${acc.role}</span></td>
-                    <td>
-                        <button class="btn btn-outline" style="padding:6px 12px; font-size:12px; color:var(--danger); border-color:var(--danger);" onclick="deleteAccount(${acc.id})" title="Hapus Akun">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            const rowsHtml = appState.accounts.map((account, index) => {
+                const role = getRoleForAccount(account);
+                return `
+                    <tr>
+                        <td style="font-weight:700; color:var(--dark);">${index + 1}</td>
+                        <td>
+                            <span style="font-weight:700; color:var(--primary);">${accessEscapeHtml(account.email)}</span>
+                            ${currentLoggedInAccount && String(currentLoggedInAccount.id) === String(account.id) ? '<div style="font-size:9px;color:var(--success);font-weight:800;margin-top:3px;">AKUN AKTIF</div>' : ''}
+                        </td>
+                        <td><span style="font-family:'Roboto Mono', monospace; font-size:12px; background:var(--gray-light); padding:4px 8px; border:1px solid var(--gray-border); border-radius:4px;">${accessEscapeHtml(account.password)}</span></td>
+                        <td>
+                            <select class="account-role-select" onchange="updateAccountRole('${account.id}', this.value)">
+                                ${renderRoleSelectOptions(role?.id)}
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline" style="padding:6px 12px; font-size:12px; color:var(--danger); border-color:var(--danger);" onclick="deleteAccount('${account.id}')" title="Hapus Akun">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
 
             container.innerHTML = `
-                <table class="anomaly-table">
-                    <thead style="background: var(--gray-light);">
-                        <tr>
-                            <th style="width:50px;">No</th>
-                            <th>Email Login</th>
-                            <th>Password Akses</th>
-                            <th>Role Akses</th>
-                            <th style="width:80px;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>${rowsHtml}</tbody>
-                </table>
+                <div style="overflow-x:auto;">
+                    <table class="anomaly-table">
+                        <thead style="background:var(--gray-light);">
+                            <tr>
+                                <th style="width:50px;">No</th>
+                                <th>Email Login</th>
+                                <th>Password Akses</th>
+                                <th style="min-width:170px;">Role Akses</th>
+                                <th style="width:80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rowsHtml}</tbody>
+                    </table>
+                </div>
             `;
         }
 
         function addAccount() {
+            migrateAccessControlState();
             const email = document.getElementById('new-account-email').value.trim();
-            const pass = document.getElementById('new-account-password').value.trim();
-            const role = document.getElementById('new-account-role').value;
+            const password = document.getElementById('new-account-password').value.trim();
+            const roleId = document.getElementById('new-account-role').value;
+            const role = appState.roles.find(item => item.id === roleId);
 
-            if (!email || !pass) {
-                alert("⚠️ Email dan Password tidak boleh kosong!");
+            if (!email || !password) {
+                alert('⚠️ Email dan Password tidak boleh kosong!');
+                return;
+            }
+            if (!role) {
+                alert('⚠️ Pilih role akses yang valid.');
                 return;
             }
 
-            if (!appState.accounts) appState.accounts = [];
-            
-            // Cek duplikasi email
-            const exists = appState.accounts.find(a => a.email.toLowerCase() === email.toLowerCase());
+            const exists = appState.accounts.find(account => String(account.email).toLowerCase() === email.toLowerCase());
             if (exists) {
-                alert("⚠️ Akun dengan email ini sudah terdaftar di sistem!");
+                alert('⚠️ Akun dengan email ini sudah terdaftar di sistem!');
                 return;
             }
 
             appState.accounts.push({
                 id: Date.now(),
-                email: email,
-                password: pass,
-                role: role
+                email,
+                password,
+                roleId: role.id,
+                role: role.name
             });
 
             saveDataToLocal();
-            initAccountMasterTable();
-            
-            // Bersihkan field setelah sukses
+            initializeAccountAccessManagement();
             document.getElementById('new-account-email').value = '';
             document.getElementById('new-account-password').value = '';
-            
-            alert(`✔️ Berhasil! Akun ${email} telah ditambahkan.`);
+            alert(`✅ Akun ${email} berhasil ditambahkan dengan role ${role.name}.`);
         }
 
         function deleteAccount(id) {
-            if (!appState.accounts) return;
-            
+            migrateAccessControlState();
+            const account = appState.accounts.find(item => String(item.id) === String(id));
+            if (!account) return;
+
             if (appState.accounts.length <= 1) {
-                alert("❌ Tidak dapat menghapus akun. Harus tersisa minimal 1 akun untuk dapat login!");
+                alert('❌ Tidak dapat menghapus akun. Harus tersisa minimal satu akun untuk login.');
+                return;
+            }
+            if (currentLoggedInAccount && String(currentLoggedInAccount.id) === String(account.id)) {
+                alert('❌ Akun yang sedang digunakan tidak dapat dihapus. Login menggunakan akun lain terlebih dahulu.');
                 return;
             }
 
-            if (confirm("⚠️ Yakin ingin menghapus akses login untuk akun ini?")) {
-                appState.accounts = appState.accounts.filter(a => a.id !== id);
+            const role = getRoleForAccount(account);
+            const superAdmins = appState.accounts.filter(item => getRoleForAccount(item)?.id === 'role_super_admin');
+            if (role?.id === 'role_super_admin' && superAdmins.length <= 1) {
+                alert('❌ Harus tersisa minimal satu akun Super Admin.');
+                return;
+            }
+
+            if (confirm(`Hapus akses login untuk ${account.email}?`)) {
+                appState.accounts = appState.accounts.filter(item => String(item.id) !== String(id));
                 saveDataToLocal();
-                initAccountMasterTable();
+                initializeAccountAccessManagement();
             }
         }
 
