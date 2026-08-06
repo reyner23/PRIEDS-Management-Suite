@@ -162,6 +162,142 @@
         .dropdown-content.show { display: block; }
         .dropdown-item { padding: 12px 15px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: 0.2s; }
         .dropdown-item:hover { background: #f1f5f9; color: var(--primary); }
+        .dropdown-content.drop-up { top:auto; bottom:calc(100% + 5px); margin-top:0; margin-bottom:5px; }
+
+        /* Feature History: dropdown action tetap terlihat walau hanya ada satu baris */
+        .feature-history-detail-table { overflow:visible !important; }
+        .feature-history-detail-table tr,
+        .feature-history-detail-table td,
+        .feature-history-action-cell { overflow:visible !important; }
+        .feature-history-action-cell { position:relative; white-space:nowrap; }
+        .feature-history-action-cell .dropdown-content { z-index:1200; }
+
+        /* Multiple Impacted Module & Pages - aligned UI */
+        .feature-modal-content {
+            width:1040px !important;
+            max-width:calc(100vw - 32px);
+        }
+        .feature-impact-grid {
+            display:grid;
+            grid-template-columns:minmax(520px, 2.55fr) minmax(145px, .78fr) minmax(120px, .67fr);
+            gap:14px;
+            align-items:start;
+            margin-bottom:20px;
+        }
+        .feature-impact-grid > div { min-width:0; }
+        .impacted-targets-field { min-width:0; }
+        .impacted-targets-header,
+        .impacted-target-row {
+            display:grid;
+            grid-template-columns:minmax(170px, .95fr) minmax(220px, 1.25fr) 36px;
+            gap:8px;
+            align-items:center;
+            width:100%;
+            min-width:0;
+        }
+        .impacted-targets-header {
+            min-height:21px;
+            margin-bottom:7px;
+        }
+        .impacted-target-label {
+            font-size:12px;
+            font-weight:700;
+            color:var(--dark);
+            line-height:21px;
+            white-space:nowrap;
+        }
+        .impacted-target-page-label {
+            display:flex;
+            align-items:center;
+            gap:7px;
+            min-width:0;
+        }
+        .impacted-targets-container {
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            width:100%;
+        }
+        .impacted-page-add-btn,
+        .impacted-target-remove-btn {
+            border:1px solid var(--gray-border);
+            background:#fff;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            transition:.18s ease;
+            flex-shrink:0;
+        }
+        .impacted-page-add-btn {
+            width:21px;
+            height:21px;
+            border-radius:6px;
+            color:var(--primary);
+            border-color:#bfdbfe;
+            background:#eff6ff;
+            font-size:10px;
+        }
+        .impacted-page-add-btn:hover {
+            background:#dbeafe;
+            border-color:#93c5fd;
+            transform:translateY(-1px);
+        }
+        .impacted-target-row select {
+            min-width:0;
+            width:100% !important;
+            height:40px;
+            padding:0 34px 0 11px !important;
+            border:1px solid var(--gray-border) !important;
+            border-radius:8px !important;
+            background-color:#fff;
+            color:var(--text-main);
+            font-size:12px !important;
+            font-family:'Inter', sans-serif;
+            text-overflow:ellipsis;
+            transition:border-color .18s ease, box-shadow .18s ease;
+        }
+        .impacted-target-row select:focus {
+            outline:none;
+            border-color:var(--primary) !important;
+            box-shadow:0 0 0 3px rgba(37,99,235,.1);
+        }
+        .impacted-target-row select:disabled {
+            background:var(--gray-light) !important;
+            color:var(--text-muted);
+            cursor:not-allowed;
+        }
+        .impacted-target-remove-btn {
+            width:36px;
+            height:36px;
+            border-radius:8px;
+            color:var(--danger);
+            border-color:#fecaca;
+            background:#fff7f7;
+            font-size:11px;
+        }
+        .impacted-target-remove-btn:hover {
+            color:#dc2626;
+            background:#fee2e2;
+            border-color:#fca5a5;
+            transform:translateY(-1px);
+        }
+        .impacted-target-remove-placeholder {
+            width:36px;
+            height:36px;
+        }
+        @media (max-width: 920px) {
+            .feature-impact-grid { grid-template-columns:1fr 1fr; }
+            .impacted-targets-field { grid-column:1 / -1; }
+        }
+        @media (max-width: 620px) {
+            .feature-impact-grid { grid-template-columns:1fr; }
+            .feature-modal-content { max-width:calc(100vw - 20px); }
+            .impacted-targets-header,
+            .impacted-target-row {
+                grid-template-columns:1fr 1.15fr 36px;
+            }
+        }
 
         /* Modal Overlay */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
@@ -1723,10 +1859,10 @@
     <!-- MODAL ADD FEATURE ROADMAP -->
     <div id="add-feature-modal" class="modal-overlay">
         <!-- Background dan Border diubah menyesuaikan Light Mode -->
-        <div class="modal-content" style="width: 750px;">
+        <div class="modal-content feature-modal-content">
             <div class="modal-header">
                 <h3 style="font-size:16px; font-weight:800; color:var(--dark);" id="feature-modal-title">Add feature</h3>
-                <button style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-muted); padding:5px;" onclick="closeAddFeatureModal()">
+                <button id="feature-modal-header-close" type="button" title="Close" aria-label="Close" style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--text-muted); padding:5px; line-height:1;" onclick="closeAddFeatureModal()">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -1781,47 +1917,43 @@
                 </div>
 
                 <!-- Input Impact, Module, Integration & Package -->
-                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:15px; margin-bottom:20px;">
-                    <!-- 1. MODULE PINDAH KE KIRI -->
-                    <div>
-                        <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Impacted Module</label>
-                        <select id="feat-impact-module" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;" onchange="updateImpactedPages()">
-                            <option value="-">-- Pilih Modul --</option>
-                            <option value="Purchasing">Purchasing</option>
-                            <option value="Inbound">Inbound</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Outbound">Outbound</option>
-                            <option value="Stock Movement">Stock Movement</option>
-                            <option value="Inventory Management">Inventory Management</option>
-                            <option value="Approval Documents">Approval Documents</option>
-                            <option value="Production">Production</option>
-                            <option value="Warehouse Dashboard">Warehouse Dashboard</option>
-                            <option value="Master">Master</option>
-                            <option value="Accounting">Accounting</option>
-                            <option value="Integration & Tools">Integration & Tools</option>
-                            <option value="Ticketing Support">Ticketing Support</option>
-                            <option value="RFID OPERATIONAL">RFID OPERATIONAL</option>
-                        </select>
+                <div class="feature-impact-grid">
+                    <!-- MODULE + PAGE DITAMBAHKAN SEBAGAI PASANGAN AGAR BISA LINTAS MODULE -->
+                    <div class="impacted-targets-field">
+                        <div class="impacted-targets-header">
+                            <div class="impacted-target-label">Impacted Module</div>
+                            <div class="impacted-target-label impacted-target-page-label">
+                                <span>Impacted Pages</span>
+                                <button id="btn-add-impacted-page" type="button" class="impacted-page-add-btn" onclick="addImpactedTargetField()" title="Tambah impacted module dan page" aria-label="Tambah impacted module dan page">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                            <div aria-hidden="true"></div>
+                        </div>
+                        <div id="feat-impact-targets-container" class="impacted-targets-container">
+                            <div class="impacted-target-row">
+                                <select id="feat-impact-module" class="feat-impact-module-select" onchange="updateImpactedTargetPage(this)">
+                                    <option value="-">-- Pilih Modul --</option>
+                                </select>
+                                <select id="feat-impact" class="feat-impact-page-select" disabled>
+                                    <option value="-">-- Pilih Modul Terlebih Dahulu --</option>
+                                </select>
+                                <div class="impacted-target-remove-placeholder" aria-hidden="true"></div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- 2. PAGES PINDAH KE TENGAH (Sekarang jadi Select/Dropdown) -->
+                    <!-- INTEGRATION TETAP DI KANAN -->
                     <div>
-                        <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Impacted Pages</label>
-                        <select id="feat-impact" disabled style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px; background-color: var(--gray-light);">
-                            <option value="-">-- Pilih Modul Terlebih Dahulu --</option>
-                        </select>
-                    </div>
-                    <!-- 3. INTEGRATION TETAP DI KANAN -->
-                    <div>
-                        <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Integration Feature?</label>
-                        <select id="feat-is-integration" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;">
+                        <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:7px; line-height:21px;">Integration Feature?</label>
+                        <select id="feat-is-integration" style="width:100%; height:40px; padding:0 34px 0 11px; border:1px solid var(--gray-border); border-radius:8px; font-size:12px;">
                             <option value="No">No</option>
                             <option value="Yes">Yes</option>
                         </select>
                     </div>
-                    <!-- 👇 4. TAMBAHAN OPSI PACKAGE 👇 -->
+                    <!-- PACKAGE -->
                     <div>
-                        <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Package</label>
-                        <select id="feat-package" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;">
+                        <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:7px; line-height:21px;">Package</label>
+                        <select id="feat-package" style="width:100%; height:40px; padding:0 34px 0 11px; border:1px solid var(--gray-border); border-radius:8px; font-size:12px;">
                             <option value="All">All</option>
                             <option value="ERP">ERP</option>
                             <option value="WMS">WMS</option>
@@ -1927,8 +2059,11 @@
 
                 <!-- Tombol Action di Bawah -->
                 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px solid var(--gray-border); padding-top:15px;">
-                    <button class="btn btn-outline" onclick="closeAddFeatureModal()">Cancel</button>
-                    <button class="btn btn-primary" onclick="saveFeature()">Save</button>
+                    <button type="button" id="btn-reopen-feature-detail" class="btn btn-outline" style="display:none; border-color:var(--warning); color:#b45309;" onclick="reopenFeatureFromDetail()">
+                        <i class="fa-solid fa-rotate-left"></i> Reopen Feature
+                    </button>
+                    <button type="button" id="feature-modal-footer-close" class="btn btn-outline" onclick="closeAddFeatureModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveFeature()">Save</button>
                 </div>
             </div>
         </div>
@@ -6702,34 +6837,206 @@ ${error.message}`);
             "RFID OPERATIONAL": ["Inbound Manual RFID Mobile", "Inbound RFID by PO", "Outbound Manual RFID Mobile", "Outbound RFID by DO", "Outbound RFID by PRTN", "Process Opname RFID", "Inbound RFID by SRTN", "Outbound RFID by STO"]
         };
 
-        function updateImpactedPages() {
-            const moduleSelect = document.getElementById('feat-impact-module');
-            const pageSelect = document.getElementById('feat-impact');
-            const selectedModule = moduleSelect.value;
+        function normalizeImpactedPages(value) {
+            const rawValues = Array.isArray(value)
+                ? value
+                : String(value ?? '').split(/[,;|\n]+/);
 
-            pageSelect.innerHTML = ''; // Kosongkan opsi lama
+            return [...new Set(
+                rawValues
+                    .map(page => String(page ?? '').trim())
+                    .filter(page => page && page !== '-')
+            )];
+        }
 
-            if (selectedModule === '-') {
-                pageSelect.innerHTML = '<option value="-">-- Pilih Modul Terlebih Dahulu --</option>';
-                pageSelect.disabled = true;
-                pageSelect.style.backgroundColor = 'var(--gray-light)';
-            } else {
-                pageSelect.disabled = false;
-                pageSelect.style.backgroundColor = '#fff';
+        function normalizeImpactedTargets(value, legacyModule = '-', legacyPages = []) {
+            let rawTargets = [];
 
-                const pages = modulePagesMap[selectedModule] || [selectedModule];
-                
-                let optionsHtml = '<option value="-">-- Pilih Page --</option>';
-                pages.forEach(page => {
-                    optionsHtml += `<option value="${page}">${page}</option>`;
-                });
-                pageSelect.innerHTML = optionsHtml;
-                
-                if (pages.length === 1 && pages[0] === selectedModule) {
-                    pageSelect.value = selectedModule;
+            if (Array.isArray(value)) {
+                rawTargets = value;
+            } else if (value && typeof value === 'object') {
+                rawTargets = [value];
+            }
+
+            let normalized = rawTargets.map(target => {
+                if (typeof target === 'string') {
+                    return { module: legacyModule, page: target };
                 }
+                return {
+                    module: String(target?.module ?? target?.impactedModule ?? '-').trim() || '-',
+                    page: String(target?.page ?? target?.impactedPage ?? '-').trim() || '-'
+                };
+            }).filter(target => target.module !== '-' && target.page !== '-');
+
+            if (!normalized.length) {
+                const moduleName = String(legacyModule ?? '-').trim() || '-';
+                normalized = normalizeImpactedPages(legacyPages)
+                    .filter(page => moduleName !== '-')
+                    .map(page => ({ module: moduleName, page }));
+            }
+
+            const seen = new Set();
+            return normalized.filter(target => {
+                const key = `${target.module}|||${target.page}`;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
+
+        function getFeatureImpactedTargets(feature) {
+            if (!feature) return [];
+            return normalizeImpactedTargets(
+                feature.impactedTargets,
+                feature.impactedModule,
+                feature.impactedPages
+            );
+        }
+
+        function getImpactedModuleOptions(selectedValue = '-') {
+            let optionsHtml = '<option value="-">-- Pilih Modul --</option>';
+            Object.keys(modulePagesMap).forEach(moduleName => {
+                const selected = moduleName === selectedValue ? ' selected' : '';
+                optionsHtml += `<option value="${moduleName}"${selected}>${moduleName}</option>`;
+            });
+            return optionsHtml;
+        }
+
+        function getImpactedPageOptions(selectedModule, selectedValue = '-') {
+            if (selectedModule === '-') {
+                return '<option value="-">-- Pilih Modul Terlebih Dahulu --</option>';
+            }
+
+            const pages = [...(modulePagesMap[selectedModule] || [selectedModule])];
+            if (selectedValue && selectedValue !== '-' && !pages.includes(selectedValue)) {
+                pages.push(selectedValue);
+            }
+            let optionsHtml = '<option value="-">-- Pilih Page --</option>';
+            pages.forEach(page => {
+                const selected = page === selectedValue ? ' selected' : '';
+                optionsHtml += `<option value="${page}"${selected}>${page}</option>`;
+            });
+            return optionsHtml;
+        }
+
+        function updateImpactedTargetPage(moduleSelect, selectedPage = '-') {
+            const row = moduleSelect?.closest('.impacted-target-row');
+            const pageSelect = row?.querySelector('.feat-impact-page-select');
+            if (!row || !pageSelect) return;
+
+            const selectedModule = moduleSelect.value || '-';
+            pageSelect.innerHTML = getImpactedPageOptions(selectedModule, selectedPage);
+            pageSelect.disabled = selectedModule === '-';
+            pageSelect.style.backgroundColor = selectedModule === '-' ? 'var(--gray-light)' : '#fff';
+
+            const modulePages = modulePagesMap[selectedModule] || [];
+            if (selectedModule !== '-' && modulePages.length === 1 && selectedPage === '-') {
+                pageSelect.value = modulePages[0];
+            } else if (selectedPage && Array.from(pageSelect.options).some(option => option.value === selectedPage)) {
+                pageSelect.value = selectedPage;
             }
         }
+
+        function refreshImpactedTargetRowIds() {
+            const container = document.getElementById('feat-impact-targets-container');
+            if (!container) return;
+
+            container.querySelectorAll('.feat-impact-module-select').forEach(select => select.removeAttribute('id'));
+            container.querySelectorAll('.feat-impact-page-select').forEach(select => select.removeAttribute('id'));
+
+            const firstRow = container.querySelector('.impacted-target-row');
+            const firstModule = firstRow?.querySelector('.feat-impact-module-select');
+            const firstPage = firstRow?.querySelector('.feat-impact-page-select');
+            if (firstModule) firstModule.id = 'feat-impact-module';
+            if (firstPage) firstPage.id = 'feat-impact';
+        }
+
+        function appendImpactedTargetRow(selectedModule = '-', selectedPage = '-', allowRemove = true) {
+            const container = document.getElementById('feat-impact-targets-container');
+            if (!container) return;
+
+            const row = document.createElement('div');
+            row.className = 'impacted-target-row';
+
+            const moduleSelect = document.createElement('select');
+            moduleSelect.className = 'feat-impact-module-select';
+            moduleSelect.innerHTML = getImpactedModuleOptions(selectedModule);
+            moduleSelect.value = Object.prototype.hasOwnProperty.call(modulePagesMap, selectedModule) ? selectedModule : '-';
+            moduleSelect.onchange = () => updateImpactedTargetPage(moduleSelect);
+
+            const pageSelect = document.createElement('select');
+            pageSelect.className = 'feat-impact-page-select';
+
+            row.appendChild(moduleSelect);
+            row.appendChild(pageSelect);
+
+            if (allowRemove) {
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'impacted-target-remove-btn';
+                removeButton.title = 'Hapus impacted module dan page';
+                removeButton.setAttribute('aria-label', 'Hapus impacted module dan page');
+                removeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                removeButton.onclick = () => removeImpactedTargetField(removeButton);
+                row.appendChild(removeButton);
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'impacted-target-remove-placeholder';
+                placeholder.setAttribute('aria-hidden', 'true');
+                row.appendChild(placeholder);
+            }
+
+            container.appendChild(row);
+            updateImpactedTargetPage(moduleSelect, selectedPage);
+            refreshImpactedTargetRowIds();
+        }
+
+        function renderImpactedTargets(targets = []) {
+            const container = document.getElementById('feat-impact-targets-container');
+            if (!container) return;
+
+            const normalizedTargets = normalizeImpactedTargets(targets);
+            const valuesToRender = normalizedTargets.length
+                ? normalizedTargets
+                : [{ module: '-', page: '-' }];
+
+            container.innerHTML = '';
+            valuesToRender.forEach((target, index) => {
+                appendImpactedTargetRow(target.module, target.page, index > 0);
+            });
+        }
+
+        function addImpactedTargetField() {
+            appendImpactedTargetRow('-', '-', true);
+        }
+
+        function removeImpactedTargetField(button) {
+            const container = document.getElementById('feat-impact-targets-container');
+            const row = button.closest('.impacted-target-row');
+            if (!container || !row) return;
+
+            row.remove();
+            if (!container.querySelector('.impacted-target-row')) {
+                appendImpactedTargetRow('-', '-', false);
+            }
+            refreshImpactedTargetRowIds();
+        }
+
+        function getSelectedImpactedTargets() {
+            const rows = Array.from(document.querySelectorAll('#feat-impact-targets-container .impacted-target-row'));
+            return normalizeImpactedTargets(rows.map(row => ({
+                module: row.querySelector('.feat-impact-module-select')?.value || '-',
+                page: row.querySelector('.feat-impact-page-select')?.value || '-'
+            })));
+        }
+
+        function formatImpactedTargetsForLog(targets) {
+            const normalized = normalizeImpactedTargets(targets);
+            return normalized.length
+                ? normalized.map(target => `${target.module} → ${target.page}`).join(', ')
+                : '-';
+        }
+
 
         // 2. Fungsi untuk berpindah tab di dalam Modal Add Feature
         function switchFeatureTab(tabId, element) {
@@ -6755,12 +7062,29 @@ ${error.message}`);
                 input.style.backgroundColor = '#fff';
             });
 
-            // Kembalikan tombol Save dan teks Cancel
+            // Kembalikan tombol Save dan tombol footer Cancel
             const saveBtn = modal.querySelector('button[onclick="saveFeature()"]');
             if (saveBtn) saveBtn.style.display = 'inline-flex';
 
-            const cancelBtn = modal.querySelector('button[onclick="closeAddFeatureModal()"]');
-            if (cancelBtn) cancelBtn.innerText = 'Cancel';
+            const footerCloseBtn = document.getElementById('feature-modal-footer-close');
+            if (footerCloseBtn) {
+                footerCloseBtn.innerHTML = 'Cancel';
+                footerCloseBtn.title = '';
+                footerCloseBtn.setAttribute('aria-label', 'Cancel');
+            }
+
+            const headerCloseBtn = document.getElementById('feature-modal-header-close');
+            if (headerCloseBtn) {
+                headerCloseBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                headerCloseBtn.style.color = 'var(--text-muted)';
+            }
+
+            const reopenBtn = document.getElementById('btn-reopen-feature-detail');
+            if (reopenBtn) reopenBtn.style.display = 'none';
+
+            const addPageBtn = document.getElementById('btn-add-impacted-page');
+            if (addPageBtn) addPageBtn.style.display = 'inline-flex';
+            modal.querySelectorAll('.impacted-target-remove-btn').forEach(button => button.style.display = 'inline-flex');
 
             // Tampilkan kembali tombol Mark All Done
             const markDoneBtn = document.getElementById('btn-mark-all-done');
@@ -6783,12 +7107,25 @@ ${error.message}`);
                 input.style.backgroundColor = 'var(--gray-light)';
             });
 
-            // 4. Sembunyikan tombol Save & ubah teks Cancel jadi Close
+            // 4. Sembunyikan tombol Save dan pastikan tombol Close di header hanya berupa ikon silang merah
             const saveBtn = modal.querySelector('button[onclick="saveFeature()"]');
             if (saveBtn) saveBtn.style.display = 'none';
 
-            const cancelBtn = modal.querySelector('button[onclick="closeAddFeatureModal()"]');
-            if (cancelBtn) cancelBtn.innerText = 'Close';
+            const headerCloseBtn = document.getElementById('feature-modal-header-close');
+            if (headerCloseBtn) {
+                headerCloseBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                headerCloseBtn.title = 'Close';
+                headerCloseBtn.setAttribute('aria-label', 'Close');
+                headerCloseBtn.style.color = 'var(--danger)';
+            }
+
+            const detailFeature = appState.roadmapFeatures.find(feat => String(feat.id) === String(id));
+            const reopenBtn = document.getElementById('btn-reopen-feature-detail');
+            if (reopenBtn) reopenBtn.style.display = detailFeature?.overallStatus === 'Done' ? 'inline-flex' : 'none';
+
+            const addPageBtn = document.getElementById('btn-add-impacted-page');
+            if (addPageBtn) addPageBtn.style.display = 'none';
+            modal.querySelectorAll('.impacted-target-remove-btn').forEach(button => button.style.display = 'none');
 
             // Sembunyikan tombol Mark All Done saat mode Read-Only
             const markDoneBtn = document.getElementById('btn-mark-all-done');
@@ -6796,7 +7133,7 @@ ${error.message}`);
         }
 
         // Fungsi untuk mengembalikan fitur (Reopen) ke status In Progress
-        function reopenFeature(id) {
+        function reopenFeature(id, closeDetailAfterSuccess = false) {
             if (confirm("⚠️ Yakin ingin membuka kembali (reopen) fitur ini?\n\nFitur akan dikembalikan ke tab Roadmap Dashboard dengan status 'In Progress'.")) {
                 const f = appState.roadmapFeatures.find(feat => String(feat.id) === String(id));
                 if (f) {
@@ -6811,10 +7148,18 @@ ${error.message}`);
                     initFeatureHistoryView(); // Refresh tabel history
                     if (typeof initMasterFeatureView === "function") initMasterFeatureView();
                     if (typeof initRoadmapView === "function") initRoadmapView(); // Refresh tabel roadmap
+                    if (closeDetailAfterSuccess) closeAddFeatureModal();
                     
                     alert(`✅ Fitur "${f.name}" berhasil di-reopen!`);
+                    return true;
                 }
             }
+            return false;
+        }
+
+        function reopenFeatureFromDetail() {
+            const id = document.getElementById('feat-id').value;
+            if (id) reopenFeature(id, true);
         }
 
         // 3. Fungsi untuk membuka Modal Add Feature
@@ -6832,8 +7177,7 @@ ${error.message}`);
             document.getElementById('feat-priority').value = 'Medium';
             document.getElementById('feat-status').value = 'Planned';
             
-            document.getElementById('feat-impact-module').value = '-';
-            updateImpactedPages(); 
+            renderImpactedTargets([]); 
             
             document.getElementById('feat-is-integration').value = 'No';
             document.getElementById('feat-package').value = 'All'; // <--- TAMBAHAN RESET PACKAGE
@@ -6897,10 +7241,8 @@ ${error.message}`);
             document.getElementById('feat-priority').value = f.priority || 'Medium';
             document.getElementById('feat-duedate').value = f.dueDate || '';
             document.getElementById('feat-status').value = f.overallStatus || 'Planned';
-            // 👇 BAGIAN INI DIRUBAH 👇
-            document.getElementById('feat-impact-module').value = f.impactedModule || '-';
-            updateImpactedPages(); // 1. Load dulu pilihan pages-nya berdasarkan module tersimpan
-            document.getElementById('feat-impact').value = f.impactedPages || '-'; // 2. Baru assign page spesifik-nya
+            // Load seluruh pasangan impacted module dan page, termasuk kompatibilitas data lama
+            renderImpactedTargets(getFeatureImpactedTargets(f));
             
             document.getElementById('feat-is-integration').value = f.isIntegration ? 'Yes' : 'No';
             document.getElementById('feat-package').value = f.package || 'All'; // <--- TAMBAHAN LOAD PACKAGE
@@ -6994,8 +7336,9 @@ ${error.message}`);
             const overallStatus = document.getElementById('feat-status').value;
             
             // 👇 INI BAGIAN YANG BARU KITA TAMBAHKAN 👇
-            const impactedPages = document.getElementById('feat-impact').value;
-            const impactedModule = document.getElementById('feat-impact-module').value; 
+            const impactedTargets = getSelectedImpactedTargets();
+            const impactedModule = impactedTargets[0]?.module || '-';
+            const impactedPages = [...new Set(impactedTargets.map(target => target.page))]; 
             const isIntegration = document.getElementById('feat-is-integration').value === 'Yes';
             const packageVal = document.getElementById('feat-package').value; // <--- TAMBAHAN TARIK DATA PACKAGE
             // 👆 ================================= 👆
@@ -7030,8 +7373,11 @@ ${error.message}`);
                     if (existing.overallStatus !== overallStatus) changes.push(`Status diubah menjadi "${overallStatus}"`);
                     if (existing.dueDate !== dueDate) changes.push(`Due Date diubah menjadi "${dueDate || '-'}"`);
                     
-                    // 👇 LOGGING KETIKA MODULE DIUBAH 👇
-                    if (existing.impactedModule !== impactedModule) changes.push(`Impacted Module diubah menjadi "${impactedModule}"`);
+                    // Logging perubahan pasangan Module dan Page
+                    const oldImpactedTargets = getFeatureImpactedTargets(existing);
+                    if (JSON.stringify(oldImpactedTargets) !== JSON.stringify(impactedTargets)) {
+                        changes.push(`Impacted Module & Pages diubah menjadi "${formatImpactedTargetsForLog(impactedTargets)}"`);
+                    }
                     
                     if (changes.length === 0) changes.push(`Data diperbarui tanpa perubahan spesifik.`);
 
@@ -7044,8 +7390,9 @@ ${error.message}`);
                     existing.overallStatus = overallStatus;
                     
                     // 👇 UPDATE OBJECT DATA KETIKA DI-SAVE 👇
-                    existing.impactedPages = impactedPages;
-                    existing.impactedModule = impactedModule;
+                    existing.impactedTargets = impactedTargets;
+                    existing.impactedPages = impactedPages; // backward compatibility
+                    existing.impactedModule = impactedModule; // backward compatibility
                     existing.isIntegration = isIntegration;
                     existing.package = packageVal; // <--- UPDATE PACKAGE KE OBJEK
                     
@@ -7067,8 +7414,9 @@ ${error.message}`);
                     overallStatus: overallStatus,
                     
                     // 👇 SIMPAN KE OBJECT SAAT BIKIN BARU 👇
-                    impactedPages: impactedPages,
-                    impactedModule: impactedModule,
+                    impactedTargets: impactedTargets,
+                    impactedPages: impactedPages, // backward compatibility
+                    impactedModule: impactedModule, // backward compatibility
                     isIntegration: isIntegration,
                     package: packageVal, // <--- MASUKKAN PACKAGE KE OBJEK BARU
                     
@@ -7233,16 +7581,14 @@ ${error.message}`);
             return (!moduleName || moduleName === '-') ? 'Unassigned Module' : moduleName;
         }
 
-        function normalizeMasterFeaturePages(value) {
-            const raw = String(value || '').trim();
-            if (!raw || raw === '-') return ['Unassigned Page'];
-
-            const pages = raw
-                .split(/[,;|\n]+/)
-                .map(page => page.trim())
-                .filter(Boolean);
-
-            return pages.length ? [...new Set(pages)] : ['Unassigned Page'];
+        function getMasterFeatureTargets(feature) {
+            const targets = getFeatureImpactedTargets(feature);
+            return targets.length
+                ? targets.map(target => ({
+                    module: normalizeMasterFeatureModule(target.module),
+                    page: String(target.page || '').trim() || 'Unassigned Page'
+                }))
+                : [{ module: 'Unassigned Module', page: 'Unassigned Page' }];
         }
 
         function populateMasterFeatureModuleFilter(features) {
@@ -7250,7 +7596,7 @@ ${error.message}`);
             if (!select) return;
 
             const previousValue = select.value || 'all';
-            const modules = [...new Set(features.map(feature => normalizeMasterFeatureModule(feature.impactedModule)))]
+            const modules = [...new Set(features.flatMap(feature => getMasterFeatureTargets(feature).map(target => target.module)))]
                 .sort((a, b) => a.localeCompare(b));
 
             select.innerHTML = `
@@ -7277,9 +7623,10 @@ ${error.message}`);
             const allModules = new Set();
             const allPages = new Set();
             allFeatures.forEach(feature => {
-                const moduleName = normalizeMasterFeatureModule(feature.impactedModule);
-                allModules.add(moduleName);
-                normalizeMasterFeaturePages(feature.impactedPages).forEach(page => allPages.add(`${moduleName}|||${page}`));
+                getMasterFeatureTargets(feature).forEach(target => {
+                    allModules.add(target.module);
+                    allPages.add(`${target.module}|||${target.page}`);
+                });
             });
 
             const integrationTotal = allFeatures.filter(feature => Boolean(feature.isIntegration)).length;
@@ -7311,15 +7658,13 @@ ${error.message}`);
             const search = (document.getElementById('master-feature-search')?.value || '').trim().toLowerCase();
 
             let filtered = allFeatures.filter(feature => {
-                const moduleName = normalizeMasterFeatureModule(feature.impactedModule);
-                const pages = normalizeMasterFeaturePages(feature.impactedPages);
+                const targets = getMasterFeatureTargets(feature);
                 const typeMatch = typeFilter === 'all'
                     || (typeFilter === 'integration' && Boolean(feature.isIntegration))
                     || (typeFilter === 'internal' && !feature.isIntegration);
-                const moduleMatch = moduleFilter === 'all' || moduleName === moduleFilter;
+                const moduleMatch = moduleFilter === 'all' || targets.some(target => target.module === moduleFilter);
                 const searchable = [
-                    moduleName,
-                    ...pages,
+                    ...targets.flatMap(target => [target.module, target.page]),
                     feature.featureId,
                     feature.name,
                     feature.package,
@@ -7331,12 +7676,11 @@ ${error.message}`);
 
             const grouped = {};
             filtered.forEach(feature => {
-                const moduleName = normalizeMasterFeatureModule(feature.impactedModule);
-                if (!grouped[moduleName]) grouped[moduleName] = {};
-
-                normalizeMasterFeaturePages(feature.impactedPages).forEach(pageName => {
-                    if (!grouped[moduleName][pageName]) grouped[moduleName][pageName] = [];
-                    grouped[moduleName][pageName].push(feature);
+                getMasterFeatureTargets(feature).forEach(target => {
+                    if (moduleFilter !== 'all' && target.module !== moduleFilter) return;
+                    if (!grouped[target.module]) grouped[target.module] = {};
+                    if (!grouped[target.module][target.page]) grouped[target.module][target.page] = [];
+                    grouped[target.module][target.page].push(feature);
                 });
             });
 
@@ -7500,10 +7844,10 @@ ${error.message}`);
             }
             
             if (moduleFilter !== 'all') {
-                data = data.filter(f => f.impactedModule === moduleFilter);
+                data = data.filter(f => getFeatureImpactedTargets(f).some(target => target.module === moduleFilter));
             }
             if (pageSearch !== '') {
-                data = data.filter(f => (f.impactedPages || '').toLowerCase().includes(pageSearch));
+                data = data.filter(f => getFeatureImpactedTargets(f).some(target => target.page.toLowerCase().includes(pageSearch)));
             }
 
             if (data.length === 0) {
@@ -7574,13 +7918,20 @@ ${error.message}`);
                     
                     const prdStatus = hasPRD ? '✅' : '❌';
                     const figmaStatus = hasFigma ? '✅' : '❌';
+                    const impactedTargets = getFeatureImpactedTargets(f);
+                    const impactedModulesHtml = impactedTargets.length
+                        ? impactedTargets.map(target => `<div style="min-height:24px; display:flex; align-items:center; margin-bottom:3px;"><span style="font-size:10px; background:#f1f5f9; padding:2px 6px; border:1px solid var(--gray-border); border-radius:4px; display:inline-block;">${masterFeatureEscapeHtml(target.module)}</span></div>`).join('')
+                        : '-';
+                    const impactedPagesHtml = impactedTargets.length
+                        ? impactedTargets.map(target => `<div style="min-height:24px; display:flex; align-items:center; margin-bottom:3px;"><span style="font-size:10px; background:#f8fafc; padding:2px 6px; border:1px solid var(--gray-border); border-radius:4px; display:inline-block;">${masterFeatureEscapeHtml(target.page)}</span></div>`).join('')
+                        : '-';
                     // 👆 AKHIR LOGIKA DOC STATUS 👆
 
                     return `
                     <tr style="background:#fff;">
                         <td style="font-weight:700; color:var(--dark); padding-left:15px;">${f.name}</td>
-                        <td><span style="font-size:11px; background:#f1f5f9; padding:2px 6px; border:1px solid var(--gray-border); border-radius:4px;">${f.impactedModule || '-'}</span></td>
-                        <td style="font-size:11px; font-weight:600; color:var(--text-main);">${f.impactedPages || '-'}</td>
+                        <td style="font-size:11px; font-weight:600; color:var(--text-main);">${impactedModulesHtml}</td>
+                        <td style="font-size:11px; font-weight:600; color:var(--text-main);">${impactedPagesHtml}</td>
                         <td>${f.isIntegration ? '<span style="font-size:10px; color:var(--warning); font-weight:800;"><i class="fa-solid fa-link"></i> Integrasi</span>' : '<span style="font-size:10px; color:var(--text-muted); font-weight:700;">Internal</span>'}</td>
                         <td><span style="font-size:11px; font-weight:700; color:var(--primary);">${f.package || 'All'}</span></td>
                         
@@ -7592,12 +7943,12 @@ ${error.message}`);
                         
                         <td style="font-size:11px;">${f.dueDate || '-'}</td>
                         <td><span style="font-size:11px; font-weight:700; color:var(--success); background:#dcfce7; padding:2px 8px; border-radius:6px;">Done</span></td>
-                        <td>
+                        <td class="feature-history-action-cell">
                             <div class="dropdown">
                                 <button class="btn btn-outline" style="padding:4px 8px; font-size:12px;" onclick="toggleDropdown('hist-drop-${gIdx}-${idx}', event)">
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </button>
-                                <div id="hist-drop-${gIdx}-${idx}" class="dropdown-content">
+                                <div id="hist-drop-${gIdx}-${idx}" class="dropdown-content drop-up">
                                     <div class="dropdown-item" onclick="viewFeatureDetail('${f.id}')">
                                         <i class="fa-solid fa-eye" style="color:var(--primary);"></i> Detail
                                     </div>
@@ -7615,7 +7966,7 @@ ${error.message}`);
                 rowsHtml += `
                     <tr id="group-hist-${gIdx}" style="display: none; background: #f8fafc;">
                         <td colspan="6" style="padding: 10px 15px 20px 15px;">
-                            <table style="width:100%; border-collapse:collapse; border-radius:8px; overflow:hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <table class="feature-history-detail-table" style="width:100%; border-collapse:collapse; border-radius:8px; overflow:visible; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
                                 <thead>
                                     <tr style="background:#0e7490; color:#fff; text-align:left;">
                                         <th style="padding:10px 15px; font-size:11px; font-weight:700;">Nama Fitur</th>
