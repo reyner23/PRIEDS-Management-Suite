@@ -365,6 +365,94 @@
         }
 
 
+
+        /* ================= DAILY TASK STYLES ================= */
+        .daily-task-summary { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:20px; }
+        .daily-task-stat { background:#fff; border:1px solid var(--gray-border); border-radius:12px; padding:16px; box-shadow:0 2px 5px rgba(15,23,42,.04); min-width:0; }
+        .daily-task-stat-label { color:var(--text-muted); font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; display:flex; align-items:center; gap:7px; margin-bottom:8px; }
+        .daily-task-stat-value { font-size:28px; font-weight:800; color:var(--dark); line-height:1; }
+        .daily-task-stat-helper { font-size:10px; color:var(--text-muted); margin-top:7px; line-height:1.4; }
+        .daily-task-toolbar { background:#f8fafc; border:1px solid var(--gray-border); border-radius:12px; padding:15px; margin-bottom:18px; display:grid; grid-template-columns:160px 170px 160px minmax(220px,1fr) auto; gap:12px; align-items:end; }
+        .daily-task-toolbar label { display:block; margin-bottom:6px; color:var(--dark); font-size:10px; font-weight:800; text-transform:uppercase; }
+        .daily-task-toolbar input, .daily-task-toolbar select { width:100%; padding:9px 10px; border:1px solid var(--gray-border); border-radius:7px; background:#fff; color:var(--text-main); font-size:12px; }
+        .daily-task-toolbar-actions { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+        .daily-task-section-title { display:flex; justify-content:space-between; align-items:flex-end; gap:14px; margin:20px 0 12px; }
+        .daily-task-section-title h3 { font-size:16px; color:var(--dark); font-weight:800; }
+        .daily-task-section-title p { font-size:10px; color:var(--text-muted); margin-top:4px; }
+        .daily-task-board { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; }
+        .daily-task-user-card { background:#fff; border:1px solid var(--gray-border); border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(15,23,42,.035); }
+        .daily-task-user-card.missing { border-style:dashed; background:#fbfdff; }
+        .daily-task-user-head { padding:14px 15px; display:flex; justify-content:space-between; align-items:flex-start; gap:10px; border-bottom:1px solid #eef2f7; background:#f8fafc; }
+        .daily-task-avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#dbeafe; color:#1d4ed8; font-size:13px; font-weight:800; flex-shrink:0; }
+        .daily-task-user-meta { display:flex; gap:10px; min-width:0; }
+        .daily-task-user-name { color:var(--dark); font-weight:800; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .daily-task-user-sub { color:var(--text-muted); font-size:9px; margin-top:3px; }
+        .daily-task-card-body { padding:14px 15px; }
+        .daily-task-block { margin-bottom:13px; }
+        .daily-task-block:last-child { margin-bottom:0; }
+        .daily-task-block-title { font-size:9px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted); font-weight:800; margin-bottom:7px; display:flex; align-items:center; gap:6px; }
+        .daily-task-progress-line { font-size:11px; color:var(--text-main); line-height:1.45; padding:4px 0 4px 14px; position:relative; white-space:pre-wrap; overflow-wrap:anywhere; }
+        .daily-task-progress-line::before { content:'•'; position:absolute; left:2px; color:var(--primary); font-weight:800; }
+        .daily-task-item { display:flex; align-items:flex-start; gap:8px; padding:7px 8px; border:1px solid #eef2f7; border-radius:8px; background:#fff; margin-bottom:6px; }
+        .daily-task-item:last-child { margin-bottom:0; }
+        .daily-task-item input { margin-top:2px; cursor:pointer; }
+        .daily-task-item-text { font-size:11px; line-height:1.4; color:var(--dark); overflow-wrap:anywhere; }
+        .daily-task-item.done .daily-task-item-text { text-decoration:line-through; color:var(--text-muted); }
+        .daily-task-item-meta { margin-left:auto; display:flex; gap:4px; flex-shrink:0; }
+        .daily-task-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 7px; border-radius:999px; font-size:9px; font-weight:800; white-space:nowrap; border:1px solid transparent; }
+        .daily-task-chip.done { color:#166534; background:#dcfce7; border-color:#bbf7d0; }
+        .daily-task-chip.progress { color:#1d4ed8; background:#dbeafe; border-color:#bfdbfe; }
+        .daily-task-chip.pending { color:#92400e; background:#fef3c7; border-color:#fde68a; }
+        .daily-task-chip.blocked { color:#991b1b; background:#fee2e2; border-color:#fecaca; }
+        .daily-task-card-footer { border-top:1px solid #eef2f7; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; background:#fff; }
+        .daily-task-mini-progress { flex:1; min-width:100px; height:6px; border-radius:999px; background:#e2e8f0; overflow:hidden; }
+        .daily-task-mini-progress > div { height:100%; background:var(--success); border-radius:999px; transition:width .25s; }
+        .daily-task-footer-actions { display:flex; gap:5px; flex-wrap:wrap; }
+        .daily-task-history-group { background:#fff; border:1px solid var(--gray-border); border-radius:12px; margin-bottom:12px; overflow:hidden; }
+        .daily-task-history-head { padding:13px 15px; display:grid; grid-template-columns:minmax(180px,1fr) repeat(3,minmax(80px,auto)) 26px; gap:12px; align-items:center; cursor:pointer; background:#fff; }
+        .daily-task-history-head:hover { background:#f8fafc; }
+        .daily-task-history-body { display:none; padding:0 14px 14px; background:#f8fafc; border-top:1px solid var(--gray-border); }
+        .daily-task-history-group.open .daily-task-history-body { display:block; }
+        .daily-task-history-group.open .daily-task-history-chevron { transform:rotate(180deg); }
+        .daily-task-history-chevron { transition:transform .2s; color:var(--text-muted); }
+        .daily-task-history-metric { font-size:9px; color:var(--text-muted); text-align:center; white-space:nowrap; }
+        .daily-task-history-metric strong { display:block; color:var(--dark); font-size:13px; margin-bottom:1px; }
+        .daily-task-history-entry { margin-top:10px; background:#fff; border:1px solid var(--gray-border); border-radius:10px; overflow:hidden; }
+        .daily-task-history-entry-head { padding:10px 12px; display:flex; justify-content:space-between; gap:10px; align-items:center; background:#fff; border-bottom:1px solid #eef2f7; }
+        .daily-task-history-entry-body { display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:11px 12px; }
+        .daily-task-empty { padding:34px 20px; text-align:center; border:1px dashed var(--gray-border); border-radius:12px; color:var(--text-muted); background:#fff; font-size:12px; }
+        .daily-task-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .daily-task-form-group label { display:block; font-size:10px; font-weight:800; color:var(--dark); margin-bottom:6px; text-transform:uppercase; }
+        .daily-task-form-group input, .daily-task-form-group select, .daily-task-form-group textarea { width:100%; padding:9px 10px; border:1px solid var(--gray-border); border-radius:8px; font-family:'Inter',sans-serif; font-size:12px; color:var(--text-main); background:#fff; }
+        .daily-task-form-group textarea { min-height:112px; resize:vertical; line-height:1.45; }
+        .daily-task-form-group.full { grid-column:1 / -1; }
+        .daily-task-form-help { margin-top:5px; font-size:9px; color:var(--text-muted); line-height:1.4; }
+        .daily-task-blocker-box { background:#fff7f7; border:1px solid #fecaca; border-radius:8px; padding:10px; }
+        .daily-task-wa-card { background:#fff; border:1px solid var(--gray-border); border-radius:12px; margin:18px 0 22px; overflow:hidden; box-shadow:0 2px 6px rgba(15,23,42,.035); }
+        .daily-task-wa-head { padding:14px 16px; display:flex; justify-content:space-between; align-items:flex-start; gap:14px; background:#f8fafc; border-bottom:1px solid var(--gray-border); }
+        .daily-task-wa-head h3 { font-size:14px; font-weight:800; color:var(--dark); display:flex; align-items:center; gap:8px; }
+        .daily-task-wa-head p { font-size:10px; color:var(--text-muted); margin-top:4px; line-height:1.45; }
+        .daily-task-wa-actions { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+        .daily-task-wa-body { padding:14px 16px 16px; }
+        .daily-task-wa-meta { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+        .daily-task-wa-meta span { display:inline-flex; align-items:center; gap:5px; font-size:9px; font-weight:800; padding:4px 8px; border-radius:999px; background:#f1f5f9; color:var(--text-muted); border:1px solid var(--gray-border); }
+        .daily-task-wa-preview { width:100%; min-height:260px; max-height:520px; resize:vertical; padding:13px 14px; border:1px solid var(--gray-border); border-radius:9px; background:#fbfdff; color:var(--dark); font-family:'Inter',sans-serif; font-size:11px; line-height:1.55; white-space:pre-wrap; }
+        .daily-task-wa-preview:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,.08); }
+        .daily-task-wa-copy-status { font-size:9px; color:var(--text-muted); margin-top:8px; min-height:14px; }
+        @media (max-width:1350px) {
+            .daily-task-summary { grid-template-columns:repeat(3,minmax(0,1fr)); }
+            .daily-task-toolbar { grid-template-columns:1fr 1fr; }
+            .daily-task-toolbar-actions { justify-content:flex-start; }
+        }
+        @media (max-width:760px) {
+            .daily-task-summary { grid-template-columns:1fr 1fr; }
+            .daily-task-toolbar { grid-template-columns:1fr; }
+            .daily-task-history-head { grid-template-columns:minmax(150px,1fr) 70px 26px; }
+            .daily-task-history-head .daily-task-history-metric:nth-of-type(2), .daily-task-history-head .daily-task-history-metric:nth-of-type(3) { display:none; }
+            .daily-task-history-entry-body, .daily-task-form-grid { grid-template-columns:1fr; }
+            .daily-task-form-group.full { grid-column:auto; }
+        }
+
         /* ================= MASTER FEATURE STYLES ================= */
         .master-feature-summary { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:14px; margin-bottom:20px; }
         .master-feature-card { background:#fff; border:1px solid var(--gray-border); border-radius:12px; padding:16px; box-shadow:0 2px 5px rgba(15,23,42,.04); }
@@ -561,6 +649,9 @@
                     </div>
                     <div class="nav-item" data-page-id="bug_tracker" onclick="switchTab('bug_tracker', this)">
                         <i class="fa-solid fa-bug"></i> BUG Tracker
+                    </div>
+                    <div class="nav-item" data-page-id="daily_task" onclick="switchTab('daily_task', this)">
+                        <i class="fa-solid fa-calendar-check"></i> Daily Task
                     </div>
                     <div class="nav-item" data-page-id="feature_history" onclick="switchTab('feature_history', this)">
                         <i class="fa-solid fa-clock-rotate-left"></i> Feature History
@@ -1021,6 +1112,9 @@
                         </button>
                     </div>
                 </div>
+                <div id="editor-daily_task" class="editor-section">
+                    <!-- Daily Task menggunakan tampilan full width -->
+                </div>
                 <div id="editor-feature_history" class="editor-section">
                     <!-- Dikosongkan karena filter dipindah ke atas tabel agar Full Width -->
                 </div>
@@ -1460,6 +1554,89 @@
                     </div>
                 </div>
 
+                <div id="view-daily_task" class="tab-view">
+                    <div class="presentation-slide">
+                        <div class="slide-header" style="margin-bottom:20px; display:flex; justify-content:space-between; gap:20px; align-items:flex-start;">
+                            <div>
+                                <h2>Daily Task</h2>
+                                <p>Daily assignment & progress history per anggota team — tersinkron otomatis ke Firebase</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openDailyTaskModal()">
+                                <i class="fa-solid fa-plus"></i> Input Daily Task
+                            </button>
+                        </div>
+
+                        <div id="daily-task-summary" class="daily-task-summary"></div>
+
+                        <div class="daily-task-toolbar">
+                            <div>
+                                <label>Tanggal Board</label>
+                                <input type="date" id="daily-task-date-filter" onchange="applyDailyTaskFilters()">
+                            </div>
+                            <div>
+                                <label>Anggota Team</label>
+                                <select id="daily-task-user-filter" onchange="applyDailyTaskFilters()">
+                                    <option value="all">Semua Anggota</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Status</label>
+                                <select id="daily-task-status-filter" onchange="applyDailyTaskFilters()">
+                                    <option value="all">Semua Status</option>
+                                    <option value="Not Started">Not Started</option>
+                                    <option value="On Progress">On Progress</option>
+                                    <option value="Done">Done</option>
+                                    <option value="Blocked">Blocked</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Cari Task / Progress</label>
+                                <input type="text" id="daily-task-search" placeholder="Cari keyword, task, progress, blocker..." oninput="applyDailyTaskFilters()">
+                            </div>
+                            <div class="daily-task-toolbar-actions">
+                                <button class="btn btn-outline" onclick="setDailyTaskToday()"><i class="fa-solid fa-calendar-day"></i> Hari Ini</button>
+                                <button class="btn btn-outline" onclick="copyDailyTaskWhatsAppRecap()" style="color:#15803d;border-color:#bbf7d0;"><i class="fa-brands fa-whatsapp"></i> Copy WA</button>
+                                <button class="btn btn-outline" onclick="exportDailyTaskExcel()"><i class="fa-solid fa-file-excel"></i> Excel</button>
+                            </div>
+                        </div>
+
+                        <div class="daily-task-wa-card">
+                            <div class="daily-task-wa-head">
+                                <div>
+                                    <h3><i class="fa-brands fa-whatsapp" style="color:#16a34a;"></i> Daily Report / WA Recap</h3>
+                                    <p>Rekap otomatis semua Daily Task yang sudah di-input pada tanggal board. Format siap copy-paste ke WhatsApp.</p>
+                                </div>
+                                <div class="daily-task-wa-actions">
+                                    <button class="btn btn-outline" onclick="refreshDailyTaskWhatsAppRecap()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                                    <button id="daily-task-wa-copy-btn" class="btn btn-success" onclick="copyDailyTaskWhatsAppRecap()"><i class="fa-regular fa-copy"></i> Copy Rekap WA</button>
+                                </div>
+                            </div>
+                            <div class="daily-task-wa-body">
+                                <div id="daily-task-wa-meta" class="daily-task-wa-meta"></div>
+                                <textarea id="daily-task-wa-preview" class="daily-task-wa-preview" spellcheck="false" aria-label="WhatsApp Daily Task Recap"></textarea>
+                                <div id="daily-task-wa-copy-status" class="daily-task-wa-copy-status">Preview mengikuti tanggal board di atas. Kamu tetap bisa edit teks di preview sebelum copy.</div>
+                            </div>
+                        </div>
+
+                        <div class="daily-task-section-title">
+                            <div>
+                                <h3><i class="fa-solid fa-table-columns"></i> Daily Board</h3>
+                                <p id="daily-task-board-caption">Ringkasan task per anggota team untuk tanggal yang dipilih.</p>
+                            </div>
+                            <div id="daily-task-live-status" style="font-size:10px; color:var(--text-muted);"><i class="fa-solid fa-circle" style="font-size:7px;"></i> Menunggu sinkronisasi...</div>
+                        </div>
+                        <div id="daily-task-board" class="daily-task-board"></div>
+
+                        <div class="daily-task-section-title" style="margin-top:28px;">
+                            <div>
+                                <h3><i class="fa-solid fa-clock-rotate-left"></i> History Task per User</h3>
+                                <p>Riwayat tersusun per anggota team, terbaru ke terlama. Gunakan filter di atas untuk mempersempit pencarian.</p>
+                            </div>
+                        </div>
+                        <div id="daily-task-history"></div>
+                    </div>
+                </div>
+
                 <div id="view-feature_history" class="tab-view">
                     <div class="presentation-slide">
                         <div class="slide-header" style="margin-bottom:20px;">
@@ -1510,7 +1687,6 @@
                                     <option value="Integration & Tools">Integration & Tools</option>
                                     <option value="Ticketing Support">Ticketing Support</option>
                                     <option value="RFID OPERATIONAL">RFID OPERATIONAL</option>
-                                    <option value="Admin">Admin</option>
                                 </select>
                             </div>
                             <div style="flex:1; min-width:200px;">
@@ -1583,6 +1759,80 @@
         </div>
     </div>
 </div>
+
+    <!-- DAILY TASK CREATE / EDIT MODAL -->
+    <div id="daily-task-modal" class="modal-overlay">
+        <div class="modal-content" style="width:820px; max-width:94vw; max-height:90vh;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="daily-task-modal-title" style="font-size:16px; font-weight:800; color:var(--dark);">Input Daily Task</h3>
+                    <p style="font-size:10px; color:var(--text-muted); margin-top:3px;">Satu entry per anggota per tanggal. Jika sudah ada, data akan diperbarui.</p>
+                </div>
+                <button style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-muted); padding:5px;" onclick="closeDailyTaskModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="daily-task-edit-id">
+                <div class="daily-task-form-grid">
+                    <div class="daily-task-form-group">
+                        <label>Tanggal</label>
+                        <input type="date" id="daily-task-form-date">
+                    </div>
+                    <div class="daily-task-form-group">
+                        <label>Anggota Team</label>
+                        <input type="text" id="daily-task-form-user" list="daily-task-member-list" placeholder="Contoh: Hendra">
+                        <datalist id="daily-task-member-list"></datalist>
+                    </div>
+                    <div class="daily-task-form-group">
+                        <label>Status</label>
+                        <select id="daily-task-form-status">
+                            <option value="Not Started">Not Started</option>
+                            <option value="On Progress">On Progress</option>
+                            <option value="Done">Done</option>
+                            <option value="Blocked">Blocked</option>
+                        </select>
+                    </div>
+                    <div class="daily-task-form-group">
+                        <label>Priority</label>
+                        <select id="daily-task-form-priority">
+                            <option value="Normal">Normal</option>
+                            <option value="High">High</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <div class="daily-task-form-group full">
+                        <label>Progress / Update Hari Ini</label>
+                        <textarea id="daily-task-form-progress" placeholder="Satu baris = satu update. Boleh paste format manual dengan tanda - atau ○"></textarea>
+                        <div class="daily-task-form-help">Contoh: Inbound shipment FEFO · Fix filter SKU case sensitive · Discuss MES.</div>
+                    </div>
+                    <div class="daily-task-form-group full">
+                        <div style="display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:6px;">
+                            <label style="margin-bottom:0;">Task / Next Action</label>
+                            <button type="button" class="btn btn-outline" style="padding:5px 8px; font-size:10px;" onclick="appendPreviousUnfinishedToForm()">
+                                <i class="fa-solid fa-forward"></i> Ambil Unfinished Sebelumnya
+                            </button>
+                        </div>
+                        <textarea id="daily-task-form-tasks" placeholder="Satu baris = satu task. Checkbox akan dibuat otomatis setelah disimpan."></textarea>
+                        <div class="daily-task-form-help">Task akan menjadi checklist dan completion progress dihitung otomatis.</div>
+                    </div>
+                    <div class="daily-task-form-group full">
+                        <label>Blocker / Catatan (opsional)</label>
+                        <textarea id="daily-task-form-blocker" style="min-height:78px;" placeholder="Isi jika ada dependency, blocker, atau note penting..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:14px 25px; border-top:1px solid var(--gray-border); display:flex; justify-content:space-between; gap:10px; align-items:center; background:#f8fafc;">
+                <button id="daily-task-delete-btn" class="btn btn-outline" style="color:var(--danger); border-color:#fecaca; display:none;" onclick="deleteDailyTaskFromModal()">
+                    <i class="fa-solid fa-trash"></i> Hapus Entry
+                </button>
+                <div style="margin-left:auto; display:flex; gap:8px;">
+                    <button class="btn btn-outline" onclick="closeDailyTaskModal()">Batal</button>
+                    <button class="btn btn-primary" onclick="saveDailyTaskEntry()"><i class="fa-solid fa-floppy-disk"></i> Simpan Daily Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="lastlogin-detail-modal" class="modal-overlay">
     <div class="modal-content" style="width: 850px; max-height: 85vh;">
@@ -2145,6 +2395,7 @@
                 pages: [
                     { id: 'roadmap', label: 'Roadmap Planner' },
                     { id: 'bug_tracker', label: 'BUG Tracker' },
+                    { id: 'daily_task', label: 'Daily Task' },
                     { id: 'feature_history', label: 'Feature History' },
                     { id: 'master_feature', label: 'Master Feature' }
                 ]
@@ -2210,8 +2461,10 @@
             if (!adminExists) appState.roles.push(createDefaultRoles()[1]);
 
             const standardAdminRole = appState.roles.find(role => role.id === 'role_admin');
-            if (standardAdminRole && !standardAdminRole.permissions.includes('*') && !standardAdminRole.permissions.includes('master_feature')) {
-                standardAdminRole.permissions.push('master_feature');
+            if (standardAdminRole && !standardAdminRole.permissions.includes('*')) {
+                ['master_feature', 'daily_task'].forEach(pageId => {
+                    if (!standardAdminRole.permissions.includes(pageId)) standardAdminRole.permissions.push(pageId);
+                });
             }
 
             if (!Array.isArray(appState.accounts)) {
@@ -4378,6 +4631,7 @@
                 closeAddFeatureModal();
                 closeFeatureLogModal();
                 closeBugDetailModal();
+                closeDailyTaskModal();
             }
         }
 
@@ -4412,7 +4666,7 @@
             document.querySelectorAll('.editor-section').forEach(editor => editor.classList.remove('active'));
 
             const editorPanel = document.querySelector('.editor-panel');
-            if (tab === 'user_company' || tab === 'feature_history' || tab === 'master_feature') {
+            if (tab === 'user_company' || tab === 'feature_history' || tab === 'master_feature' || tab === 'daily_task') {
                 editorPanel.style.display = 'none';
             } else {
                 editorPanel.style.display = 'block';
@@ -4432,6 +4686,7 @@
                 'user_company': 'User Company Master Data',
                 'account_master': 'Account Master Management',
                 'roadmap': 'PM Hub - Feature Roadmap Planner',
+                'daily_task': 'PM Hub - Daily Task',
                 'feature_history': 'PM Hub - Historical Feature Tracker',
                 'master_feature': 'PM Hub - Master Feature Catalog',
                 'bug_tracker': 'PM Hub - BUG Tracker Dashboard'
@@ -4439,6 +4694,7 @@
             document.getElementById('page-header-title').innerText = titles[tab] || getPageLabel(tab);
 
             if (tab === 'account_master') initializeAccountAccessManagement();
+            if (tab === 'daily_task') initDailyTaskView();
             if (tab === 'master_feature') initMasterFeatureView();
             if (tab === 'bug_tracker' && !bugTrackerState.initialized && !bugTrackerState.loading) {
                 loadBugTrackerFromFirebaseOnly();
@@ -6835,8 +7091,7 @@ ${error.message}`);
             "Approval Documents": ["Approval Documents"],
             "Warehouse Dashboard": ["Warehouse Dashboard"],
             "Ticketing Support": ["Ticketing Support"],
-            "RFID OPERATIONAL": ["Inbound Manual RFID Mobile", "Inbound RFID by PO", "Outbound Manual RFID Mobile", "Outbound RFID by DO", "Outbound RFID by PRTN", "Process Opname RFID", "Inbound RFID by SRTN", "Outbound RFID by STO"],
-            "Admin": ["Module Management", "Release Notes", "Menu Management", "Formula Management"],
+            "RFID OPERATIONAL": ["Inbound Manual RFID Mobile", "Inbound RFID by PO", "Outbound Manual RFID Mobile", "Outbound RFID by DO", "Outbound RFID by PRTN", "Process Opname RFID", "Inbound RFID by SRTN", "Outbound RFID by STO"]
         };
 
         function normalizeImpactedPages(value) {
@@ -8228,6 +8483,772 @@ ${error.message}`);
                 }
             };
             reader.readAsArrayBuffer(file);
+        }
+
+
+        // ================= DAILY TASK LOGIC =================
+        const DAILY_TASK_FIREBASE_ROOT = 'prieds_daily_tasks';
+        const DAILY_TASK_DEFAULT_MEMBERS = ['Hendra', 'Aye', 'Reyner'];
+        const dailyTaskState = {
+            entries: [],
+            initialized: false,
+            listenerAttached: false,
+            seeding: false,
+            openGroups: new Set()
+        };
+
+        function dailyTaskEscapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function dailyTaskToday() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function dailyTaskFormatDate(dateStr, short = false) {
+            if (!dateStr) return '-';
+            const d = new Date(`${dateStr}T00:00:00`);
+            if (Number.isNaN(d.getTime())) return dateStr;
+            return new Intl.DateTimeFormat('id-ID', short
+                ? { day:'2-digit', month:'short', year:'numeric' }
+                : { weekday:'short', day:'2-digit', month:'short', year:'numeric' }
+            ).format(d);
+        }
+
+        function dailyTaskInitials(name) {
+            return String(name || '?').trim().split(/\s+/).slice(0,2).map(x => x[0]?.toUpperCase() || '').join('') || '?';
+        }
+
+        function dailyTaskCleanLine(line) {
+            return String(line || '')
+                .replace(/^\s*[-•○▪◦]\s*/, '')
+                .replace(/^\s*\d+[.)]\s*/, '')
+                .trim();
+        }
+
+        function dailyTaskParseLines(text) {
+            return String(text || '').split(/\r?\n/).map(dailyTaskCleanLine).filter(Boolean);
+        }
+
+        function normalizeDailyTaskEntry(raw, fallbackId = '') {
+            if (!raw) return null;
+            const progressText = raw.progressText ?? raw.progress ?? '';
+            let taskItems = raw.taskItems;
+            if (!Array.isArray(taskItems)) {
+                if (taskItems && typeof taskItems === 'object') taskItems = Object.values(taskItems);
+                else taskItems = dailyTaskParseLines(raw.taskText || raw.tasks || '').map((text, i) => ({ id:`task_${i}_${Date.now()}`, text, done:false }));
+            }
+            taskItems = taskItems.filter(Boolean).map((item, i) => typeof item === 'string'
+                ? { id:`task_${i}_${Date.now()}`, text:item, done:false }
+                : {
+                    id: item.id || `task_${i}_${Date.now()}`,
+                    text: String(item.text || item.task || '').trim(),
+                    done: Boolean(item.done),
+                    carriedForwardTo: item.carriedForwardTo || ''
+                }
+            ).filter(item => item.text);
+
+            const entry = {
+                id: raw.id || fallbackId || `daily_${Date.now()}`,
+                date: raw.date || dailyTaskToday(),
+                user: String(raw.user || raw.member || '').trim(),
+                progressText: String(progressText || ''),
+                taskItems,
+                blocker: String(raw.blocker || ''),
+                status: raw.status || 'Not Started',
+                priority: raw.priority || 'Normal',
+                createdAt: raw.createdAt || '',
+                updatedAt: raw.updatedAt || '',
+                updatedBy: raw.updatedBy || ''
+            };
+            return entry.user ? entry : null;
+        }
+
+        function getDailyTaskSeedEntries() {
+            const createdAt = '2026-08-11T17:00:00+07:00';
+            return [
+                {
+                    id:'daily_20260811_hendra', date:'2026-08-11', user:'Hendra', status:'Not Started', priority:'Normal',
+                    progressText:'Inbound shipment FEFO\nSTE type doc no reference FIFO, type doc inbound shipement, type doc PRTN',
+                    taskItems:[{id:'hendra_1', text:'STE doc ref MTU & Assy FIFO & FEFO', done:false}], blocker:'', createdAt, updatedAt:createdAt, updatedBy:'migration-manual'
+                },
+                {
+                    id:'daily_20260811_aye', date:'2026-08-11', user:'Aye', status:'Not Started', priority:'Normal',
+                    progressText:'Outbound RFID operational\nSales benerin tujuan halaman dan update gambar',
+                    taskItems:[
+                        {id:'aye_1', text:'Pisahin artikel sales return nya jadi ada 4 (existing&generate barcode /normal & exchange)', done:false},
+                        {id:'aye_2', text:'Lanjtu artikel outbound', done:false}
+                    ], blocker:'', createdAt, updatedAt:createdAt, updatedBy:'migration-manual'
+                },
+                {
+                    id:'daily_20260811_reyner', date:'2026-08-11', user:'Reyner', status:'On Progress', priority:'Normal',
+                    progressText:'jelasin tahapan process accurate ke mas fu\nMTU producstion process, filter SKU nya masih case sensitive seharusnya ga perlu\nsolve misteri kenapa cuma 40 % padahal WO sudah done > disebabkan karna prieds belum trigger process tahapan prosess assembly nya di accurate, case sama seperti request user kemaren\ndiscuss MES sama mas richard\n  ○ bahas barier need picklist, dibuat harus ada barier nya ketika centang harus punya material\n  ○ track WIP sama waster juga, bentuk putaway setelah finish\n  ○ kalo ga di centang tapi ada WIP sama waste nya brrti dia sebagai logging saja, tidak menambah stock\nSAC inbound manual input sloc rfid > company config\ntest barier stock transfer with sloc barcode yang sama\n  ○ case user diabisa lolos menyebabkan stock minus\nbug inbound manual inputbarcode',
+                    taskItems:[{id:'reyner_1', text:'Lanjut checking internal', done:false}], blocker:'', createdAt, updatedAt:createdAt, updatedBy:'migration-manual'
+                }
+            ];
+        }
+
+        function dailyTaskEntriesToFirebaseObject(entries) {
+            const out = {};
+            entries.forEach(entry => { out[entry.id] = entry; });
+            return out;
+        }
+
+        async function seedDailyTaskHistoryIfEmpty() {
+            if (dailyTaskState.seeding) return;
+            dailyTaskState.seeding = true;
+            try {
+                const ref = db.ref(DAILY_TASK_FIREBASE_ROOT);
+                await ref.transaction(current => {
+                    if (current && Object.keys(current).length) return;
+                    return dailyTaskEntriesToFirebaseObject(getDailyTaskSeedEntries());
+                });
+            } catch (error) {
+                console.error('Daily Task seed error:', error);
+            } finally {
+                dailyTaskState.seeding = false;
+            }
+        }
+
+        function initDailyTaskView() {
+            const dateInput = document.getElementById('daily-task-date-filter');
+            if (dateInput && !dateInput.value) dateInput.value = dailyTaskToday();
+
+            if (!dailyTaskState.listenerAttached) {
+                dailyTaskState.listenerAttached = true;
+                const statusEl = document.getElementById('daily-task-live-status');
+                if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan Firebase...';
+
+                db.ref(DAILY_TASK_FIREBASE_ROOT).on('value', async snapshot => {
+                    if (!snapshot.exists()) {
+                        dailyTaskState.entries = getDailyTaskSeedEntries().map(entry => normalizeDailyTaskEntry(entry, entry.id)).filter(Boolean);
+                        dailyTaskState.initialized = true;
+                        populateDailyTaskMemberControls();
+                        renderDailyTaskPage();
+                        await seedDailyTaskHistoryIfEmpty();
+                        return;
+                    }
+                    const raw = snapshot.val() || {};
+                    dailyTaskState.entries = Object.entries(raw)
+                        .map(([id, value]) => normalizeDailyTaskEntry(value, id))
+                        .filter(Boolean)
+                        .sort((a,b) => (b.date || '').localeCompare(a.date || '') || (a.user || '').localeCompare(b.user || ''));
+                    dailyTaskState.initialized = true;
+                    populateDailyTaskMemberControls();
+                    renderDailyTaskPage();
+                    const status = document.getElementById('daily-task-live-status');
+                    if (status) status.innerHTML = '<i class="fa-solid fa-circle" style="font-size:7px; color:var(--success);"></i> Live sync Firebase aktif';
+                }, error => {
+                    console.error('Daily Task Firebase listener error:', error);
+                    if (!dailyTaskState.entries.length) dailyTaskState.entries = getDailyTaskSeedEntries().map(entry => normalizeDailyTaskEntry(entry, entry.id)).filter(Boolean);
+                    dailyTaskState.initialized = true;
+                    populateDailyTaskMemberControls();
+                    renderDailyTaskPage();
+                    const status = document.getElementById('daily-task-live-status');
+                    if (status) status.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color:var(--danger);"></i> Sync gagal: ${dailyTaskEscapeHtml(error.message)}`;
+                });
+            } else {
+                populateDailyTaskMemberControls();
+                renderDailyTaskPage();
+            }
+        }
+
+        function getDailyTaskMembers() {
+            const names = new Set(DAILY_TASK_DEFAULT_MEMBERS);
+            dailyTaskState.entries.forEach(entry => { if (entry.user) names.add(entry.user); });
+            return Array.from(names).sort((a,b) => a.localeCompare(b, 'id'));
+        }
+
+        function populateDailyTaskMemberControls() {
+            const members = getDailyTaskMembers();
+            const select = document.getElementById('daily-task-user-filter');
+            if (select) {
+                const current = select.value || 'all';
+                select.innerHTML = '<option value="all">Semua Anggota</option>' + members.map(name => `<option value="${dailyTaskEscapeHtml(name)}">${dailyTaskEscapeHtml(name)}</option>`).join('');
+                if ([...select.options].some(opt => opt.value === current)) select.value = current;
+            }
+            const list = document.getElementById('daily-task-member-list');
+            if (list) list.innerHTML = members.map(name => `<option value="${dailyTaskEscapeHtml(name)}"></option>`).join('');
+        }
+
+        function getDailyTaskFilters() {
+            return {
+                date: document.getElementById('daily-task-date-filter')?.value || dailyTaskToday(),
+                user: document.getElementById('daily-task-user-filter')?.value || 'all',
+                status: document.getElementById('daily-task-status-filter')?.value || 'all',
+                search: (document.getElementById('daily-task-search')?.value || '').trim().toLowerCase()
+            };
+        }
+
+        function applyDailyTaskFilters() {
+            renderDailyTaskPage();
+        }
+
+        function setDailyTaskToday() {
+            const input = document.getElementById('daily-task-date-filter');
+            if (input) input.value = dailyTaskToday();
+            renderDailyTaskPage();
+        }
+
+        function dailyTaskMatchesFilters(entry, filters, ignoreDate = false) {
+            if (!ignoreDate && filters.date && entry.date !== filters.date) return false;
+            if (filters.user !== 'all' && entry.user !== filters.user) return false;
+            if (filters.status !== 'all' && entry.status !== filters.status) return false;
+            if (filters.search) {
+                const haystack = [entry.user, entry.progressText, entry.blocker, entry.status, entry.priority, ...(entry.taskItems || []).map(i => i.text)].join(' ').toLowerCase();
+                if (!haystack.includes(filters.search)) return false;
+            }
+            return true;
+        }
+
+        function getDailyTaskCompletion(entry) {
+            const items = entry?.taskItems || [];
+            if (!items.length) return { done:0, total:0, pct:0 };
+            const done = items.filter(i => i.done).length;
+            return { done, total:items.length, pct:Math.round(done / items.length * 100) };
+        }
+
+        function getDailyTaskStatusClass(status) {
+            if (status === 'Done') return 'done';
+            if (status === 'On Progress') return 'progress';
+            if (status === 'Blocked') return 'blocked';
+            return 'pending';
+        }
+
+        function renderDailyTaskPage() {
+            if (!document.getElementById('view-daily_task')) return;
+            const filters = getDailyTaskFilters();
+            renderDailyTaskSummary(filters);
+            renderDailyTaskWhatsAppRecap(filters);
+            renderDailyTaskBoard(filters);
+            renderDailyTaskHistory(filters);
+        }
+
+        function dailyTaskWhatsAppDate(dateStr) {
+            if (!dateStr) return '-';
+            const d = new Date(`${dateStr}T00:00:00`);
+            if (Number.isNaN(d.getTime())) return dateStr;
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        function getDailyTaskEntriesForRecap(dateStr) {
+            const memberOrder = new Map(DAILY_TASK_DEFAULT_MEMBERS.map((name, index) => [name.toLowerCase(), index]));
+            return dailyTaskState.entries
+                .filter(entry => entry.date === dateStr)
+                .sort((a, b) => {
+                    const ai = memberOrder.has(a.user.toLowerCase()) ? memberOrder.get(a.user.toLowerCase()) : 999;
+                    const bi = memberOrder.has(b.user.toLowerCase()) ? memberOrder.get(b.user.toLowerCase()) : 999;
+                    return ai - bi || a.user.localeCompare(b.user, 'id');
+                });
+        }
+
+        function buildDailyTaskWhatsAppRecap(dateStr) {
+            const entries = getDailyTaskEntriesForRecap(dateStr);
+            const members = getDailyTaskMembers();
+            const inputNames = new Set(entries.map(entry => entry.user.toLowerCase()));
+            const missing = members.filter(name => !inputNames.has(name.toLowerCase()));
+            const dateLabel = dailyTaskWhatsAppDate(dateStr);
+
+            if (!entries.length) {
+                return `*Daily Task Report - ${dateLabel}*\n\nBelum ada Daily Task yang di-input untuk tanggal ini.`;
+            }
+
+            const lines = [`*Daily Task Report - ${dateLabel}*`, ''];
+            entries.forEach((entry, index) => {
+                const progress = dailyTaskParseLines(entry.progressText);
+                const tasks = entry.taskItems || [];
+                const completion = getDailyTaskCompletion(entry);
+
+                lines.push('=============================');
+                lines.push(`*${dateLabel} - ${entry.user}*`);
+                lines.push('');
+
+                lines.push('*Progress / Update:*');
+                if (progress.length) progress.forEach(item => lines.push(`- ${item}`));
+                else lines.push('- Belum ada update progress');
+                lines.push('');
+
+                lines.push('*Task / Next Action:*');
+                if (tasks.length) {
+                    tasks.forEach(item => lines.push(`${item.done ? '✅' : '⬜'} ${item.text}`));
+                } else {
+                    lines.push('- Belum ada task / next action');
+                }
+
+                if (entry.blocker) {
+                    lines.push('');
+                    lines.push('*Blocker / Note:*');
+                    dailyTaskParseLines(entry.blocker).forEach(item => lines.push(`- ${item}`));
+                }
+
+                lines.push('');
+                lines.push(`*Status:* ${entry.status} | *Completion:* ${completion.pct}%`);
+                if (index === entries.length - 1) lines.push('=============================');
+                lines.push('');
+            });
+
+            lines.push(`*Summary:* ${entries.length}/${members.length} anggota sudah input.`);
+            if (missing.length) lines.push(`*Belum input:* ${missing.join(', ')}`);
+            return lines.join('\n').trim();
+        }
+
+        function renderDailyTaskWhatsAppRecap(filters) {
+            const preview = document.getElementById('daily-task-wa-preview');
+            const meta = document.getElementById('daily-task-wa-meta');
+            if (!preview || !meta) return;
+
+            const entries = getDailyTaskEntriesForRecap(filters.date);
+            const members = getDailyTaskMembers();
+            const tasks = entries.flatMap(entry => entry.taskItems || []);
+            const done = tasks.filter(item => item.done).length;
+            const blocked = entries.filter(entry => entry.status === 'Blocked').length;
+
+            preview.value = buildDailyTaskWhatsAppRecap(filters.date);
+            meta.innerHTML = `
+                <span><i class="fa-solid fa-calendar-day"></i> ${dailyTaskEscapeHtml(dailyTaskWhatsAppDate(filters.date))}</span>
+                <span><i class="fa-solid fa-user-check"></i> ${entries.length}/${members.length} sudah input</span>
+                <span><i class="fa-solid fa-list-check"></i> ${done}/${tasks.length} task done</span>
+                <span><i class="fa-solid fa-triangle-exclamation"></i> ${blocked} blocked</span>
+            `;
+
+            const status = document.getElementById('daily-task-wa-copy-status');
+            if (status) status.textContent = entries.length
+                ? 'Preview sudah dibuat otomatis. Kamu boleh edit teks di atas sebelum menekan Copy Rekap WA.'
+                : 'Belum ada Daily Task pada tanggal ini.';
+        }
+
+        function refreshDailyTaskWhatsAppRecap() {
+            renderDailyTaskWhatsAppRecap(getDailyTaskFilters());
+            const status = document.getElementById('daily-task-wa-copy-status');
+            if (status) status.textContent = '✅ Preview diperbarui dari data Daily Task terbaru.';
+        }
+
+        async function copyDailyTaskWhatsAppRecap() {
+            const preview = document.getElementById('daily-task-wa-preview');
+            if (!preview) return;
+            const text = preview.value || buildDailyTaskWhatsAppRecap(getDailyTaskFilters().date);
+            if (!text.trim()) {
+                alert('Belum ada rekap yang bisa dicopy.');
+                return;
+            }
+
+            let copied = false;
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    copied = true;
+                }
+            } catch (error) {
+                console.warn('Clipboard API gagal, menggunakan fallback:', error);
+            }
+
+            if (!copied) {
+                const helper = document.createElement('textarea');
+                helper.value = text;
+                helper.style.position = 'fixed';
+                helper.style.opacity = '0';
+                helper.style.pointerEvents = 'none';
+                document.body.appendChild(helper);
+                helper.focus();
+                helper.select();
+                try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+                helper.remove();
+            }
+
+            const status = document.getElementById('daily-task-wa-copy-status');
+            const btn = document.getElementById('daily-task-wa-copy-btn');
+            if (copied) {
+                if (status) status.textContent = '✅ Rekap berhasil dicopy. Tinggal paste ke WhatsApp.';
+                if (btn) {
+                    const oldHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    setTimeout(() => { btn.innerHTML = oldHtml; }, 1800);
+                }
+            } else {
+                if (status) status.textContent = '⚠️ Browser tidak mengizinkan copy otomatis. Select teks preview lalu copy manual.';
+                preview.focus();
+                preview.select();
+            }
+        }
+
+        function renderDailyTaskSummary(filters) {
+            const container = document.getElementById('daily-task-summary');
+            if (!container) return;
+            const members = getDailyTaskMembers();
+            const dateEntries = dailyTaskState.entries.filter(e => e.date === filters.date);
+            const allActive = dailyTaskState.entries.flatMap(entry => (entry.taskItems || []).map(item => ({...item, entry})))
+                .filter(x => !x.done && !x.carriedForwardTo);
+            const dateTasks = dateEntries.flatMap(entry => entry.taskItems || []);
+            const dateDone = dateTasks.filter(i => i.done).length;
+            const blocked = dateEntries.filter(e => e.status === 'Blocked').length;
+            const overdue = allActive.filter(x => x.entry.date < filters.date).length;
+
+            const cards = [
+                ['fa-users', 'Team Member', members.length, `${dateEntries.length}/${members.length} sudah input pada ${dailyTaskFormatDate(filters.date, true)}`],
+                ['fa-clipboard-check', 'Entry Tanggal Ini', dateEntries.length, 'Satu entry per user per hari'],
+                ['fa-list-check', 'Task Completion', `${dateDone}/${dateTasks.length}`, dateTasks.length ? `${Math.round(dateDone/dateTasks.length*100)}% task selesai` : 'Belum ada task'],
+                ['fa-triangle-exclamation', 'Blocked', blocked, blocked ? 'Perlu follow-up dependency' : 'Tidak ada blocker tercatat'],
+                ['fa-clock', 'Open / Overdue', overdue, overdue ? 'Task lama belum selesai / belum di-carry' : 'Tidak ada overdue aktif']
+            ];
+            container.innerHTML = cards.map(([icon,label,val,help]) => `
+                <div class="daily-task-stat">
+                    <div class="daily-task-stat-label"><i class="fa-solid ${icon}"></i> ${dailyTaskEscapeHtml(label)}</div>
+                    <div class="daily-task-stat-value">${dailyTaskEscapeHtml(val)}</div>
+                    <div class="daily-task-stat-helper">${dailyTaskEscapeHtml(help)}</div>
+                </div>`).join('');
+        }
+
+        function renderDailyTaskBoard(filters) {
+            const container = document.getElementById('daily-task-board');
+            const caption = document.getElementById('daily-task-board-caption');
+            if (!container) return;
+            if (caption) caption.textContent = `Ringkasan ${dailyTaskFormatDate(filters.date)} — task dibagi per anggota team.`;
+
+            let members = getDailyTaskMembers();
+            if (filters.user !== 'all') members = members.filter(name => name === filters.user);
+            const cards = members.map(member => {
+                const entry = dailyTaskState.entries.find(e => e.date === filters.date && e.user === member);
+                if (!entry || !dailyTaskMatchesFilters(entry, filters)) {
+                    if (filters.status !== 'all' || filters.search) return '';
+                    return renderMissingDailyTaskCard(member, filters.date);
+                }
+                return renderDailyTaskUserCard(entry);
+            }).filter(Boolean);
+            container.innerHTML = cards.length ? cards.join('') : '<div class="daily-task-empty" style="grid-column:1/-1;"><i class="fa-solid fa-magnifying-glass" style="display:block;font-size:22px;margin-bottom:8px;"></i>Tidak ada entry yang cocok dengan filter.</div>';
+        }
+
+        function renderMissingDailyTaskCard(member, date) {
+            return `
+                <div class="daily-task-user-card missing">
+                    <div class="daily-task-user-head">
+                        <div class="daily-task-user-meta"><div class="daily-task-avatar">${dailyTaskEscapeHtml(dailyTaskInitials(member))}</div><div><div class="daily-task-user-name">${dailyTaskEscapeHtml(member)}</div><div class="daily-task-user-sub">${dailyTaskEscapeHtml(dailyTaskFormatDate(date, true))}</div></div></div>
+                        <span class="daily-task-chip pending">Belum Input</span>
+                    </div>
+                    <div class="daily-task-card-body" style="min-height:145px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                        <i class="fa-regular fa-clipboard" style="font-size:25px; color:#94a3b8; margin-bottom:9px;"></i>
+                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Belum ada daily update untuk tanggal ini.</div>
+                        <button class="btn btn-outline" style="padding:7px 10px; font-size:10px;" onclick="openDailyTaskModal(null,'${dailyTaskEscapeHtml(member)}','${dailyTaskEscapeHtml(date)}')"><i class="fa-solid fa-plus"></i> Input Task</button>
+                    </div>
+                </div>`;
+        }
+
+        function renderDailyTaskUserCard(entry) {
+            const completion = getDailyTaskCompletion(entry);
+            const statusClass = getDailyTaskStatusClass(entry.status);
+            const progressLines = dailyTaskParseLines(entry.progressText);
+            const progressHtml = progressLines.length ? progressLines.map(line => `<div class="daily-task-progress-line">${dailyTaskEscapeHtml(line)}</div>`).join('') : '<div style="font-size:10px;color:var(--text-muted);">Belum ada progress/update.</div>';
+            const tasksHtml = (entry.taskItems || []).length ? entry.taskItems.map(item => `
+                <label class="daily-task-item ${item.done ? 'done' : ''}">
+                    <input type="checkbox" ${item.done ? 'checked' : ''} onchange="toggleDailyTaskItem('${dailyTaskEscapeHtml(entry.id)}','${dailyTaskEscapeHtml(item.id)}',this.checked)">
+                    <span class="daily-task-item-text">${dailyTaskEscapeHtml(item.text)}</span>
+                    ${item.carriedForwardTo ? `<span class="daily-task-chip progress" title="Sudah dibawa ke entry berikutnya">Carry → ${dailyTaskEscapeHtml(item.carriedForwardTo)}</span>` : ''}
+                </label>`).join('') : '<div style="font-size:10px;color:var(--text-muted);">Belum ada next task.</div>';
+            const blocker = entry.blocker ? `<div class="daily-task-block"><div class="daily-task-block-title" style="color:var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> Blocker / Note</div><div style="font-size:10px; line-height:1.45; color:#991b1b; background:#fff7f7; border:1px solid #fecaca; border-radius:7px; padding:8px; white-space:pre-wrap;">${dailyTaskEscapeHtml(entry.blocker)}</div></div>` : '';
+            return `
+                <div class="daily-task-user-card">
+                    <div class="daily-task-user-head">
+                        <div class="daily-task-user-meta"><div class="daily-task-avatar">${dailyTaskEscapeHtml(dailyTaskInitials(entry.user))}</div><div><div class="daily-task-user-name">${dailyTaskEscapeHtml(entry.user)}</div><div class="daily-task-user-sub">${dailyTaskEscapeHtml(dailyTaskFormatDate(entry.date, true))} · Updated ${dailyTaskEscapeHtml(formatDailyTaskTimestamp(entry.updatedAt))}</div></div></div>
+                        <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;"><span class="daily-task-chip ${statusClass}">${dailyTaskEscapeHtml(entry.status)}</span>${entry.priority !== 'Normal' ? `<span class="daily-task-chip ${entry.priority === 'Urgent' ? 'blocked' : 'pending'}">${dailyTaskEscapeHtml(entry.priority)}</span>` : ''}</div>
+                    </div>
+                    <div class="daily-task-card-body">
+                        <div class="daily-task-block"><div class="daily-task-block-title"><i class="fa-solid fa-chart-line"></i> Progress / Update</div>${progressHtml}</div>
+                        <div class="daily-task-block"><div class="daily-task-block-title"><i class="fa-solid fa-list-check"></i> Task / Next Action</div>${tasksHtml}</div>
+                        ${blocker}
+                    </div>
+                    <div class="daily-task-card-footer">
+                        <div style="display:flex; align-items:center; gap:7px; min-width:120px; flex:1;"><div class="daily-task-mini-progress"><div style="width:${completion.pct}%"></div></div><span style="font-size:9px;font-weight:800;color:var(--text-muted);">${completion.pct}%</span></div>
+                        <div class="daily-task-footer-actions">
+                            <button class="btn btn-outline" style="padding:6px 8px; font-size:9px;" onclick="carryForwardDailyTasks('${dailyTaskEscapeHtml(entry.id)}')"><i class="fa-solid fa-forward"></i> Carry</button>
+                            <button class="btn btn-outline" style="padding:6px 8px; font-size:9px;" onclick="openDailyTaskModal('${dailyTaskEscapeHtml(entry.id)}')"><i class="fa-solid fa-pen"></i> Edit</button>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function formatDailyTaskTimestamp(value) {
+            if (!value) return '-';
+            const d = new Date(value);
+            if (Number.isNaN(d.getTime())) return value;
+            return new Intl.DateTimeFormat('id-ID', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }).format(d);
+        }
+
+        function renderDailyTaskHistory(filters) {
+            const container = document.getElementById('daily-task-history');
+            if (!container) return;
+            let entries = dailyTaskState.entries.filter(e => dailyTaskMatchesFilters(e, filters, true));
+            if (!entries.length) {
+                container.innerHTML = '<div class="daily-task-empty">Belum ada history yang cocok dengan filter.</div>';
+                return;
+            }
+            const grouped = {};
+            entries.forEach(entry => { (grouped[entry.user] ||= []).push(entry); });
+            const users = Object.keys(grouped).sort((a,b) => a.localeCompare(b,'id'));
+            container.innerHTML = users.map(user => {
+                const userEntries = grouped[user].sort((a,b) => b.date.localeCompare(a.date));
+                const tasks = userEntries.flatMap(e => e.taskItems || []);
+                const done = tasks.filter(i => i.done).length;
+                const completion = tasks.length ? Math.round(done/tasks.length*100) : 0;
+                const blocked = userEntries.filter(e => e.status === 'Blocked').length;
+                const latest = userEntries[0]?.date || '-';
+                const safeId = `daily-hist-${user.replace(/[^a-zA-Z0-9]/g,'_')}`;
+                const isOpen = dailyTaskState.openGroups.has(user);
+                return `
+                    <div class="daily-task-history-group ${isOpen ? 'open' : ''}" id="${safeId}">
+                        <div class="daily-task-history-head" onclick="toggleDailyTaskHistoryGroup('${dailyTaskEscapeHtml(user)}')">
+                            <div class="daily-task-user-meta"><div class="daily-task-avatar" style="width:32px;height:32px;">${dailyTaskEscapeHtml(dailyTaskInitials(user))}</div><div><div class="daily-task-user-name">${dailyTaskEscapeHtml(user)}</div><div class="daily-task-user-sub">${userEntries.length} daily entry</div></div></div>
+                            <div class="daily-task-history-metric"><strong>${completion}%</strong>Completion</div>
+                            <div class="daily-task-history-metric"><strong>${blocked}</strong>Blocked</div>
+                            <div class="daily-task-history-metric"><strong>${dailyTaskEscapeHtml(dailyTaskFormatDate(latest,true))}</strong>Latest</div>
+                            <i class="fa-solid fa-chevron-down daily-task-history-chevron"></i>
+                        </div>
+                        <div class="daily-task-history-body">${userEntries.map(renderDailyTaskHistoryEntry).join('')}</div>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderDailyTaskHistoryEntry(entry) {
+            const completion = getDailyTaskCompletion(entry);
+            const updates = dailyTaskParseLines(entry.progressText);
+            const taskList = (entry.taskItems || []).map(i => `<div style="font-size:10px; line-height:1.45; margin-bottom:4px; ${i.done ? 'text-decoration:line-through;color:var(--text-muted);' : 'color:var(--dark);'}"><i class="fa-solid ${i.done ? 'fa-circle-check' : 'fa-circle'}" style="font-size:7px; margin-right:5px;"></i>${dailyTaskEscapeHtml(i.text)}</div>`).join('') || '<span style="font-size:10px;color:var(--text-muted);">-</span>';
+            const updateList = updates.map(x => `<div style="font-size:10px; line-height:1.45; margin-bottom:4px; color:var(--text-main);">• ${dailyTaskEscapeHtml(x)}</div>`).join('') || '<span style="font-size:10px;color:var(--text-muted);">-</span>';
+            return `
+                <div class="daily-task-history-entry">
+                    <div class="daily-task-history-entry-head">
+                        <div><strong style="font-size:11px;color:var(--dark);">${dailyTaskEscapeHtml(dailyTaskFormatDate(entry.date))}</strong><span style="font-size:9px;color:var(--text-muted);margin-left:7px;">${completion.done}/${completion.total} task done</span></div>
+                        <div style="display:flex;gap:5px;align-items:center;"><span class="daily-task-chip ${getDailyTaskStatusClass(entry.status)}">${dailyTaskEscapeHtml(entry.status)}</span><button class="btn btn-outline" style="padding:4px 7px;font-size:9px;" onclick="event.stopPropagation();openDailyTaskModal('${dailyTaskEscapeHtml(entry.id)}')"><i class="fa-solid fa-pen"></i></button></div>
+                    </div>
+                    <div class="daily-task-history-entry-body">
+                        <div><div class="daily-task-block-title">Progress / Update</div>${updateList}</div>
+                        <div><div class="daily-task-block-title">Task / Next Action</div>${taskList}${entry.blocker ? `<div style="margin-top:8px;font-size:9px;color:#991b1b;background:#fff7f7;border:1px solid #fecaca;padding:6px;border-radius:6px;"><strong>Blocker:</strong> ${dailyTaskEscapeHtml(entry.blocker)}</div>` : ''}</div>
+                    </div>
+                </div>`;
+        }
+
+        function toggleDailyTaskHistoryGroup(user) {
+            if (dailyTaskState.openGroups.has(user)) dailyTaskState.openGroups.delete(user);
+            else dailyTaskState.openGroups.add(user);
+            renderDailyTaskHistory(getDailyTaskFilters());
+        }
+
+        function openDailyTaskModal(entryId = null, presetUser = '', presetDate = '') {
+            const modal = document.getElementById('daily-task-modal');
+            if (!modal) return;
+            const entry = entryId ? dailyTaskState.entries.find(e => e.id === entryId) : null;
+            document.getElementById('daily-task-edit-id').value = entry?.id || '';
+            document.getElementById('daily-task-form-date').value = entry?.date || presetDate || document.getElementById('daily-task-date-filter')?.value || dailyTaskToday();
+            document.getElementById('daily-task-form-user').value = entry?.user || presetUser || '';
+            document.getElementById('daily-task-form-status').value = entry?.status || 'Not Started';
+            document.getElementById('daily-task-form-priority').value = entry?.priority || 'Normal';
+            document.getElementById('daily-task-form-progress').value = entry?.progressText || '';
+            document.getElementById('daily-task-form-tasks').value = entry ? (entry.taskItems || []).map(i => `${i.done ? '[x]' : '[ ]'} ${i.text}`).join('\n') : '';
+            document.getElementById('daily-task-form-blocker').value = entry?.blocker || '';
+            document.getElementById('daily-task-modal-title').textContent = entry ? `Edit Daily Task — ${entry.user}` : 'Input Daily Task';
+            document.getElementById('daily-task-delete-btn').style.display = entry ? 'inline-flex' : 'none';
+            populateDailyTaskMemberControls();
+            modal.classList.add('active');
+        }
+
+        function closeDailyTaskModal() {
+            document.getElementById('daily-task-modal')?.classList.remove('active');
+        }
+
+        function parseDailyTaskFormItems(text, previousItems = []) {
+            const prevByText = new Map(previousItems.map(i => [i.text.trim().toLowerCase(), i]));
+            return String(text || '').split(/\r?\n/).map(line => {
+                const raw = line.trim();
+                if (!raw) return null;
+                const explicitDone = /^\[x\]\s*/i.test(raw);
+                const explicitOpen = /^\[\s\]\s*/.test(raw);
+                const cleaned = dailyTaskCleanLine(raw.replace(/^\[(x|\s)\]\s*/i, ''));
+                if (!cleaned) return null;
+                const prev = prevByText.get(cleaned.toLowerCase());
+                return {
+                    id: prev?.id || `task_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
+                    text: cleaned,
+                    done: explicitDone ? true : (explicitOpen ? false : Boolean(prev?.done)),
+                    carriedForwardTo: prev?.carriedForwardTo || ''
+                };
+            }).filter(Boolean);
+        }
+
+        async function saveDailyTaskEntry() {
+            const editId = document.getElementById('daily-task-edit-id').value;
+            const date = document.getElementById('daily-task-form-date').value;
+            const user = document.getElementById('daily-task-form-user').value.trim();
+            if (!date || !user) {
+                alert('❌ Tanggal dan Anggota Team wajib diisi.');
+                return;
+            }
+            const existingById = editId ? dailyTaskState.entries.find(e => e.id === editId) : null;
+            const existingSameDay = dailyTaskState.entries.find(e => e.date === date && e.user.toLowerCase() === user.toLowerCase() && e.id !== editId);
+            const base = existingById || existingSameDay;
+            const id = base?.id || `daily_${date.replace(/-/g,'')}_${user.toLowerCase().replace(/[^a-z0-9]+/g,'_')}_${Date.now()}`;
+            const previousItems = base?.taskItems || [];
+            const now = new Date().toISOString();
+            let status = document.getElementById('daily-task-form-status').value;
+            const taskItems = parseDailyTaskFormItems(document.getElementById('daily-task-form-tasks').value, previousItems);
+            if (taskItems.length && taskItems.every(i => i.done)) status = 'Done';
+            else if (status === 'Done' && taskItems.some(i => !i.done)) status = taskItems.some(i => i.done) ? 'On Progress' : 'Not Started';
+
+            const entry = {
+                id, date, user,
+                progressText: document.getElementById('daily-task-form-progress').value.trim(),
+                taskItems,
+                blocker: document.getElementById('daily-task-form-blocker').value.trim(),
+                status,
+                priority: document.getElementById('daily-task-form-priority').value,
+                createdAt: base?.createdAt || now,
+                updatedAt: now,
+                updatedBy: currentLoggedInAccount?.email || 'unknown'
+            };
+            try {
+                await db.ref(`${DAILY_TASK_FIREBASE_ROOT}/${id}`).set(entry);
+                if (editId && existingSameDay && editId !== existingSameDay.id) await db.ref(`${DAILY_TASK_FIREBASE_ROOT}/${editId}`).remove();
+                closeDailyTaskModal();
+            } catch (error) {
+                console.error('Save Daily Task error:', error);
+                alert(`❌ Gagal menyimpan Daily Task: ${error.message}`);
+            }
+        }
+
+        async function toggleDailyTaskItem(entryId, itemId, checked) {
+            const entry = dailyTaskState.entries.find(e => e.id === entryId);
+            if (!entry) return;
+            const items = (entry.taskItems || []).map(i => i.id === itemId ? {...i, done:checked} : i);
+            let status = entry.status;
+            if (items.length && items.every(i => i.done)) status = 'Done';
+            else if (status !== 'Blocked') status = items.some(i => i.done) ? 'On Progress' : 'Not Started';
+            try {
+                await db.ref(`${DAILY_TASK_FIREBASE_ROOT}/${entryId}`).update({ taskItems:items, status, updatedAt:new Date().toISOString(), updatedBy:currentLoggedInAccount?.email || 'unknown' });
+            } catch (error) {
+                console.error('Toggle task error:', error);
+                alert(`❌ Gagal update checklist: ${error.message}`);
+            }
+        }
+
+        function findPreviousDailyTaskEntry(user, beforeDate) {
+            return dailyTaskState.entries
+                .filter(e => e.user.toLowerCase() === user.toLowerCase() && e.date < beforeDate)
+                .sort((a,b) => b.date.localeCompare(a.date))[0] || null;
+        }
+
+        function appendPreviousUnfinishedToForm() {
+            const user = document.getElementById('daily-task-form-user').value.trim();
+            const date = document.getElementById('daily-task-form-date').value;
+            if (!user || !date) {
+                alert('Pilih anggota team dan tanggal terlebih dahulu.');
+                return;
+            }
+            const previous = findPreviousDailyTaskEntry(user, date);
+            if (!previous) {
+                alert('Tidak ada entry sebelumnya untuk anggota ini.');
+                return;
+            }
+            const unfinished = (previous.taskItems || []).filter(i => !i.done && !i.carriedForwardTo);
+            if (!unfinished.length) {
+                alert('Tidak ada unfinished task dari entry sebelumnya.');
+                return;
+            }
+            const textarea = document.getElementById('daily-task-form-tasks');
+            const existing = textarea.value.trim();
+            const append = unfinished.map(i => `[ ] ${i.text}`).join('\n');
+            textarea.value = existing ? `${existing}\n${append}` : append;
+        }
+
+        async function carryForwardDailyTasks(entryId) {
+            const source = dailyTaskState.entries.find(e => e.id === entryId);
+            if (!source) return;
+            const unfinished = (source.taskItems || []).filter(i => !i.done && !i.carriedForwardTo);
+            if (!unfinished.length) {
+                alert('✅ Tidak ada unfinished task yang perlu di-carry forward.');
+                return;
+            }
+            const today = dailyTaskToday();
+            const nextDayObj = new Date(`${source.date}T00:00:00`);
+            nextDayObj.setDate(nextDayObj.getDate() + 1);
+            const nextDay = `${nextDayObj.getFullYear()}-${String(nextDayObj.getMonth()+1).padStart(2,'0')}-${String(nextDayObj.getDate()).padStart(2,'0')}`;
+            const targetDate = source.date < today ? today : nextDay;
+            const existing = dailyTaskState.entries.find(e => e.user === source.user && e.date === targetDate);
+            const newItems = unfinished.map(i => ({ id:`task_${Date.now()}_${Math.random().toString(36).slice(2,8)}`, text:i.text, done:false, carriedForwardTo:'' }));
+            const now = new Date().toISOString();
+            const updates = {};
+            if (existing) {
+                const existingTexts = new Set((existing.taskItems || []).map(i => i.text.toLowerCase()));
+                const combined = [...(existing.taskItems || []), ...newItems.filter(i => !existingTexts.has(i.text.toLowerCase()))];
+                updates[`${DAILY_TASK_FIREBASE_ROOT}/${existing.id}/taskItems`] = combined;
+                updates[`${DAILY_TASK_FIREBASE_ROOT}/${existing.id}/updatedAt`] = now;
+                updates[`${DAILY_TASK_FIREBASE_ROOT}/${existing.id}/updatedBy`] = currentLoggedInAccount?.email || 'unknown';
+            } else {
+                const newId = `daily_${targetDate.replace(/-/g,'')}_${source.user.toLowerCase().replace(/[^a-z0-9]+/g,'_')}_${Date.now()}`;
+                updates[`${DAILY_TASK_FIREBASE_ROOT}/${newId}`] = {
+                    id:newId, date:targetDate, user:source.user, progressText:'', taskItems:newItems, blocker:'', status:'Not Started', priority:source.priority || 'Normal', createdAt:now, updatedAt:now, updatedBy:currentLoggedInAccount?.email || 'unknown'
+                };
+            }
+            const sourceItems = (source.taskItems || []).map(i => unfinished.some(u => u.id === i.id) ? {...i, carriedForwardTo:targetDate} : i);
+            updates[`${DAILY_TASK_FIREBASE_ROOT}/${source.id}/taskItems`] = sourceItems;
+            updates[`${DAILY_TASK_FIREBASE_ROOT}/${source.id}/updatedAt`] = now;
+            try {
+                await db.ref().update(updates);
+                alert(`✅ ${unfinished.length} unfinished task ${source.user} dibawa ke ${dailyTaskFormatDate(targetDate)}.`);
+            } catch (error) {
+                console.error('Carry forward error:', error);
+                alert(`❌ Gagal carry forward: ${error.message}`);
+            }
+        }
+
+        async function deleteDailyTaskFromModal() {
+            const id = document.getElementById('daily-task-edit-id').value;
+            if (!id) return;
+            const entry = dailyTaskState.entries.find(e => e.id === id);
+            if (!confirm(`Hapus Daily Task ${entry?.user || ''} tanggal ${entry?.date || ''}?`)) return;
+            try {
+                await db.ref(`${DAILY_TASK_FIREBASE_ROOT}/${id}`).remove();
+                closeDailyTaskModal();
+            } catch (error) {
+                alert(`❌ Gagal menghapus: ${error.message}`);
+            }
+        }
+
+        function exportDailyTaskExcel() {
+            if (!dailyTaskState.entries.length) {
+                alert('Belum ada Daily Task untuk di-export.');
+                return;
+            }
+            const filters = getDailyTaskFilters();
+            const rows = dailyTaskState.entries
+                .filter(e => dailyTaskMatchesFilters(e, filters, true))
+                .sort((a,b) => b.date.localeCompare(a.date))
+                .map((entry, index) => {
+                    const c = getDailyTaskCompletion(entry);
+                    return {
+                        No:index+1,
+                        Date:entry.date,
+                        User:entry.user,
+                        Status:entry.status,
+                        Priority:entry.priority,
+                        'Progress / Update':dailyTaskParseLines(entry.progressText).join(' | '),
+                        'Task / Next Action':(entry.taskItems || []).map(i => `${i.done ? '[DONE]' : '[OPEN]'} ${i.text}`).join(' | '),
+                        'Completion %':c.pct,
+                        Blocker:entry.blocker,
+                        'Updated At':entry.updatedAt,
+                        'Updated By':entry.updatedBy
+                    };
+                });
+            const ws = XLSX.utils.json_to_sheet(rows);
+            ws['!cols'] = [{wch:5},{wch:13},{wch:18},{wch:14},{wch:10},{wch:70},{wch:70},{wch:14},{wch:45},{wch:22},{wch:30}];
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Daily Task History');
+            XLSX.writeFile(wb, `Prieds_Daily_Task_${dailyTaskToday()}.xlsx`);
         }
 
         // ================= AUTOMATION DUE DATE =================
