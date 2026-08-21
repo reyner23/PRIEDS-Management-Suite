@@ -92,7 +92,8 @@
         .editor-panel { width: 400px; background: #ffffff; border-right: 1px solid var(--gray-border); padding: 24px; overflow-y: auto; flex-shrink: 0; }
         /* Roadmap filter panel can be minimized horizontally to give the table more space */
         .editor-panel { transition: width .22s ease, padding .22s ease; }
-        .roadmap-panel-toggle-wrap { display:flex; justify-content:flex-end; margin-bottom:10px; }
+        #editor-roadmap.active { display:flex; min-height:100%; flex-direction:column; }
+        .roadmap-panel-toggle-wrap { display:flex; justify-content:flex-end; margin-top:auto; padding-top:16px; }
         .roadmap-panel-toggle-btn {
             border:1px solid var(--gray-border); background:#fff; color:var(--text-main);
             border-radius:7px; min-height:30px; padding:5px 9px; cursor:pointer;
@@ -1068,12 +1069,6 @@
                     </div>
                 </div>
                 <div id="editor-roadmap" class="editor-section">
-                    <div class="roadmap-panel-toggle-wrap">
-                        <button type="button" class="roadmap-panel-toggle-btn" onclick="toggleRoadmapSidePanel(true)" title="Minimize panel filter ke samping">
-                            <i class="fa-solid fa-angles-left"></i>
-                            <span>Minimize Panel</span>
-                        </button>
-                    </div>
                     <div class="roadmap-panel-collapsed-actions">
                         <button type="button" class="roadmap-panel-rail-btn" onclick="toggleRoadmapSidePanel(false)" title="Buka panel filter">
                             <i class="fa-solid fa-angles-right"></i>
@@ -1093,7 +1088,7 @@
                                 Filter Roadmap
                                 <span id="roadmap-filter-active-count" style="display:none; min-width:20px; height:20px; padding:0 6px; border-radius:999px; align-items:center; justify-content:center; background:#dbeafe; color:#1d4ed8; font-size:10px; font-weight:800;">0</span>
                             </span>
-                            <span style="font-size:9px; color:var(--text-muted); font-weight:700;">MINIMIZE PANEL →</span>
+
                         </div>
 
                         <div id="roadmap-filter-body" style="display:block; padding:0 14px 14px; border-top:1px solid var(--gray-border);">
@@ -1137,6 +1132,12 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="roadmap-panel-toggle-wrap">
+                        <button type="button" class="roadmap-panel-toggle-btn" onclick="toggleRoadmapSidePanel(true)" title="Minimize panel filter ke samping">
+                            <i class="fa-solid fa-angles-left"></i>
+                            <span>Minimize Panel</span>
+                        </button>
                     </div>
                 </div>
 
@@ -7913,17 +7914,6 @@ ${error.message}`);
             let collapsed = false;
             try { collapsed = sessionStorage.getItem('roadmapSidePanelCollapsed') === '1'; } catch (e) {}
             applyRoadmapSidePanelState(collapsed);
-        }
-
-        // Collapse / expand seluruh filter Roadmap agar sidebar tetap ringkas
-        function toggleRoadmapFilters(forceOpen) {
-            const body = document.getElementById('roadmap-filter-body');
-            const chevron = document.getElementById('roadmap-filter-chevron');
-            if (!body) return;
-
-            const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : body.style.display === 'none';
-            body.style.display = shouldOpen ? 'block' : 'none';
-            if (chevron) chevron.style.transform = shouldOpen ? 'rotate(180deg)' : 'rotate(0deg)';
         }
 
         function updateRoadmapFilterSummary() {
