@@ -2292,10 +2292,15 @@
                     <!-- MODULE + PAGE DITAMBAHKAN SEBAGAI PASANGAN AGAR BISA LINTAS MODULE -->
                     <div class="impacted-targets-field">
                         <div class="impacted-targets-header">
-                            <div class="impacted-target-label">Impacted Module</div>
+                            <div class="impacted-target-label" style="display:flex; align-items:center; gap:7px;">
+                                <span>Impacted Module</span>
+                                <button id="btn-manage-impact-catalog" type="button" class="impacted-page-add-btn" onclick="openRoadmapImpactCatalogModal()" title="Tambah module atau page baru ke pilihan Roadmap" aria-label="Kelola pilihan impacted module dan page" style="width:auto; padding:0 7px; gap:5px;">
+                                    <i class="fa-solid fa-pen-to-square"></i><span style="font-size:9px; font-weight:800;">Manage</span>
+                                </button>
+                            </div>
                             <div class="impacted-target-label impacted-target-page-label">
                                 <span>Impacted Pages</span>
-                                <button id="btn-add-impacted-page" type="button" class="impacted-page-add-btn" onclick="addImpactedTargetField()" title="Tambah impacted module dan page" aria-label="Tambah impacted module dan page">
+                                <button id="btn-add-impacted-page" type="button" class="impacted-page-add-btn" onclick="addImpactedTargetField()" title="Tambah baris impacted module & page" aria-label="Tambah baris impacted module dan page">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
@@ -2435,6 +2440,69 @@
                     </button>
                     <button type="button" id="feature-modal-footer-close" class="btn btn-outline" onclick="closeAddFeatureModal()">Cancel</button>
                     <button type="button" class="btn btn-primary" onclick="saveFeature()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MANAGE ROADMAP IMPACT MODULE & PAGE -->
+    <div id="impact-catalog-modal" class="modal-overlay" style="z-index:1100;">
+        <div class="modal-content" style="width:680px; max-width:calc(100vw - 32px);">
+            <div class="modal-header">
+                <div>
+                    <h3 style="font-size:16px; font-weight:800; color:var(--dark);">Manage Impacted Module & Pages</h3>
+                    <p style="font-size:10px; color:var(--text-muted); margin-top:4px;">Tambahkan module atau page baru agar langsung tersedia pada dropdown Feature Roadmap.</p>
+                </div>
+                <button type="button" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-muted); padding:5px;" onclick="closeRoadmapImpactCatalogModal()" title="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:20px;">
+                <div style="padding:11px 12px; border:1px solid #bfdbfe; background:#eff6ff; color:#1e40af; border-radius:8px; font-size:10px; line-height:1.5; margin-bottom:16px;">
+                    <i class="fa-solid fa-circle-info" style="margin-right:5px;"></i>
+                    Data yang ditambahkan disimpan ke Firebase dan akan tersedia untuk user lain yang menggunakan dashboard ini.
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div style="border:1px solid var(--gray-border); border-radius:10px; padding:14px; background:#fff;">
+                        <div style="font-size:11px; font-weight:800; color:var(--dark); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> Add New Module
+                        </div>
+                        <label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:5px;">Module Name</label>
+                        <input id="impact-new-module-name" type="text" placeholder="Contoh: Production Planning" style="width:100%; padding:9px 10px; border:1px solid var(--gray-border); border-radius:7px; font-size:12px; margin-bottom:10px;" onkeydown="if(event.key==='Enter'){event.preventDefault(); addRoadmapImpactModule();}">
+                        <button type="button" class="btn btn-primary" style="width:100%; padding:8px 10px; font-size:11px;" onclick="addRoadmapImpactModule()">
+                            <i class="fa-solid fa-plus"></i> Add Module
+                        </button>
+                    </div>
+
+                    <div style="border:1px solid var(--gray-border); border-radius:10px; padding:14px; background:#fff;">
+                        <div style="font-size:11px; font-weight:800; color:var(--dark); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-file-circle-plus" style="color:var(--primary);"></i> Add New Page
+                        </div>
+                        <label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:5px;">Module</label>
+                        <select id="impact-catalog-module-select" style="width:100%; padding:9px 10px; border:1px solid var(--gray-border); border-radius:7px; font-size:12px; margin-bottom:9px;" onchange="renderRoadmapImpactCatalogPreview()">
+                            <option value="-">-- Pilih Modul --</option>
+                        </select>
+                        <label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:5px;">Page Name</label>
+                        <input id="impact-new-page-name" type="text" placeholder="Contoh: Production Plan" style="width:100%; padding:9px 10px; border:1px solid var(--gray-border); border-radius:7px; font-size:12px; margin-bottom:10px;" onkeydown="if(event.key==='Enter'){event.preventDefault(); addRoadmapImpactPage();}">
+                        <button type="button" class="btn btn-primary" style="width:100%; padding:8px 10px; font-size:11px;" onclick="addRoadmapImpactPage()">
+                            <i class="fa-solid fa-plus"></i> Add Page
+                        </button>
+                    </div>
+                </div>
+
+                <div style="margin-top:14px; border:1px solid var(--gray-border); border-radius:10px; padding:14px; background:#f8fafc;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:9px;">
+                        <div style="font-size:11px; font-weight:800; color:var(--dark);">Pages in Selected Module</div>
+                        <div id="impact-catalog-count" style="font-size:9px; font-weight:800; color:var(--text-muted);"></div>
+                    </div>
+                    <div id="impact-catalog-pages-preview" style="display:flex; flex-wrap:wrap; gap:6px; max-height:140px; overflow:auto;">
+                        <span style="font-size:10px; color:var(--text-muted);">Pilih module untuk melihat daftar page.</span>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+                    <button type="button" class="btn btn-outline" onclick="closeRoadmapImpactCatalogModal()">Close</button>
                 </div>
             </div>
         </div>
@@ -3151,7 +3219,7 @@
                         const data = snapshot.val();
                         Object.assign(appState, data);
                         
-                        const arrayKeys = ['lastLoginData', 'lastLoginReports', 'retention', 'surveyLogs', 'npsReports', 'masterCompany', 'accounts', 'roles', 'roadmapFeatures'];
+                        const arrayKeys = ['lastLoginData', 'lastLoginReports', 'retention', 'surveyLogs', 'npsReports', 'masterCompany', 'accounts', 'roles', 'roadmapFeatures', 'roadmapImpactCatalog'];
                         arrayKeys.forEach(key => {
                             if (!appState[key]) {
                                 appState[key] = [];
@@ -3164,6 +3232,7 @@
                         });
 
                         migrateAccessControlState();
+                        syncRoadmapImpactCatalog();
 
                         // Migrasi Feature Roadmap lama: seluruh data tanpa category otomatis menjadi Roadmap.
                         if (migrateRoadmapFeatureCategories()) {
@@ -7246,7 +7315,7 @@ ${error.message}`);
         migrateRoadmapFeatureCategories();
 
         // ================= MAPPING DATA MODULE KE PAGES =================
-        const modulePagesMap = {
+        const DEFAULT_MODULE_PAGES_MAP = {
             "Purchasing": ["Purchase Request Form", "Purchase Request Fulfillment", "Purchase Invoice Register", "Direct Purchase", "Purchase Return", "Stock Suggestions", "Purchase Request List", "Purchase Report", "Purchase Return Report", "Purchase Invoice Report"],
             "Inbound": ["Inbound", "QC Inbound", "Barcode Generator", "Inbound Report", "QC Report", "Putaway Report", "Putaway App", "Stock Entry With Putaway", "Inbound Shipment", "Inbound Shipment Report", "Inbound Manual"],
             "Sales": ["Sales Order", "Sales Return", "Point Of Sales", "SO Report", "Sales Report", "Sales Return Report", "POS Report"],
@@ -7262,6 +7331,203 @@ ${error.message}`);
             "Ticketing Support": ["Ticketing Support"],
             "RFID OPERATIONAL": ["Inbound Manual RFID Mobile", "Inbound RFID by PO", "Outbound Manual RFID Mobile", "Outbound RFID by DO", "Outbound RFID by PRTN", "Process Opname RFID", "Inbound RFID by SRTN", "Outbound RFID by STO"]
         };
+
+        const modulePagesMap = {};
+
+        function normalizeRoadmapImpactCatalog(value) {
+            const raw = Array.isArray(value)
+                ? value
+                : (value && typeof value === 'object' ? Object.values(value) : []);
+
+            const result = [];
+            const seenModules = new Set();
+            raw.forEach(item => {
+                const moduleName = String(item?.module ?? '').trim();
+                if (!moduleName) return;
+                const moduleKey = moduleName.toLowerCase();
+                if (seenModules.has(moduleKey)) {
+                    const existing = result.find(entry => entry.module.toLowerCase() === moduleKey);
+                    normalizeImpactedPages(item?.pages || []).forEach(page => {
+                        if (!existing.pages.some(saved => saved.toLowerCase() === page.toLowerCase())) existing.pages.push(page);
+                    });
+                    return;
+                }
+                seenModules.add(moduleKey);
+                result.push({ module: moduleName, pages: normalizeImpactedPages(item?.pages || []) });
+            });
+            return result;
+        }
+
+        function syncRoadmapImpactCatalog() {
+            Object.keys(modulePagesMap).forEach(key => delete modulePagesMap[key]);
+            Object.entries(DEFAULT_MODULE_PAGES_MAP).forEach(([moduleName, pages]) => {
+                modulePagesMap[moduleName] = [...pages];
+            });
+
+            appState.roadmapImpactCatalog = normalizeRoadmapImpactCatalog(appState.roadmapImpactCatalog);
+            appState.roadmapImpactCatalog.forEach(entry => {
+                const existingName = Object.keys(modulePagesMap).find(name => name.toLowerCase() === entry.module.toLowerCase());
+                const canonicalName = existingName || entry.module;
+                if (!modulePagesMap[canonicalName]) modulePagesMap[canonicalName] = [];
+                entry.pages.forEach(page => {
+                    if (!modulePagesMap[canonicalName].some(existingPage => existingPage.toLowerCase() === page.toLowerCase())) {
+                        modulePagesMap[canonicalName].push(page);
+                    }
+                });
+            });
+        }
+
+        function impactCatalogEscapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getRoadmapImpactCatalogEntry(moduleName, createIfMissing = false) {
+            appState.roadmapImpactCatalog = normalizeRoadmapImpactCatalog(appState.roadmapImpactCatalog);
+            let entry = appState.roadmapImpactCatalog.find(item => item.module.toLowerCase() === String(moduleName || '').trim().toLowerCase());
+            if (!entry && createIfMissing) {
+                entry = { module: String(moduleName || '').trim(), pages: [] };
+                if (entry.module) appState.roadmapImpactCatalog.push(entry);
+            }
+            return entry || null;
+        }
+
+        function refreshAllImpactedTargetOptions() {
+            document.querySelectorAll('#feat-impact-targets-container .impacted-target-row').forEach(row => {
+                const moduleSelect = row.querySelector('.feat-impact-module-select');
+                const pageSelect = row.querySelector('.feat-impact-page-select');
+                if (!moduleSelect || !pageSelect) return;
+
+                const selectedModule = moduleSelect.value || '-';
+                const selectedPage = pageSelect.value || '-';
+                moduleSelect.innerHTML = getImpactedModuleOptions(selectedModule);
+                moduleSelect.value = Object.prototype.hasOwnProperty.call(modulePagesMap, selectedModule) ? selectedModule : '-';
+                updateImpactedTargetPage(moduleSelect, selectedPage);
+            });
+            refreshImpactedTargetRowIds();
+        }
+
+        function refreshRoadmapImpactCatalogModuleSelect(preferredModule = '') {
+            const select = document.getElementById('impact-catalog-module-select');
+            if (!select) return;
+            const current = preferredModule || select.value || '-';
+            select.innerHTML = getImpactedModuleOptions(current);
+            if (Object.prototype.hasOwnProperty.call(modulePagesMap, current)) select.value = current;
+            else select.value = '-';
+        }
+
+        function renderRoadmapImpactCatalogPreview() {
+            const select = document.getElementById('impact-catalog-module-select');
+            const preview = document.getElementById('impact-catalog-pages-preview');
+            const count = document.getElementById('impact-catalog-count');
+            if (!select || !preview || !count) return;
+
+            const moduleName = select.value || '-';
+            if (moduleName === '-' || !modulePagesMap[moduleName]) {
+                count.textContent = '';
+                preview.innerHTML = '<span style="font-size:10px; color:var(--text-muted);">Pilih module untuk melihat daftar page.</span>';
+                return;
+            }
+
+            const pages = modulePagesMap[moduleName] || [];
+            count.textContent = `${pages.length} page`;
+            preview.innerHTML = pages.length
+                ? pages.map(page => `<span style="display:inline-flex; align-items:center; padding:4px 7px; border-radius:999px; background:#fff; border:1px solid var(--gray-border); color:var(--text-main); font-size:9px; font-weight:700;">${impactCatalogEscapeHtml(page)}</span>`).join('')
+                : '<span style="font-size:10px; color:var(--text-muted);">Module belum memiliki page. Tambahkan page menggunakan form di atas.</span>';
+        }
+
+        function openRoadmapImpactCatalogModal() {
+            syncRoadmapImpactCatalog();
+            refreshRoadmapImpactCatalogModuleSelect();
+            renderRoadmapImpactCatalogPreview();
+            const moduleInput = document.getElementById('impact-new-module-name');
+            const pageInput = document.getElementById('impact-new-page-name');
+            if (moduleInput) moduleInput.value = '';
+            if (pageInput) pageInput.value = '';
+            document.getElementById('impact-catalog-modal')?.classList.add('active');
+        }
+
+        function closeRoadmapImpactCatalogModal() {
+            document.getElementById('impact-catalog-modal')?.classList.remove('active');
+        }
+
+        function addRoadmapImpactModule() {
+            const input = document.getElementById('impact-new-module-name');
+            const moduleName = String(input?.value || '').trim();
+            if (!moduleName) {
+                alert('Module name wajib diisi.');
+                input?.focus();
+                return;
+            }
+
+            const existingName = Object.keys(modulePagesMap).find(name => name.toLowerCase() === moduleName.toLowerCase());
+            if (existingName) {
+                alert(`Module "${existingName}" sudah tersedia.`);
+                refreshRoadmapImpactCatalogModuleSelect(existingName);
+                renderRoadmapImpactCatalogPreview();
+                return;
+            }
+
+            getRoadmapImpactCatalogEntry(moduleName, true);
+            syncRoadmapImpactCatalog();
+            saveDataToLocal();
+            refreshAllImpactedTargetOptions();
+            refreshRoadmapImpactCatalogModuleSelect(moduleName);
+            renderRoadmapImpactCatalogPreview();
+            if (input) input.value = '';
+            document.getElementById('impact-new-page-name')?.focus();
+        }
+
+        function addRoadmapImpactPage() {
+            const moduleSelect = document.getElementById('impact-catalog-module-select');
+            const pageInput = document.getElementById('impact-new-page-name');
+            const moduleName = moduleSelect?.value || '-';
+            const pageName = String(pageInput?.value || '').trim();
+
+            if (moduleName === '-' || !modulePagesMap[moduleName]) {
+                alert('Pilih module terlebih dahulu.');
+                moduleSelect?.focus();
+                return;
+            }
+            if (!pageName) {
+                alert('Page name wajib diisi.');
+                pageInput?.focus();
+                return;
+            }
+            if ((modulePagesMap[moduleName] || []).some(page => page.toLowerCase() === pageName.toLowerCase())) {
+                alert(`Page "${pageName}" sudah tersedia di module "${moduleName}".`);
+                return;
+            }
+
+            const entry = getRoadmapImpactCatalogEntry(moduleName, true);
+            if (!entry.pages.some(page => page.toLowerCase() === pageName.toLowerCase())) entry.pages.push(pageName);
+            syncRoadmapImpactCatalog();
+            saveDataToLocal();
+            refreshAllImpactedTargetOptions();
+            refreshRoadmapImpactCatalogModuleSelect(moduleName);
+            renderRoadmapImpactCatalogPreview();
+
+            // Jika ada row Feature yang sedang memilih module ini tetapi belum memilih page,
+            // langsung pilih page baru agar proses input lebih cepat.
+            document.querySelectorAll('#feat-impact-targets-container .impacted-target-row').forEach(row => {
+                const rowModule = row.querySelector('.feat-impact-module-select');
+                const rowPage = row.querySelector('.feat-impact-page-select');
+                if (rowModule?.value === moduleName && (!rowPage?.value || rowPage.value === '-')) {
+                    updateImpactedTargetPage(rowModule, pageName);
+                }
+            });
+
+            if (pageInput) {
+                pageInput.value = '';
+                pageInput.focus();
+            }
+        }
+
+        syncRoadmapImpactCatalog();
 
         function normalizeImpactedPages(value) {
             const rawValues = Array.isArray(value)
@@ -7510,6 +7776,8 @@ ${error.message}`);
 
             const addPageBtn = document.getElementById('btn-add-impacted-page');
             if (addPageBtn) addPageBtn.style.display = 'inline-flex';
+            const manageImpactCatalogBtn = document.getElementById('btn-manage-impact-catalog');
+            if (manageImpactCatalogBtn) manageImpactCatalogBtn.style.display = 'inline-flex';
             modal.querySelectorAll('.impacted-target-remove-btn').forEach(button => button.style.display = 'inline-flex');
 
             // Tampilkan kembali tombol Mark All Done
@@ -7551,6 +7819,8 @@ ${error.message}`);
 
             const addPageBtn = document.getElementById('btn-add-impacted-page');
             if (addPageBtn) addPageBtn.style.display = 'none';
+            const manageImpactCatalogBtn = document.getElementById('btn-manage-impact-catalog');
+            if (manageImpactCatalogBtn) manageImpactCatalogBtn.style.display = 'none';
             modal.querySelectorAll('.impacted-target-remove-btn').forEach(button => button.style.display = 'none');
 
             // Sembunyikan tombol Mark All Done saat mode Read-Only
