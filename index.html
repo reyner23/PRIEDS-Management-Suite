@@ -1059,6 +1059,24 @@
                             <option value="Roadmap">Roadmap</option>
                             <option value="User Request">User Request</option>
                         </select>
+
+                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Feature ID</label>
+                        <input type="text" id="roadmap-filter-feature-id" placeholder="Contoh: FT-00083" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" oninput="filterRoadmap()">
+
+                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Priority</label>
+                        <select id="roadmap-filter-priority" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
+                            <option value="all">Semua Priority</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+
+                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Status</label>
+                        <select id="roadmap-filter-status" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:0;" onchange="filterRoadmap()">
+                            <option value="all">Semua Status</option>
+                            <option value="Planned">Planned</option>
+                            <option value="In Progress">In Progress</option>
+                        </select>
                     </div>
                 </div>
 
@@ -7818,14 +7836,20 @@ ${error.message}`);
             const search = (document.getElementById('roadmap-search')?.value || '').toLowerCase();
             const qtr = document.getElementById('roadmap-filter-quarter')?.value || 'all';
             const categoryFilter = document.getElementById('roadmap-filter-category')?.value || 'all';
+            const featureIdFilter = (document.getElementById('roadmap-filter-feature-id')?.value || '').trim().toLowerCase();
+            const priorityFilter = document.getElementById('roadmap-filter-priority')?.value || 'all';
+            const statusFilter = document.getElementById('roadmap-filter-status')?.value || 'all';
 
             // Filter data berdasarkan inputan user dan JANGAN tampilkan yang sudah 'Done'
             let data = appState.roadmapFeatures.filter(f => {
                 const mSearch = String(f.name || '').toLowerCase().includes(search);
                 const mQtr = qtr === 'all' || f.quarter === qtr;
                 const mCategory = categoryFilter === 'all' || normalizeFeatureCategory(f.category) === categoryFilter;
-                const mNotDone = f.overallStatus !== 'Done'; // <--- TAMBAHAN FILTER
-                return mSearch && mQtr && mCategory && mNotDone;
+                const mFeatureId = !featureIdFilter || String(f.featureId || '').toLowerCase().includes(featureIdFilter);
+                const mPriority = priorityFilter === 'all' || f.priority === priorityFilter;
+                const mStatus = statusFilter === 'all' || f.overallStatus === statusFilter;
+                const mNotDone = f.overallStatus !== 'Done';
+                return mSearch && mQtr && mCategory && mFeatureId && mPriority && mStatus && mNotDone;
             });
 
             // Kalkulasi Data Pipeline (Berapa banyak yang sudah 'Done' di tiap fase)
