@@ -90,6 +90,39 @@
         
         /* --- EDITOR PANEL --- */
         .editor-panel { width: 400px; background: #ffffff; border-right: 1px solid var(--gray-border); padding: 24px; overflow-y: auto; flex-shrink: 0; }
+        /* Roadmap filter panel can be minimized horizontally to give the table more space */
+        .editor-panel { transition: width .22s ease, padding .22s ease; }
+        .roadmap-panel-toggle-wrap { display:flex; justify-content:flex-end; margin-bottom:10px; }
+        .roadmap-panel-toggle-btn {
+            border:1px solid var(--gray-border); background:#fff; color:var(--text-main);
+            border-radius:7px; min-height:30px; padding:5px 9px; cursor:pointer;
+            display:inline-flex; align-items:center; justify-content:center; gap:7px;
+            font-size:10px; font-weight:800; font-family:'Inter',sans-serif;
+            transition:.18s ease;
+        }
+        .roadmap-panel-toggle-btn:hover { background:#eff6ff; border-color:#bfdbfe; color:var(--primary); }
+        .roadmap-panel-toggle-btn i { font-size:10px; }
+        .roadmap-panel-collapsed-actions { display:none; flex-direction:column; gap:8px; align-items:center; }
+        .editor-panel.roadmap-collapsed {
+            width:56px !important;
+            min-width:56px;
+            padding:18px 8px !important;
+            overflow-y:hidden;
+        }
+        .editor-panel.roadmap-collapsed #editor-roadmap > .roadmap-panel-toggle-wrap,
+        .editor-panel.roadmap-collapsed #editor-roadmap > .section-title,
+        .editor-panel.roadmap-collapsed #editor-roadmap > #roadmap-filter-card { display:none !important; }
+        .editor-panel.roadmap-collapsed #editor-roadmap > .roadmap-panel-collapsed-actions { display:flex; }
+        .roadmap-panel-rail-btn {
+            width:36px; height:36px; padding:0; border-radius:8px;
+            border:1px solid var(--gray-border); background:#fff; color:var(--text-main);
+            cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+            transition:.18s ease;
+        }
+        .roadmap-panel-rail-btn:hover { background:#eff6ff; border-color:#bfdbfe; color:var(--primary); }
+        .roadmap-panel-rail-btn.primary { background:var(--primary); border-color:var(--primary); color:#fff; }
+        .roadmap-panel-rail-btn.primary:hover { background:var(--primary-hover); color:#fff; }
+
         .section-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .editor-section { display: none; }
         .editor-section.active { display: block; }
@@ -1035,48 +1068,75 @@
                     </div>
                 </div>
                 <div id="editor-roadmap" class="editor-section">
+                    <div class="roadmap-panel-toggle-wrap">
+                        <button type="button" class="roadmap-panel-toggle-btn" onclick="toggleRoadmapSidePanel(true)" title="Minimize panel filter ke samping">
+                            <i class="fa-solid fa-angles-left"></i>
+                            <span>Minimize Panel</span>
+                        </button>
+                    </div>
+                    <div class="roadmap-panel-collapsed-actions">
+                        <button type="button" class="roadmap-panel-rail-btn" onclick="toggleRoadmapSidePanel(false)" title="Buka panel filter">
+                            <i class="fa-solid fa-angles-right"></i>
+                        </button>
+                        <button type="button" class="roadmap-panel-rail-btn primary" onclick="openAddFeatureModal()" title="Add Feature">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
                     <div class="section-title">
                         <span>Manajemen Roadmap</span>
                         <button class="btn btn-primary" style="padding:4px 8px; font-size:11px;" onclick="openAddFeatureModal()">+ Add Feature</button>
                     </div>
-                    <div style="padding:15px; background:var(--gray-light); border:1px solid var(--gray-border); border-radius:8px; font-size:12px;">
-                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Cari Fitur</label>
-                        <input type="text" id="roadmap-search" placeholder="Ketik nama fitur..." style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" oninput="filterRoadmap()">
-                        
-                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Quarter</label>
-                        <select id="roadmap-filter-quarter" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
-                            <option value="all">Semua Quarter</option>
-                            <option value="Q1 2026">Q1 2026</option>
-                            <option value="Q2 2026">Q2 2026</option>
-                            <option value="Q3 2026">Q3 2026</option>
-                            <option value="Q4 2026">Q4 2026</option>
-                            <option value="Q1 2027">Q1 2027</option>
-                        </select>
+                    <div id="roadmap-filter-card" style="background:var(--gray-light); border:1px solid var(--gray-border); border-radius:8px; font-size:12px; overflow:hidden;">
+                        <div style="width:100%; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; font-family:'Inter',sans-serif; color:var(--dark);">
+                            <span style="display:flex; align-items:center; gap:8px; font-size:12px; font-weight:800;">
+                                <i class="fa-solid fa-filter" style="color:var(--primary);"></i>
+                                Filter Roadmap
+                                <span id="roadmap-filter-active-count" style="display:none; min-width:20px; height:20px; padding:0 6px; border-radius:999px; align-items:center; justify-content:center; background:#dbeafe; color:#1d4ed8; font-size:10px; font-weight:800;">0</span>
+                            </span>
+                            <span style="font-size:9px; color:var(--text-muted); font-weight:700;">MINIMIZE PANEL →</span>
+                        </div>
 
-                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Category</label>
-                        <select id="roadmap-filter-category" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
-                            <option value="all">Semua Category</option>
-                            <option value="Roadmap">Roadmap</option>
-                            <option value="User Request">User Request</option>
-                        </select>
+                        <div id="roadmap-filter-body" style="display:block; padding:0 14px 14px; border-top:1px solid var(--gray-border);">
+                            <div style="padding-top:12px;">
+                                <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Cari Fitur</label>
+                                <input type="text" id="roadmap-search" placeholder="Ketik nama fitur..." style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" oninput="filterRoadmap()">
+                                
+                                <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Quarter</label>
+                                <select id="roadmap-filter-quarter" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
+                                    <option value="all">Semua Quarter</option>
+                                    <option value="Q1 2026">Q1 2026</option>
+                                    <option value="Q2 2026">Q2 2026</option>
+                                    <option value="Q3 2026">Q3 2026</option>
+                                    <option value="Q4 2026">Q4 2026</option>
+                                    <option value="Q1 2027">Q1 2027</option>
+                                </select>
 
-                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Feature ID</label>
-                        <input type="text" id="roadmap-filter-feature-id" placeholder="Contoh: FT-00083" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" oninput="filterRoadmap()">
+                                <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Category</label>
+                                <select id="roadmap-filter-category" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
+                                    <option value="all">Semua Category</option>
+                                    <option value="Roadmap">Roadmap</option>
+                                    <option value="User Request">User Request</option>
+                                </select>
 
-                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Priority</label>
-                        <select id="roadmap-filter-priority" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
-                            <option value="all">Semua Priority</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
+                                <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Feature ID</label>
+                                <input type="text" id="roadmap-filter-feature-id" placeholder="Contoh: FT-00083" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" oninput="filterRoadmap()">
 
-                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Status</label>
-                        <select id="roadmap-filter-status" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:0;" onchange="filterRoadmap()">
-                            <option value="all">Semua Status</option>
-                            <option value="Planned">Planned</option>
-                            <option value="In Progress">In Progress</option>
-                        </select>
+                                <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Priority</label>
+                                <select id="roadmap-filter-priority" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
+                                    <option value="all">Semua Priority</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+
+                                <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Status</label>
+                                <select id="roadmap-filter-status" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:0;" onchange="filterRoadmap()">
+                                    <option value="all">Semua Status</option>
+                                    <option value="Planned">Planned</option>
+                                    <option value="In Progress">In Progress</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -4731,11 +4791,19 @@
 
             const editorPanel = document.querySelector('.editor-panel');
             if (tab === 'user_company' || tab === 'feature_history' || tab === 'master_feature' || tab === 'daily_task') {
+                editorPanel.classList.remove('roadmap-collapsed');
                 editorPanel.style.display = 'none';
             } else {
                 editorPanel.style.display = 'block';
                 const targetEditor = document.getElementById(`editor-${tab}`);
                 if (targetEditor) targetEditor.classList.add('active');
+
+                // Hanya Roadmap yang memakai mode minimize ke samping. Halaman editor lain tetap normal.
+                if (tab === 'roadmap') {
+                    restoreRoadmapSidePanelState();
+                } else {
+                    editorPanel.classList.remove('roadmap-collapsed');
+                }
             }
 
             const titles = {
@@ -7823,13 +7891,67 @@ ${error.message}`);
             closeAddFeatureModal();
         }
 
+        // Minimize / expand panel Manajemen Roadmap secara horizontal.
+        // State disimpan per browser session agar ketika kembali ke Roadmap layout tetap konsisten.
+        function applyRoadmapSidePanelState(collapsed) {
+            const editorPanel = document.querySelector('.editor-panel');
+            if (!editorPanel) return;
+            editorPanel.classList.toggle('roadmap-collapsed', Boolean(collapsed));
+        }
+
+        function toggleRoadmapSidePanel(forceCollapsed) {
+            const editorPanel = document.querySelector('.editor-panel');
+            if (!editorPanel) return;
+            const collapsed = typeof forceCollapsed === 'boolean'
+                ? forceCollapsed
+                : !editorPanel.classList.contains('roadmap-collapsed');
+            applyRoadmapSidePanelState(collapsed);
+            try { sessionStorage.setItem('roadmapSidePanelCollapsed', collapsed ? '1' : '0'); } catch (e) {}
+        }
+
+        function restoreRoadmapSidePanelState() {
+            let collapsed = false;
+            try { collapsed = sessionStorage.getItem('roadmapSidePanelCollapsed') === '1'; } catch (e) {}
+            applyRoadmapSidePanelState(collapsed);
+        }
+
+        // Collapse / expand seluruh filter Roadmap agar sidebar tetap ringkas
+        function toggleRoadmapFilters(forceOpen) {
+            const body = document.getElementById('roadmap-filter-body');
+            const chevron = document.getElementById('roadmap-filter-chevron');
+            if (!body) return;
+
+            const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : body.style.display === 'none';
+            body.style.display = shouldOpen ? 'block' : 'none';
+            if (chevron) chevron.style.transform = shouldOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function updateRoadmapFilterSummary() {
+            const activeValues = [
+                (document.getElementById('roadmap-search')?.value || '').trim(),
+                (document.getElementById('roadmap-filter-quarter')?.value || 'all') !== 'all',
+                (document.getElementById('roadmap-filter-category')?.value || 'all') !== 'all',
+                (document.getElementById('roadmap-filter-feature-id')?.value || '').trim(),
+                (document.getElementById('roadmap-filter-priority')?.value || 'all') !== 'all',
+                (document.getElementById('roadmap-filter-status')?.value || 'all') !== 'all'
+            ];
+            const activeCount = activeValues.filter(Boolean).length;
+            const badge = document.getElementById('roadmap-filter-active-count');
+            if (badge) {
+                badge.textContent = activeCount;
+                badge.style.display = activeCount > 0 ? 'inline-flex' : 'none';
+            }
+        }
+
         // 6. Fungsi trigger saat user mengetik di kolom pencarian atau filter quarter
         function filterRoadmap() {
+            updateRoadmapFilterSummary();
             initRoadmapView();
         }
 
         // 7. Fungsi Utama untuk me-render Dashboard Roadmap (Pipeline Card & Tabel)
         function initRoadmapView() {
+            updateRoadmapFilterSummary();
             const container = document.getElementById('roadmap-table-container');
             const pipelineCont = document.getElementById('roadmap-pipeline-container');
             
