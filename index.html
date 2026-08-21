@@ -1052,6 +1052,13 @@
                             <option value="Q4 2026">Q4 2026</option>
                             <option value="Q1 2027">Q1 2027</option>
                         </select>
+
+                        <label style="font-weight:700; color:var(--dark); display:block; margin-bottom:4px;">Filter Category</label>
+                        <select id="roadmap-filter-category" style="width:100%; padding:8px; border:1px solid var(--gray-border); border-radius:6px; margin-bottom:12px;" onchange="filterRoadmap()">
+                            <option value="all">Semua Category</option>
+                            <option value="Roadmap">Roadmap</option>
+                            <option value="User Request">User Request</option>
+                        </select>
                     </div>
                 </div>
 
@@ -2125,6 +2132,40 @@
                     <input type="text" id="feat-name" placeholder="e.g. Onboarding redesign" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;">
                 </div>
 
+                <div style="margin-bottom:15px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Category</label>
+                    <select id="feat-category" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;" onchange="toggleUserRequestFields()">
+                        <option value="Roadmap" selected>Roadmap</option>
+                        <option value="User Request">User Request</option>
+                    </select>
+                </div>
+
+                <div id="feat-user-request-fields" style="display:none; margin-bottom:15px; padding:12px; background:#f8fafc; border:1px solid var(--gray-border); border-radius:8px;">
+                    <div style="font-size:11px; font-weight:800; color:var(--dark); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-user-pen" style="color:var(--primary);"></i> User Request Detail
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px;">
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Add On</label>
+                            <select id="feat-addon" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;" onchange="toggleUserRequestFields()">
+                                <option value="No" selected>No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Status</label>
+                            <select id="feat-request-status" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;">
+                                <option value="Waiting Approval" selected>Waiting Approval</option>
+                                <option value="Approved">Approved</option>
+                            </select>
+                        </div>
+                        <div id="feat-mandays-wrap" style="display:none;">
+                            <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Mandays *</label>
+                            <input type="number" id="feat-mandays" min="1" step="1" placeholder="e.g. 5" style="width:100%; padding:10px; border:1px solid var(--gray-border); border-radius:6px; font-size:13px;">
+                        </div>
+                    </div>
+                </div>
+
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
                     <div>
                         <label style="font-size:12px; font-weight:700; color:var(--dark); display:block; margin-bottom:5px;">Target Rilis (Tahun & Quarter)</label>
@@ -3031,7 +3072,7 @@
                         const data = snapshot.val();
                         Object.assign(appState, data);
                         
-                        const arrayKeys = ['lastLoginData', 'lastLoginReports', 'retention', 'surveyLogs', 'npsReports', 'masterCompany', 'accounts', 'roles'];
+                        const arrayKeys = ['lastLoginData', 'lastLoginReports', 'retention', 'surveyLogs', 'npsReports', 'masterCompany', 'accounts', 'roles', 'roadmapFeatures'];
                         arrayKeys.forEach(key => {
                             if (!appState[key]) {
                                 appState[key] = [];
@@ -3044,6 +3085,11 @@
                         });
 
                         migrateAccessControlState();
+
+                        // Migrasi Feature Roadmap lama: seluruh data tanpa category otomatis menjadi Roadmap.
+                        if (migrateRoadmapFeatureCategories()) {
+                            saveDataToLocal();
+                        }
 
                         // Bug fix Search & Status
                         if (appState.masterCompanyState) {
@@ -7076,6 +7122,42 @@ ${error.message}`);
         // 1. Inisialisasi State Roadmap (Mencegah error jika data kosong)
         appState.roadmapFeatures = appState.roadmapFeatures || [];
 
+        function normalizeFeatureCategory(value) {
+            return String(value || '').trim() === 'User Request' ? 'User Request' : 'Roadmap';
+        }
+
+        function migrateRoadmapFeatureCategories() {
+            if (!Array.isArray(appState.roadmapFeatures)) {
+                appState.roadmapFeatures = appState.roadmapFeatures ? Object.values(appState.roadmapFeatures) : [];
+            }
+
+            let changed = false;
+            appState.roadmapFeatures.forEach(feature => {
+                if (!feature || typeof feature !== 'object') return;
+                const normalizedCategory = normalizeFeatureCategory(feature.category);
+                if (feature.category !== normalizedCategory) {
+                    feature.category = normalizedCategory;
+                    changed = true;
+                }
+            });
+            return changed;
+        }
+
+        function toggleUserRequestFields() {
+            const category = normalizeFeatureCategory(document.getElementById('feat-category')?.value);
+            const userRequestFields = document.getElementById('feat-user-request-fields');
+            const addOnSelect = document.getElementById('feat-addon');
+            const mandaysWrap = document.getElementById('feat-mandays-wrap');
+            const isUserRequest = category === 'User Request';
+            const isAddOn = isUserRequest && addOnSelect?.value === 'Yes';
+
+            if (userRequestFields) userRequestFields.style.display = isUserRequest ? 'block' : 'none';
+            if (mandaysWrap) mandaysWrap.style.display = isAddOn ? 'block' : 'none';
+        }
+
+        // Pastikan data yang sudah ada tetap dianggap sebagai category Roadmap.
+        migrateRoadmapFeatureCategories();
+
         // ================= MAPPING DATA MODULE KE PAGES =================
         const modulePagesMap = {
             "Purchasing": ["Purchase Request Form", "Purchase Request Fulfillment", "Purchase Invoice Register", "Direct Purchase", "Purchase Return", "Stock Suggestions", "Purchase Request List", "Purchase Report", "Purchase Return Report", "Purchase Invoice Report"],
@@ -7433,6 +7515,11 @@ ${error.message}`);
             document.getElementById('feat-quarter-only').value = 'Unassigned';
             document.getElementById('feat-priority').value = 'Medium';
             document.getElementById('feat-status').value = 'Planned';
+            document.getElementById('feat-category').value = 'Roadmap';
+            document.getElementById('feat-addon').value = 'No';
+            document.getElementById('feat-request-status').value = 'Waiting Approval';
+            document.getElementById('feat-mandays').value = '';
+            toggleUserRequestFields();
             
             renderImpactedTargets([]); 
             
@@ -7498,6 +7585,11 @@ ${error.message}`);
             document.getElementById('feat-priority').value = f.priority || 'Medium';
             document.getElementById('feat-duedate').value = f.dueDate || '';
             document.getElementById('feat-status').value = f.overallStatus || 'Planned';
+            document.getElementById('feat-category').value = normalizeFeatureCategory(f.category);
+            document.getElementById('feat-addon').value = (f.addOn === true || f.addOn === 'Yes') ? 'Yes' : 'No';
+            document.getElementById('feat-request-status').value = f.requestStatus || 'Waiting Approval';
+            document.getElementById('feat-mandays').value = (f.mandays !== null && f.mandays !== undefined && f.mandays !== '') ? f.mandays : '';
+            toggleUserRequestFields();
             // Load seluruh pasangan impacted module dan page, termasuk kompatibilitas data lama
             renderImpactedTargets(getFeatureImpactedTargets(f));
             
@@ -7591,6 +7683,16 @@ ${error.message}`);
             const priority = document.getElementById('feat-priority').value;
             const dueDate = document.getElementById('feat-duedate').value;
             const overallStatus = document.getElementById('feat-status').value;
+            const category = normalizeFeatureCategory(document.getElementById('feat-category').value);
+            const addOn = category === 'User Request' && document.getElementById('feat-addon').value === 'Yes';
+            const requestStatus = category === 'User Request' ? document.getElementById('feat-request-status').value : '';
+            const mandaysRaw = document.getElementById('feat-mandays').value;
+            const mandays = addOn && mandaysRaw !== '' ? Number(mandaysRaw) : null;
+
+            if (addOn && (!Number.isFinite(mandays) || mandays <= 0)) {
+                alert('Mandays wajib diisi dengan angka lebih dari 0 untuk User Request Add On.');
+                return;
+            }
             
             // 👇 INI BAGIAN YANG BARU KITA TAMBAHKAN 👇
             const impactedTargets = getSelectedImpactedTargets();
@@ -7629,6 +7731,10 @@ ${error.message}`);
                     if (existing.quarter !== quarter) changes.push(`Quarter diubah menjadi "${quarter}"`);
                     if (existing.overallStatus !== overallStatus) changes.push(`Status diubah menjadi "${overallStatus}"`);
                     if (existing.dueDate !== dueDate) changes.push(`Due Date diubah menjadi "${dueDate || '-'}"`);
+                    if (normalizeFeatureCategory(existing.category) !== category) changes.push(`Category diubah menjadi "${category}"`);
+                    if ((existing.addOn === true || existing.addOn === 'Yes') !== addOn) changes.push(`Add On diubah menjadi "${addOn ? 'Yes' : 'No'}"`);
+                    if ((existing.requestStatus || '') !== requestStatus) changes.push(`User Request Status diubah menjadi "${requestStatus || '-'}"`);
+                    if ((existing.mandays ?? null) !== mandays) changes.push(`Mandays diubah menjadi "${mandays ?? '-'}"`);
                     
                     // Logging perubahan pasangan Module dan Page
                     const oldImpactedTargets = getFeatureImpactedTargets(existing);
@@ -7645,6 +7751,10 @@ ${error.message}`);
                     existing.priority = priority;
                     existing.dueDate = dueDate;
                     existing.overallStatus = overallStatus;
+                    existing.category = category;
+                    existing.addOn = addOn;
+                    existing.requestStatus = requestStatus;
+                    existing.mandays = mandays;
                     
                     // 👇 UPDATE OBJECT DATA KETIKA DI-SAVE 👇
                     existing.impactedTargets = impactedTargets;
@@ -7669,6 +7779,10 @@ ${error.message}`);
                     priority: priority,
                     dueDate: dueDate,
                     overallStatus: overallStatus,
+                    category: category,
+                    addOn: addOn,
+                    requestStatus: requestStatus,
+                    mandays: mandays,
                     
                     // 👇 SIMPAN KE OBJECT SAAT BIKIN BARU 👇
                     impactedTargets: impactedTargets,
@@ -7703,13 +7817,15 @@ ${error.message}`);
             
             const search = (document.getElementById('roadmap-search')?.value || '').toLowerCase();
             const qtr = document.getElementById('roadmap-filter-quarter')?.value || 'all';
+            const categoryFilter = document.getElementById('roadmap-filter-category')?.value || 'all';
 
             // Filter data berdasarkan inputan user dan JANGAN tampilkan yang sudah 'Done'
             let data = appState.roadmapFeatures.filter(f => {
-                const mSearch = f.name.toLowerCase().includes(search);
+                const mSearch = String(f.name || '').toLowerCase().includes(search);
                 const mQtr = qtr === 'all' || f.quarter === qtr;
+                const mCategory = categoryFilter === 'all' || normalizeFeatureCategory(f.category) === categoryFilter;
                 const mNotDone = f.overallStatus !== 'Done'; // <--- TAMBAHAN FILTER
-                return mSearch && mQtr && mNotDone;
+                return mSearch && mQtr && mCategory && mNotDone;
             });
 
             // Kalkulasi Data Pipeline (Berapa banyak yang sudah 'Done' di tiap fase)
@@ -7764,11 +7880,19 @@ ${error.message}`);
             const rowsHtml = data.map((f, idx) => {
                 let badgeColor = f.overallStatus === 'Done' ? 'var(--success)' : f.overallStatus === 'In Progress' ? 'var(--primary)' : 'var(--text-muted)';
                 let fId = f.featureId || '-'; // Jaga-jaga data lama yang belum punya ID
+                const featureCategory = normalizeFeatureCategory(f.category);
+                const categoryStyle = featureCategory === 'User Request'
+                    ? 'background:#fff7ed; color:#c2410c; border-color:#fed7aa;'
+                    : 'background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe;';
+                const requestMeta = featureCategory === 'User Request'
+                    ? `<div style="margin-top:5px; font-size:9px; color:var(--text-muted); line-height:1.35;">Add On: ${f.addOn === true || f.addOn === 'Yes' ? 'Yes' : 'No'} · ${f.requestStatus || 'Waiting Approval'}${(f.addOn === true || f.addOn === 'Yes') && f.mandays ? ` · ${f.mandays} MD` : ''}</div>`
+                    : '';
                 
                 return `
                 <tr>
                     <td><span style="font-family:'Roboto Mono', monospace; font-size:11px; font-weight:700; color:var(--text-muted); background:var(--gray-light); padding:2px 6px; border:1px solid var(--gray-border); border-radius:4px;">${fId}</span></td>
                     <td style="font-weight:700; color:var(--dark);">${f.name}</td>
+                    <td><span style="display:inline-flex; font-size:10px; font-weight:800; padding:3px 7px; border:1px solid; border-radius:999px; ${categoryStyle}">${featureCategory}</span>${requestMeta}</td>
                     <td><span style="font-size:11px; background:var(--gray-light); padding:2px 6px; border:1px solid var(--gray-border); border-radius:4px;">${f.quarter}</span></td>
                     <td>${f.priority}</td>
                     <td><span style="font-size:11px; font-weight:700; color:${badgeColor}; border:1px solid ${badgeColor}; padding:2px 6px; border-radius:4px;">${f.overallStatus}</span></td>
@@ -7801,6 +7925,7 @@ ${error.message}`);
                         <tr>
                             <th style="width:100px;">Feature ID</th>
                             <th>Feature Name</th>
+                            <th style="width:180px;">Category</th>
                             <th>Quarter</th>
                             <th>Priority</th>
                             <th>Status</th>
